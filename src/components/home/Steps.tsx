@@ -13,7 +13,7 @@ function Visual({ index }: { index: number }) {
   if (index === 0) {
     return (
       <div className="vis vis-discover">
-        {["Supercar", "Off-road", "Motorsport", "Dealership", "3D", "Scroll"].map((t, i) => (
+        {["Supercar", "Off-road", "Motorsport", "Motorcycle", "3D", "Scroll"].map((t, i) => (
           <span key={t} style={{ animationDelay: `${i * 80}ms` }}>{t}</span>
         ))}
       </div>

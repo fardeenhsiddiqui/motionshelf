@@ -70,6 +70,7 @@ export type CatalogItem = {
   summary: string;
   tags: string[];
   previewPath: string;
+  posterPath: string;
   filesBase: string;
   files: CodeFile[];
   assetIds?: string[];

@@ -6,7 +6,7 @@ import { PreviewThumb } from "./PreviewThumb";
 export function TemplateCard({ item }: { item: CatalogItem }) {
   return (
     <Link href={itemPath(item)} className="card">
-      <PreviewThumb src={item.previewPath} title={item.title} />
+      <PreviewThumb src={item.previewPath} poster={item.posterPath} title={item.title} />
       <div className="card-body">
         <p className="kicker">{categoryLabel(item.category)} · {item.theme}</p>
         <div className="card-title">
@@ -19,6 +19,7 @@ export function TemplateCard({ item }: { item: CatalogItem }) {
             <span key={tag} className="tag">{tag}</span>
           ))}
         </div>
+        <span className="card-cta">Open template <span aria-hidden="true">→</span></span>
       </div>
     </Link>
   );

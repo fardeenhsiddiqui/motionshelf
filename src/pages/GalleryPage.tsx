@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import type { SectionId, Theme } from "../types";
 import { catalog, getSection, itemsInSection, matchesQuery, sectionPath } from "../lib/catalog";
 import { Link } from "../lib/router";
@@ -10,20 +11,34 @@ const THEMES: { id: Theme | "all"; label: string }[] = [
   { id: "light", label: "Light" },
 ];
 
+const EASE = [0.16, 1, 0.3, 1] as const;
+
 export function GalleryPage({ section }: { section?: SectionId }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string | null>(null);
   const [theme, setTheme] = useState<Theme | "all">("all");
   const [tag, setTag] = useState<string | null>(null);
+  const search = useRef<HTMLInputElement>(null);
+
+  // Ctrl/Cmd+K and "/" jump to search.
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      const typing = event.target instanceof HTMLElement && /^(INPUT|TEXTAREA|SELECT)$/.test(event.target.tagName);
+      if (((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") || (event.key === "/" && !typing)) {
+        event.preventDefault();
+        search.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   const info = section ? getSection(section) : null;
   const inSection = itemsInSection(section);
 
-  // Only offer categories and tags that actually have items in this section.
+  // Every category stays visible so the shelf shows what is coming; empty ones are disabled.
   const categories = useMemo(
-    () => catalog.categories
-      .map((c) => ({ ...c, count: inSection.filter((item) => item.category === c.id).length }))
-      .filter((c) => c.count > 0),
+    () => catalog.categories.map((c) => ({ ...c, count: inSection.filter((item) => item.category === c.id).length })),
     [inSection],
   );
   const tags = useMemo(() => [...new Set(inSection.flatMap((item) => item.tags))].sort(), [inSection]);
@@ -39,12 +54,13 @@ export function GalleryPage({ section }: { section?: SectionId }) {
 
   return (
     <>
-      <header className="page-head">
-        <h1>{info ? info.label : "Browse MotionShelf"}</h1>
-        <p>
+      <header className="gallery-head">
+        <p className="eyebrow">{info ? "Collection" : "The shelf"}</p>
+        <h1>{info ? info.label : "Browse experiences"}</h1>
+        <p className="gallery-lede">
           {info
             ? info.description
-            : "Original website templates and UI building blocks. Preview them live, copy the code, and check the license before you ship."}
+            : "Cinematic website experiences you can preview live, copy and ship. Every one lists its licenses."}
         </p>
       </header>
 
@@ -60,14 +76,18 @@ export function GalleryPage({ section }: { section?: SectionId }) {
 
       <div className="toolbar">
         <div className="toolbar-row">
-          <input
-            type="search"
-            className="search"
-            placeholder="Search templates, categories, tags…"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            aria-label="Search"
-          />
+          <label className="search-wrap">
+            <span className="visually-hidden">Search</span>
+            <input
+              ref={search}
+              type="search"
+              className="search"
+              placeholder="Search experiences, categories, features…"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+            />
+            <kbd aria-hidden="true">Ctrl K</kbd>
+          </label>
           {inSection.length > 0 && (
             <div role="group" aria-label="Theme" className="segmented">
               {THEMES.map((t) => (
@@ -84,30 +104,27 @@ export function GalleryPage({ section }: { section?: SectionId }) {
           )}
         </div>
 
-        {categories.length > 0 && (
-          <div className="chips" role="group" aria-label="Filter by category">
-            <button
-              className={category === null ? "chip chip-category is-active" : "chip chip-category"}
-              aria-pressed={category === null}
-              onClick={() => setCategory(null)}
-            >
-              All categories <span className="chip-count">{inSection.length}</span>
-            </button>
-            {categories.map((c) => (
+        <div className="cat-tiles" role="group" aria-label="Filter by category">
+          {categories.map((c) => {
+            const active = c.id === category;
+            const empty = c.count === 0;
+            return (
               <button
                 key={c.id}
-                className={c.id === category ? "chip chip-category is-active" : "chip chip-category"}
-                aria-pressed={c.id === category}
-                onClick={() => setCategory(c.id === category ? null : c.id)}
+                className={`cat-tile${active ? " is-active" : ""}${empty ? " is-empty" : ""}`}
+                aria-pressed={active}
+                disabled={empty}
+                onClick={() => setCategory(active ? null : c.id)}
               >
-                {c.label} <span className="chip-count">{c.count}</span>
+                <span className="cat-name">{c.label}</span>
+                <span className="cat-meta">{empty ? "Coming soon" : `${c.count} ${c.count === 1 ? "experience" : "experiences"}`}</span>
               </button>
-            ))}
-          </div>
-        )}
+            );
+          })}
+        </div>
 
         {tags.length > 0 && (
-          <div className="chips chips-tags" role="group" aria-label="Filter by feature">
+          <div className="chips" role="group" aria-label="Filter by feature">
             {tags.map((name) => (
               <button
                 key={name}
@@ -122,14 +139,27 @@ export function GalleryPage({ section }: { section?: SectionId }) {
         )}
       </div>
 
-      {results.length > 0 && (
-        <>
-          {filtering && <p className="muted small result-summary">{results.length} of {inSection.length} shown</p>}
-          <div className="grid">
-            {results.map((item) => <TemplateCard key={item.id} item={item} />)}
-          </div>
-        </>
-      )}
+      <div className="result-row" aria-live="polite">
+        <p className="muted small">{results.length} of {inSection.length} shown</p>
+        {filtering && <button className="link-btn" onClick={clearFilters}>Clear filters</button>}
+      </div>
+
+      <motion.div className="grid" layout>
+        <AnimatePresence mode="popLayout">
+          {results.map((item) => (
+            <motion.div
+              key={item.id}
+              layout
+              initial={{ opacity: 0, y: 24, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              transition={{ duration: 0.45, ease: EASE }}
+            >
+              <TemplateCard item={item} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </motion.div>
 
       {results.length === 0 && filtering && (
         <div className="empty">
@@ -148,10 +178,6 @@ export function GalleryPage({ section }: { section?: SectionId }) {
               : "This section is next on the list. Automotive templates are live now."}
           </p>
         </div>
-      )}
-
-      {!section && !filtering && catalog.items.length > 0 && (
-        <p className="muted small result-count">{catalog.items.length} item{catalog.items.length === 1 ? "" : "s"} · more landing soon</p>
       )}
     </>
   );

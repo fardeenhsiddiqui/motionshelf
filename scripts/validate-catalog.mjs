@@ -89,7 +89,7 @@ for (const item of catalog.items) {
   if (item.license.attributionRequired && !item.license.attributionText) {
     errors.push(`${where}: attribution is required but attributionText is empty`);
   }
-  const publicFiles = [item.previewPath, item.license.licenseFile, ...item.files.map((f) => `${item.filesBase}/${f.path}`)];
+  const publicFiles = [item.previewPath, item.posterPath, item.license.licenseFile, ...item.files.map((f) => `${item.filesBase}/${f.path}`)];
   for (const file of publicFiles) {
     if (!inPublic(file)) errors.push(`${where}: file not found in public/: ${file}`);
   }

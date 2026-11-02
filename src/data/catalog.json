@@ -3,7 +3,7 @@
     {
       "id": "templates",
       "label": "Automotive Templates",
-      "description": "Supercar, off-road, motorsport and dealership website templates. Plain HTML and CSS you can copy straight into a project.",
+      "description": "Supercar, off-road, motorsport and motorcycle website templates. Plain HTML and CSS you can copy straight into a project.",
       "status": "live"
     },
     {
@@ -20,10 +20,22 @@
     }
   ],
   "categories": [
-    { "id": "supercar", "label": "Supercar" },
-    { "id": "off-road", "label": "Off-road SUV" },
-    { "id": "motorsport", "label": "Motorsport" },
-    { "id": "dealership", "label": "Dealership" }
+    {
+      "id": "supercar",
+      "label": "Supercar"
+    },
+    {
+      "id": "off-road",
+      "label": "Off-road"
+    },
+    {
+      "id": "motorsport",
+      "label": "Motorsport"
+    },
+    {
+      "id": "motorcycle",
+      "label": "Motorcycle"
+    }
   ],
   "items": [
     {
@@ -33,15 +45,37 @@
       "theme": "dark",
       "title": "Vortex GT",
       "summary": "A bold, angular supercar landing page with an animated SVG hero car, a paint switcher built in pure CSS, performance stats, a model range and a reservation form.",
-      "tags": ["landing page", "hero", "animated", "paint switcher", "no JavaScript needed"],
+      "tags": [
+        "landing page",
+        "hero",
+        "animated",
+        "paint switcher",
+        "no JavaScript needed"
+      ],
       "previewPath": "/previews/vortex-gt/index.html",
       "filesBase": "/previews/vortex-gt",
       "files": [
-        { "path": "index.html", "language": "html" },
-        { "path": "styles.css", "language": "css" }
+        {
+          "path": "index.html",
+          "language": "html"
+        },
+        {
+          "path": "styles.css",
+          "language": "css"
+        }
       ],
-      "sections": ["Header", "Hero", "Stats", "Models", "Engineering", "Reserve form", "Footer"],
-      "fonts": ["System font stack (Bahnschrift / Arial Narrow fallback)"],
+      "sections": [
+        "Header",
+        "Hero",
+        "Stats",
+        "Models",
+        "Engineering",
+        "Reserve form",
+        "Footer"
+      ],
+      "fonts": [
+        "System font stack (Bahnschrift / Arial Narrow fallback)"
+      ],
       "externalDeps": [],
       "responsive": true,
       "createdAt": "2026-11-02",
@@ -60,7 +94,8 @@
         "aiGenerated": true,
         "verifiedOn": "2026-11-02",
         "notes": "Original layout, copy and inline SVG artwork. Code written with AI assistance. 'Vortex' is a fictional brand. No third-party images, fonts, logos or trademarks."
-      }
+      },
+      "posterPath": "/previews/vortex-gt/poster.webp"
     },
     {
       "id": "ridgeback-x",
@@ -69,15 +104,39 @@
       "theme": "light",
       "title": "Ridgeback X",
       "summary": "An earthy, expedition-style landing page for an off-road luxury SUV: topographic hero, animated boxy SUV illustration, terrain modes, trim comparison and a test-drive form.",
-      "tags": ["landing page", "hero", "animated", "paint switcher", "pricing", "forms", "no JavaScript needed"],
+      "tags": [
+        "landing page",
+        "hero",
+        "animated",
+        "paint switcher",
+        "pricing",
+        "forms",
+        "no JavaScript needed"
+      ],
       "previewPath": "/previews/ridgeback-x/index.html",
       "filesBase": "/previews/ridgeback-x",
       "files": [
-        { "path": "index.html", "language": "html" },
-        { "path": "styles.css", "language": "css" }
+        {
+          "path": "index.html",
+          "language": "html"
+        },
+        {
+          "path": "styles.css",
+          "language": "css"
+        }
       ],
-      "sections": ["Header", "Hero", "Stats", "Terrain modes", "Trims", "Test-drive form", "Footer"],
-      "fonts": ["System serif stack (Iowan Old Style / Palatino / Georgia) and system sans"],
+      "sections": [
+        "Header",
+        "Hero",
+        "Stats",
+        "Terrain modes",
+        "Trims",
+        "Test-drive form",
+        "Footer"
+      ],
+      "fonts": [
+        "System serif stack (Iowan Old Style / Palatino / Georgia) and system sans"
+      ],
       "externalDeps": [],
       "responsive": true,
       "createdAt": "2026-11-02",
@@ -96,7 +155,8 @@
         "aiGenerated": true,
         "verifiedOn": "2026-11-02",
         "notes": "Original layout, copy and inline SVG artwork. Code written with AI assistance. 'Ridgeback' is a fictional brand. Specifications are invented. No third-party images, fonts, logos or trademarks."
-      }
+      },
+      "posterPath": "/previews/ridgeback-x/poster.webp"
     },
     {
       "id": "redline-racing",
@@ -105,15 +165,41 @@
       "theme": "dark",
       "title": "Redline Racing",
       "summary": "A fast, high-contrast motorsport team site: results ticker, animated race car, next-race countdown card, constructors' standings table, driver cards and a race calendar.",
-      "tags": ["landing page", "hero", "animated", "data table", "calendar", "forms", "no JavaScript needed"],
+      "tags": [
+        "landing page",
+        "hero",
+        "animated",
+        "data table",
+        "calendar",
+        "forms",
+        "no JavaScript needed"
+      ],
       "previewPath": "/previews/redline-racing/index.html",
       "filesBase": "/previews/redline-racing",
       "files": [
-        { "path": "index.html", "language": "html" },
-        { "path": "styles.css", "language": "css" }
+        {
+          "path": "index.html",
+          "language": "html"
+        },
+        {
+          "path": "styles.css",
+          "language": "css"
+        }
       ],
-      "sections": ["Ticker", "Header", "Hero", "Next race", "Standings", "Drivers", "Calendar", "Newsletter", "Footer"],
-      "fonts": ["System font stack (Bahnschrift / Arial Narrow fallback)"],
+      "sections": [
+        "Ticker",
+        "Header",
+        "Hero",
+        "Next race",
+        "Standings",
+        "Drivers",
+        "Calendar",
+        "Newsletter",
+        "Footer"
+      ],
+      "fonts": [
+        "System font stack (Bahnschrift / Arial Narrow fallback)"
+      ],
       "externalDeps": [],
       "responsive": true,
       "createdAt": "2026-11-02",
@@ -132,7 +218,8 @@
         "aiGenerated": true,
         "verifiedOn": "2026-11-02",
         "notes": "Original layout, copy and inline SVG artwork. Code written with AI assistance. Team, drivers, results and standings are fictional. No third-party images, fonts, logos, team names or trademarks."
-      }
+      },
+      "posterPath": "/previews/redline-racing/poster.webp"
     }
   ]
 }

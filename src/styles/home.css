@@ -19,10 +19,10 @@ body { font-feature-settings: "cv11", "ss01"; }
 .site-header.is-solid { background: rgba(7, 8, 11, 0.88); backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%); border-bottom-color: var(--line); }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 600; font-size: 15px; letter-spacing: -0.02em; }
 .site-nav { display: flex; align-items: center; gap: 4px; margin-left: auto; }
-.site-nav a { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; color: var(--muted); font-size: 14px; transition: color 0.2s, background 0.2s; }
+.site-nav a { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; color: var(--muted); font-size: 14px; white-space: nowrap; transition: color 0.2s, background 0.2s; }
 .site-nav a:hover { color: var(--text); }
 .site-nav a[aria-current="page"] { color: var(--text); background: rgba(255, 255, 255, 0.07); }
-.header-cta { padding: 10px 20px; font-size: 14px; background: var(--text); color: #0b0d12; }
+.header-cta { padding: 10px 20px; font-size: 14px; white-space: nowrap; background: var(--text); color: #0b0d12; }
 .menu-btn { display: none; width: 42px; height: 42px; border: 1px solid var(--line-strong); border-radius: 50%; background: transparent; cursor: pointer; position: relative; }
 .menu-btn span { position: absolute; left: 12px; right: 12px; height: 2px; background: var(--text); border-radius: 2px; transition: transform 0.3s var(--ease-out), top 0.3s var(--ease-out); }
 .menu-btn span:first-child { top: 16px; }
