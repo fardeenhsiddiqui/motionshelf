@@ -1,4 +1,5 @@
 import { useEffect, useState, type AnchorHTMLAttributes, type MouseEvent } from "react";
+import { scrollToTop } from "./smoothScroll";
 
 // A tiny History API router: just enough for a handful of static routes.
 export function usePath(): string {
@@ -14,7 +15,7 @@ export function usePath(): string {
 export function navigate(to: string) {
   window.history.pushState({}, "", to);
   window.dispatchEvent(new PopStateEvent("popstate"));
-  window.scrollTo({ top: 0 });
+  scrollToTop();
 }
 
 export function Link({ href, onClick, ...rest }: AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }) {

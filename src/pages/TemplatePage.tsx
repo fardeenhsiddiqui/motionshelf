@@ -20,7 +20,7 @@ export function TemplatePage({ item }: { item: CatalogItem }) {
   return (
     <>
       <nav className="crumbs" aria-label="Breadcrumb">
-        <Link href="/">Browse</Link> <span>/</span> <Link href={sectionPath(item.section)}>{section.label}</Link> <span>/</span> <span>{item.title}</span>
+        <Link href="/browse">Browse</Link> <span>/</span> <Link href={sectionPath(item.section)}>{section.label}</Link> <span>/</span> <span>{item.title}</span>
       </nav>
 
       <header className="page-head">

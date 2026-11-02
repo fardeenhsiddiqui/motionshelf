@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import type { SectionId, Theme } from "../types";
-import { catalog, getSection, itemsInSection, matchesQuery } from "../lib/catalog";
+import { catalog, getSection, itemsInSection, matchesQuery, sectionPath } from "../lib/catalog";
+import { Link } from "../lib/router";
 import { TemplateCard } from "../components/TemplateCard";
 
 const THEMES: { id: Theme | "all"; label: string }[] = [
@@ -46,6 +47,16 @@ export function GalleryPage({ section }: { section?: SectionId }) {
             : "Original website templates and UI building blocks. Preview them live, copy the code, and check the license before you ship."}
         </p>
       </header>
+
+      <nav className="section-tabs" aria-label="Sections">
+        <Link href="/browse" aria-current={section ? undefined : "page"}>All <span className="count">{catalog.items.length}</span></Link>
+        {catalog.sections.map((s) => (
+          <Link key={s.id} href={sectionPath(s.id)} aria-current={section === s.id ? "page" : undefined}>
+            {s.label}
+            {s.status === "soon" ? <span className="soon">Soon</span> : <span className="count">{itemsInSection(s.id).length}</span>}
+          </Link>
+        ))}
+      </nav>
 
       <div className="toolbar">
         <div className="toolbar-row">
