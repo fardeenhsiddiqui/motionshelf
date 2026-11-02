@@ -29,6 +29,31 @@ export type CodeFile = {
   language: "html" | "css";
 };
 
+export type Clearance = "cleared" | "dev-only";
+
+export type Asset = {
+  id: string;
+  type: "model" | "image" | "video" | "font" | "audio" | "hdri";
+  title: string;
+  file: string;
+  source: { name: string; url: string };
+  originalSource?: string;
+  author: string;
+  license: { name: string; spdx: string; url: string; licenseFile: string };
+  attributionRequired: boolean;
+  attributionText?: string;
+  commercialUse: boolean;
+  redistribution: boolean;
+  modification: boolean;
+  clearance: Clearance;
+  brandsDepicted: string[];
+  brandPermission?: string;
+  processing?: string;
+  usedIn: string[];
+  verifiedOn: string;
+  notes?: string;
+};
+
 export type Category = {
   id: string;
   label: string;
@@ -47,6 +72,7 @@ export type CatalogItem = {
   previewPath: string;
   filesBase: string;
   files: CodeFile[];
+  assetIds?: string[];
   sections: string[];
   fonts: string[];
   externalDeps: string[];

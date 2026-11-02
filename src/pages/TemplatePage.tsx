@@ -49,8 +49,8 @@ export function TemplatePage({ item }: { item: CatalogItem }) {
           </div>
         </div>
         <div className="stage">
-          {/* No allow-scripts: previews are static HTML/CSS. allow-same-origin is needed because
-              Vite's dev/preview servers render opaque-origin (fully sandboxed) frames blank. */}
+          {/* Static previews: scripts stay off. Script-capable previews will move to a separate
+              preview origin with sandbox="allow-scripts" (verified in Milestone 0). */}
           <iframe
             key={frameKey}
             className="frame"

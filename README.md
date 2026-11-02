@@ -48,8 +48,17 @@ scripts/validate-catalog.mjs fails the build if license metadata or files are mi
 
 ## Notes
 
-- Previews use `sandbox="allow-same-origin"` (scripts off). Vite's dev and preview servers
-  render fully opaque-origin sandboxed frames blank. A template that needs JavaScript
-  should be previewed from a separate origin instead of adding `allow-scripts` here.
+- Previews currently use `sandbox="allow-same-origin"` (scripts off). Templates that need
+  JavaScript will be previewed from a separate origin with `sandbox="allow-scripts"` (no
+  `allow-same-origin`), which isolates the parent page, cookies and storage (see Assets).
+- The in-app Claude browser pane blocks opaque-origin (fully sandboxed) frames, so check
+  those previews in a regular browser.
+
+## Assets and clearance
+
+Every external asset (3D model, image, video, font) is listed in `src/data/assets.json`
+with its source, author, license and a `clearance` of `cleared` or `dev-only`.
+`npm run build` allows dev-only assets and prints a warning. `npm run build:release`
+fails if any dev-only asset is present.
 - This repo also doubles as a personal Claude Code learning project; see `CLAUDE.md` for
   the working agreements.
