@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { CatalogItem } from "../types";
-import { getSection, sectionPath } from "../lib/catalog";
+import { categoryLabel, getSection, sectionPath } from "../lib/catalog";
 import { Link } from "../lib/router";
 import { CodeTabs } from "../components/CodeTabs";
 import { LicenseBox } from "../components/LicenseBox";
@@ -26,7 +26,7 @@ export function TemplatePage({ item }: { item: CatalogItem }) {
       <header className="page-head">
         <h1>{item.title}</h1>
         <p>{item.summary}</p>
-        <div className="tags">{item.tags.map((tag) => <span key={tag} className="tag">{tag}</span>)}</div>
+        <div className="tags"><span className="tag tag-category">{categoryLabel(item.category)}</span>{item.tags.map((tag) => <span key={tag} className="tag">{tag}</span>)}</div>
       </header>
 
       <section aria-label="Live preview" className="preview">
@@ -69,6 +69,8 @@ export function TemplatePage({ item }: { item: CatalogItem }) {
           <aside className="panel" aria-label="Template details">
             <h2>Details</h2>
             <dl className="facts">
+              <dt>Category</dt><dd>{categoryLabel(item.category)}</dd>
+              <dt>Theme</dt><dd>{item.theme === "dark" ? "Dark" : "Light"}</dd>
               <dt>Responsive</dt><dd>{item.responsive ? "Yes" : "No"}</dd>
               <dt>Sections</dt><dd>{item.sections.join(", ")}</dd>
               <dt>Fonts</dt><dd>{item.fonts.join(", ")}</dd>

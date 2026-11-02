@@ -10,6 +10,8 @@ const LICENSE_FIELDS = [
   "redistribution", "modification", "originalIp", "aiGenerated", "verifiedOn", "notes",
 ];
 const sectionIds = new Set(catalog.sections.map((s) => s.id));
+const categoryIds = new Set(catalog.categories.map((c) => c.id));
+const THEMES = new Set(["dark", "light"]);
 const seen = new Set();
 const errors = [];
 
@@ -18,6 +20,8 @@ for (const item of catalog.items) {
   if (seen.has(item.id)) errors.push(`${where}: duplicate id`);
   seen.add(item.id);
   if (!sectionIds.has(item.section)) errors.push(`${where}: unknown section "${item.section}"`);
+  if (!categoryIds.has(item.category)) errors.push(`${where}: unknown category "${item.category}"`);
+  if (!THEMES.has(item.theme)) errors.push(`${where}: theme must be "dark" or "light"`);
   if (!item.license) {
     errors.push(`${where}: missing license`);
     continue;

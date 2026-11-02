@@ -52,7 +52,15 @@ code { font-family: var(--mono); font-size: 0.92em; background: var(--panel-2); 
 .toolbar { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
 .search { width: 100%; max-width: 460px; padding: 11px 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; color: var(--text); font: inherit; }
 .search::placeholder { color: var(--muted); }
+.toolbar-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.toolbar-row .search { flex: 1 1 280px; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip-category { padding: 7px 14px; font-size: 14px; color: var(--text); }
+.chip-count { margin-left: 4px; font-size: 12px; color: var(--muted); }
+.chips-tags .chip { font-size: 12px; padding: 4px 10px; }
+.result-summary { margin: -8px 0 14px; }
+.kicker { font-size: 12px; letter-spacing: 0.08em; text-transform: capitalize; color: var(--accent); }
+.tag-category { background: var(--accent-soft); color: var(--text); }
 .chip { padding: 5px 12px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--muted); font-size: 13px; cursor: pointer; }
 .chip:hover { color: var(--text); border-color: #3a4256; }
 .chip.is-active { background: var(--accent-soft); border-color: var(--accent); color: var(--text); }

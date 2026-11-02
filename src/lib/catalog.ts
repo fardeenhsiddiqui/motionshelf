@@ -9,6 +9,10 @@ export function getSection(id: SectionId): Section {
   return section;
 }
 
+export function categoryLabel(id: string): string {
+  return catalog.categories.find((c) => c.id === id)?.label ?? id;
+}
+
 export function getItem(id: string): CatalogItem | undefined {
   return catalog.items.find((item) => item.id === id);
 }
@@ -20,7 +24,9 @@ export function itemsInSection(section?: SectionId): CatalogItem[] {
 export function matchesQuery(item: CatalogItem, query: string): boolean {
   const q = query.trim().toLowerCase();
   if (!q) return true;
-  const haystack = [item.title, item.summary, ...item.tags, ...item.sections].join(" ").toLowerCase();
+  const haystack = [item.title, item.summary, categoryLabel(item.category), item.theme, ...item.tags, ...item.sections]
+    .join(" ")
+    .toLowerCase();
   return q.split(/\s+/).every((word) => haystack.includes(word));
 }
 

@@ -29,9 +29,18 @@ export type CodeFile = {
   language: "html" | "css";
 };
 
+export type Category = {
+  id: string;
+  label: string;
+};
+
+export type Theme = "dark" | "light";
+
 export type CatalogItem = {
   id: string;
   section: SectionId;
+  category: string;
+  theme: Theme;
   title: string;
   summary: string;
   tags: string[];
@@ -48,5 +57,6 @@ export type CatalogItem = {
 
 export type Catalog = {
   sections: Section[];
+  categories: Category[];
   items: CatalogItem[];
 };

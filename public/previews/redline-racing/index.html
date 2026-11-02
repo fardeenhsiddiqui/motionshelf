@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REDLINE RACING — Race Day</title>
+  <meta name="description" content="REDLINE RACING: an original motorsport team website template." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="ticker" aria-label="Latest results">
+    <div class="ticker-track">
+      <span>P1 · Redline #07 · Monza GP</span><span>Fastest lap 1:21.304</span><span>Constructors lead +38 pts</span><span>Next: Suzuka · 14 days</span>
+      <span>P1 · Redline #07 · Monza GP</span><span>Fastest lap 1:21.304</span><span>Constructors lead +38 pts</span><span>Next: Suzuka · 14 days</span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <a class="logo" href="#top" aria-label="Redline home"><b>RDL</b><span>Redline Racing</span></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#next">Next race</a>
+      <a href="#standings">Standings</a>
+      <a href="#drivers">Drivers</a>
+      <a href="#calendar">Calendar</a>
+    </nav>
+    <a class="btn btn-small" href="#join">Join the pit wall</a>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">2027 season · Round 12 of 22</p>
+        <h1 id="hero-title">Race<br /><span>day.</span></h1>
+        <p class="lede">Two cars, one obsession. Follow Redline Racing through every lap with live standings, team radio and a front-row seat in the garage.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#next">Next race details</a>
+          <a class="btn btn-ghost" href="#standings">Season standings</a>
+        </div>
+      </div>
+
+      <div class="hero-stage" aria-hidden="true">
+        <div class="flag"></div>
+        <svg class="racer" viewBox="0 0 800 250" role="img" aria-label="Side view of the Redline RL-07 race car">
+          <ellipse cx="400" cy="228" rx="360" ry="9" fill="#000" opacity=".5" />
+          <rect class="r-wing" x="46" y="58" width="58" height="9" rx="2" />
+          <rect class="r-wing" x="64" y="64" width="9" height="62" />
+          <path class="r-body" d="M92 150 L190 118 L330 104 L420 96 L470 110 L640 146 L742 156 L742 170 L92 170 Z" />
+          <path class="r-shade" d="M92 158 L742 158 L742 170 L92 170 Z" />
+          <path class="r-white" d="M330 104 L420 96 L470 110 L430 126 L330 126 Z" />
+          <path class="r-halo" d="M360 104 Q392 70 440 100" />
+          <text x="248" y="150" class="r-num">07</text>
+          <rect class="r-wing" x="690" y="178" width="96" height="8" rx="2" />
+          <rect class="r-wing" x="700" y="166" width="8" height="14" />
+          <circle cx="190" cy="176" r="52" fill="#111" />
+          <circle cx="620" cy="180" r="44" fill="#111" />
+          <g class="wheel" style="transform-origin:190px 176px"><circle cx="190" cy="176" r="30" fill="#2a2a2a" /><path d="M190 150v52M164 176h52M172 158l36 36M208 158l-36 36" stroke="#8a8a8a" stroke-width="5" stroke-linecap="round" /><circle cx="190" cy="176" r="7" fill="#ff2a1f" /></g>
+          <g class="wheel" style="transform-origin:620px 180px"><circle cx="620" cy="180" r="26" fill="#2a2a2a" /><path d="M620 158v44M598 180h44M604 164l32 32M636 164l-32 32" stroke="#8a8a8a" stroke-width="5" stroke-linecap="round" /><circle cx="620" cy="180" r="6" fill="#ff2a1f" /></g>
+        </svg>
+      </div>
+    </section>
+
+    <section class="next" id="next">
+      <div class="next-card">
+        <p class="eyebrow">Next race</p>
+        <h2>Suzuka Grand Prix</h2>
+        <p class="muted">Sunday 14 March · Lights out 14:00 local</p>
+        <dl class="countdown">
+          <div><dt>Days</dt><dd>14</dd></div>
+          <div><dt>Hours</dt><dd>06</dd></div>
+          <div><dt>Mins</dt><dd>42</dd></div>
+        </dl>
+      </div>
+      <div class="next-info">
+        <div><strong>5.807 km</strong><span>Circuit length</span></div>
+        <div><strong>53</strong><span>Laps</span></div>
+        <div><strong>1:30.983</strong><span>Lap record</span></div>
+      </div>
+    </section>
+
+    <section class="standings" id="standings">
+      <div class="section-head">
+        <p class="eyebrow">Championship</p>
+        <h2>Constructors' standings</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Pos</th><th>Team</th><th>Wins</th><th>Podiums</th><th>Points</th></tr></thead>
+          <tbody>
+            <tr class="is-us"><td>1</td><td>Redline Racing</td><td>6</td><td>14</td><td>412</td></tr>
+            <tr><td>2</td><td>Northern Works</td><td>4</td><td>11</td><td>374</td></tr>
+            <tr><td>3</td><td>Silverline GP</td><td>2</td><td>9</td><td>301</td></tr>
+            <tr><td>4</td><td>Aurum Motorsport</td><td>0</td><td>5</td><td>228</td></tr>
+            <tr><td>5</td><td>Cobalt Racing</td><td>0</td><td>2</td><td>164</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="drivers" id="drivers">
+      <div class="section-head">
+        <p class="eyebrow">Line-up</p>
+        <h2>Meet the drivers</h2>
+      </div>
+      <div class="driver-grid">
+        <article class="driver">
+          <span class="num">07</span>
+          <h3>Marco Valenti</h3>
+          <p>Italy · 3 titles · The calm one under pressure.</p>
+          <ul><li>Wins <b>5</b></li><li>Poles <b>7</b></li><li>Points <b>238</b></li></ul>
+        </article>
+        <article class="driver">
+          <span class="num">23</span>
+          <h3>Yuki Hartmann</h3>
+          <p>Germany · rookie of the year · Fearless in the wet.</p>
+          <ul><li>Wins <b>1</b></li><li>Poles <b>2</b></li><li>Points <b>174</b></li></ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="calendar" id="calendar">
+      <div class="section-head">
+        <p class="eyebrow">Season</p>
+        <h2>Race calendar</h2>
+      </div>
+      <ol class="race-list">
+        <li class="done"><time>Feb 21</time><span>Bahrain</span><b>P2</b></li>
+        <li class="done"><time>Feb 28</time><span>Jeddah</span><b>P1</b></li>
+        <li class="done"><time>Mar 07</time><span>Melbourne</span><b>P1</b></li>
+        <li class="current"><time>Mar 14</time><span>Suzuka</span><b>Next</b></li>
+        <li><time>Mar 28</time><span>Shanghai</span><b>—</b></li>
+        <li><time>Apr 11</time><span>Miami</span><b>—</b></li>
+      </ol>
+    </section>
+
+    <section class="join" id="join">
+      <h2>Join the pit wall</h2>
+      <p>Race recaps, behind-the-scenes and early access to tickets. No spam, only lap times.</p>
+      <form class="join-form" action="#" onsubmit="event.preventDefault(); this.querySelector('button').textContent = 'Welcome to the pit wall';">
+        <label class="sr-only" for="email">Email address</label>
+        <input id="email" type="email" placeholder="you@example.com" required />
+        <button class="btn" type="submit">Subscribe</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>© 2026 Redline Racing. Fictional team — all artwork and copy are original.</span>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+</body>
+</html>
