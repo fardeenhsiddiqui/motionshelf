@@ -117,3 +117,4 @@ td a { color: var(--accent); }
 .credits a { color: var(--accent); }
 .credit-line { padding: 8px 10px; border-left: 2px solid var(--accent); background: var(--panel-2); border-radius: 0 8px 8px 0; color: var(--text); }
 .deps { gap: 6px; }
+.licensing-block { margin-top: 40px; }

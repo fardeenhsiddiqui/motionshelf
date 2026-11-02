@@ -47,3 +47,7 @@ export function assetsOf(item: CatalogItem): Asset[] {
 export function getAsset(id: string): Asset | undefined {
   return assetData.assets.find((a) => a.id === id);
 }
+
+export function allAssets(): Asset[] {
+  return assetData.assets;
+}

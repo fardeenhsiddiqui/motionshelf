@@ -1,4 +1,4 @@
-import { catalog, itemPath } from "../lib/catalog";
+import { allAssets, catalog, itemPath } from "../lib/catalog";
 import { Link } from "../lib/router";
 
 export function LicensingPage() {
@@ -38,6 +38,38 @@ export function LicensingPage() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="prose licensing-block">
+        <h2>Third-party assets</h2>
+        <p className="muted">Files used by the site or by templates that are not original to MotionShelf.</p>
+      </div>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Asset</th><th>License</th><th>Author</th><th>Attribution</th><th>Source</th></tr>
+          </thead>
+          <tbody>
+            {allAssets().map((asset) => (
+              <tr key={asset.id}>
+                <td>{asset.title}</td>
+                <td><a href={asset.license.url} target="_blank" rel="noopener noreferrer">{asset.license.name}</a></td>
+                <td>{asset.author}</td>
+                <td>{asset.attributionRequired ? asset.attributionText : "None"}</td>
+                <td><a href={asset.source.url} target="_blank" rel="noopener noreferrer">Source</a></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="prose licensing-block">
+        <h2>Libraries and fonts</h2>
+        <ul>
+          <li>React, Motion, Lenis, three.js, React Three Fiber and drei: MIT.</li>
+          <li>Unbounded and Inter fonts (via Fontsource): SIL Open Font License 1.1.</li>
+          <li>Templates load GSAP and ScrollTrigger from cdnjs and, for the Vortex GT 3D hero, three.js from esm.sh. GSAP is used under its standard no-charge license and is not redistributed in the template files.</li>
+        </ul>
       </div>
     </>
   );

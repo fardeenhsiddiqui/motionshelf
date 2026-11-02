@@ -1,4 +1,9 @@
 # Cloudflare Pages headers.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
 # Template previews run in sandboxed frames with an opaque origin, so the 3D model they fetch needs CORS.
 /assets/models/*
   Access-Control-Allow-Origin: *
