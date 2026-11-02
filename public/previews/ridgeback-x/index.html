@@ -15,6 +15,7 @@
     </a>
     <nav class="site-nav" aria-label="Primary">
       <a href="#capability">Capability</a>
+      <a href="#journey">Journey</a>
       <a href="#terrain">Terrain</a>
       <a href="#trims">Trims</a>
       <a href="#drive">Test drive</a>
@@ -69,6 +70,39 @@
       <div><strong>291<small>mm</small></strong><span>Ground clearance</span></div>
       <div><strong>3,500<small>kg</small></strong><span>Towing capacity</span></div>
       <div><strong>38<small>°</small></strong><span>Approach angle</span></div>
+    </section>
+
+    <section class="journey" id="journey" aria-labelledby="journey-title">
+      <div class="journey-stage">
+        <div class="sun" aria-hidden="true"></div>
+        <div class="layer mtn-far" aria-hidden="true"></div>
+        <div class="layer mtn-mid" aria-hidden="true"></div>
+        <div class="layer dune" aria-hidden="true"></div>
+        <div class="ground" aria-hidden="true"></div>
+        <div class="scene-vehicle" aria-hidden="true"></div>
+        <div class="layer rocks" aria-hidden="true"></div>
+        <div class="journey-copy">
+          <article>
+            <p class="eyebrow">Leave the tarmac</p>
+            <h2 id="journey-title">The road ends. The route doesn't.</h2>
+            <p>Scroll to drive. Low range engages, the diffs lock, and the horizon opens up.</p>
+          </article>
+          <article>
+            <p class="eyebrow">Cross the ridge</p>
+            <h2>291&nbsp;mm of clearance, used</h2>
+            <p>Long-travel suspension keeps a wheel on the ground while the cabin stays calm.</p>
+          </article>
+          <article>
+            <p class="eyebrow">Summit camp</p>
+            <h2>Sunrise from 3,180&nbsp;m</h2>
+            <p>Roof rack, awning and a 900&nbsp;mm wading depth for the river on the way home.</p>
+          </article>
+        </div>
+        <dl class="hud" aria-hidden="true">
+          <dt>Altitude</dt><dt>Incline</dt>
+          <dd><span data-alt>1,240</span> m</dd><dd><span data-incline>0</span>&deg;</dd>
+        </dl>
+      </div>
     </section>
 
     <section class="terrain" id="terrain">
@@ -144,5 +178,8 @@
     <span>© 2026 Ridgeback Motors. Fictional brand — all artwork and copy are original.</span>
     <a href="#top">Back to top ↑</a>
   </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="script.js" defer></script>
 </body>
 </html>

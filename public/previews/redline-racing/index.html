@@ -18,6 +18,7 @@
   <header class="site-header">
     <a class="logo" href="#top" aria-label="Redline home"><b>RDL</b><span>Redline Racing</span></a>
     <nav class="site-nav" aria-label="Primary">
+      <a href="#journey">Hot lap</a>
       <a href="#next">Next race</a>
       <a href="#standings">Standings</a>
       <a href="#drivers">Drivers</a>
@@ -56,6 +57,42 @@
           <g class="wheel" style="transform-origin:190px 176px"><circle cx="190" cy="176" r="30" fill="#2a2a2a" /><path d="M190 150v52M164 176h52M172 158l36 36M208 158l-36 36" stroke="#8a8a8a" stroke-width="5" stroke-linecap="round" /><circle cx="190" cy="176" r="7" fill="#ff2a1f" /></g>
           <g class="wheel" style="transform-origin:620px 180px"><circle cx="620" cy="180" r="26" fill="#2a2a2a" /><path d="M620 158v44M598 180h44M604 164l32 32M636 164l-32 32" stroke="#8a8a8a" stroke-width="5" stroke-linecap="round" /><circle cx="620" cy="180" r="6" fill="#ff2a1f" /></g>
         </svg>
+      </div>
+    </section>
+
+    <section class="journey" id="journey" aria-labelledby="journey-title">
+      <div class="journey-stage">
+        <div class="layer floods" aria-hidden="true"></div>
+        <div class="layer stands" aria-hidden="true"></div>
+        <div class="layer gantry" aria-hidden="true"></div>
+        <div class="barrier" aria-hidden="true"></div>
+        <div class="track" aria-hidden="true"><div class="kerb"></div><div class="lane"></div></div>
+        <div class="streaks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="scene-vehicle" aria-hidden="true"></div>
+        <div class="chequered" aria-hidden="true"></div>
+        <div class="journey-copy">
+          <article>
+            <p class="eyebrow">Lights out</p>
+            <h2 id="journey-title">One lap. No lift.</h2>
+            <p>Scroll to race. Five red lights, a clean launch and the grandstands become a blur.</p>
+          </article>
+          <article>
+            <p class="eyebrow">Sector two</p>
+            <h2>Flat through the esses</h2>
+            <p>Downforce pins the car to the tarmac while the kerbs flicker past at 290&nbsp;km/h.</p>
+          </article>
+          <article>
+            <p class="eyebrow">Final sector</p>
+            <h2>Purple, purple, chequered</h2>
+            <p>A new lap record by 0.184 seconds. The pit wall is already on its feet.</p>
+          </article>
+        </div>
+        <div class="hud" aria-hidden="true">
+          <div class="hud-time" data-time>0:00.000</div>
+          <div class="hud-kmh"><span data-kmh>0</span> <small>km/h</small></div>
+          <div class="hud-lights" data-lights><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="hud-sectors" data-sectors><b></b><b></b><b></b></div>
+        </div>
       </div>
     </section>
 
@@ -147,5 +184,8 @@
     <span>© 2026 Redline Racing. Fictional team — all artwork and copy are original.</span>
     <a href="#top">Back to top ↑</a>
   </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="script.js" defer></script>
 </body>
 </html>

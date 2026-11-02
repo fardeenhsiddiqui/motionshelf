@@ -25,7 +25,7 @@
       "clearance": "cleared",
       "brandsDepicted": [],
       "processing": "gltf-transform@4.5.1 optimize --compress meshopt --texture-compress webp --texture-size 1024 (11.8 MB to 1.8 MB; 249k triangles, 47 draw calls, 22 textures)",
-      "usedIn": ["site:showroom"],
+      "usedIn": ["site:showroom", "template:vortex-gt"],
       "verifiedOn": "2026-11-02",
       "notes": "Upstream license excludes logos and trademarks. The model is unbranded. Show the attribution text wherever the model is displayed."
     }

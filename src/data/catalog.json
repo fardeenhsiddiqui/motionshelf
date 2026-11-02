@@ -44,13 +44,15 @@
       "category": "supercar",
       "theme": "dark",
       "title": "Vortex GT",
-      "summary": "A bold, angular supercar landing page with an animated SVG hero car, a paint switcher built in pure CSS, performance stats, a model range and a reservation form.",
+      "summary": "A bold supercar landing page with a real-time 3D hero car you can drag to rotate, a paint switcher, and a scroll-driven night drive: neon skyline parallax, speed streaks, a live speedometer and gear counter, then models, engineering and a reserve form.",
       "tags": [
         "landing page",
         "hero",
-        "animated",
-        "paint switcher",
-        "no JavaScript needed"
+        "3D model",
+        "scroll scene",
+        "parallax",
+        "GSAP",
+        "paint switcher"
       ],
       "previewPath": "/previews/vortex-gt/index.html",
       "filesBase": "/previews/vortex-gt",
@@ -62,12 +64,21 @@
         {
           "path": "styles.css",
           "language": "css"
+        },
+        {
+          "path": "script.js",
+          "language": "js"
+        },
+        {
+          "path": "hero3d.js",
+          "language": "js"
         }
       ],
       "sections": [
         "Header",
-        "Hero",
+        "3D hero",
         "Stats",
+        "Night drive scene",
         "Models",
         "Engineering",
         "Reserve form",
@@ -76,7 +87,11 @@
       "fonts": [
         "System font stack (Bahnschrift / Arial Narrow fallback)"
       ],
-      "externalDeps": [],
+      "externalDeps": [
+        "GSAP 3.12.5 (cdnjs, script tag)",
+        "GSAP ScrollTrigger 3.12.5 (cdnjs, script tag)",
+        "three.js 0.160.0 (esm.sh, loaded by hero3d.js)"
+      ],
       "responsive": true,
       "createdAt": "2026-11-02",
       "license": {
@@ -93,9 +108,12 @@
         "originalIp": true,
         "aiGenerated": true,
         "verifiedOn": "2026-11-02",
-        "notes": "Original layout, copy and inline SVG artwork. Code written with AI assistance. 'Vortex' is a fictional brand. No third-party images, fonts, logos or trademarks."
+        "notes": "Original layout, copy, inline SVG artwork and generated scene tiles. Code written with AI assistance. 'Vortex' is a fictional brand. No third-party images, fonts, logos or trademarks. The scroll scene loads GSAP and ScrollTrigger from cdnjs under GSAP's standard no-charge license; they are not bundled in these files. The optional 3D hero uses the unbranded Car Concept model (CC BY 4.0, see Asset sources and credits), loaded with three.js from esm.sh; without WebGL it falls back to the original SVG car."
       },
-      "posterPath": "/previews/vortex-gt/poster.webp"
+      "posterPath": "/previews/vortex-gt/poster.webp",
+      "assetIds": [
+        "car-concept"
+      ]
     },
     {
       "id": "ridgeback-x",
@@ -103,15 +121,16 @@
       "category": "off-road",
       "theme": "light",
       "title": "Ridgeback X",
-      "summary": "An earthy, expedition-style landing page for an off-road luxury SUV: topographic hero, animated boxy SUV illustration, terrain modes, trim comparison and a test-drive form.",
+      "summary": "An off-road SUV site with a desert crossing you scroll through: layered mountains and dunes, a rising sun, dust, a body that pitches over terrain, and altitude and incline readouts, plus capability, terrain modes, trims and a test-drive form.",
       "tags": [
         "landing page",
         "hero",
-        "animated",
+        "scroll scene",
+        "parallax",
+        "GSAP",
         "paint switcher",
         "pricing",
-        "forms",
-        "no JavaScript needed"
+        "forms"
       ],
       "previewPath": "/previews/ridgeback-x/index.html",
       "filesBase": "/previews/ridgeback-x",
@@ -123,21 +142,29 @@
         {
           "path": "styles.css",
           "language": "css"
+        },
+        {
+          "path": "script.js",
+          "language": "js"
         }
       ],
       "sections": [
         "Header",
         "Hero",
         "Stats",
+        "Desert crossing scene",
         "Terrain modes",
         "Trims",
-        "Test-drive form",
+        "Test drive",
         "Footer"
       ],
       "fonts": [
         "System serif stack (Iowan Old Style / Palatino / Georgia) and system sans"
       ],
-      "externalDeps": [],
+      "externalDeps": [
+        "GSAP 3.12.5 (cdnjs, script tag)",
+        "GSAP ScrollTrigger 3.12.5 (cdnjs, script tag)"
+      ],
       "responsive": true,
       "createdAt": "2026-11-02",
       "license": {
@@ -154,7 +181,7 @@
         "originalIp": true,
         "aiGenerated": true,
         "verifiedOn": "2026-11-02",
-        "notes": "Original layout, copy and inline SVG artwork. Code written with AI assistance. 'Ridgeback' is a fictional brand. Specifications are invented. No third-party images, fonts, logos or trademarks."
+        "notes": "Original layout, copy, inline SVG artwork and generated scene tiles. Code written with AI assistance. 'Ridgeback' is a fictional brand. Specifications are invented. No third-party images, fonts, logos or trademarks. The scroll scene loads GSAP and ScrollTrigger from cdnjs under GSAP's standard no-charge license; they are not bundled in these files."
       },
       "posterPath": "/previews/ridgeback-x/poster.webp"
     },
@@ -164,15 +191,16 @@
       "category": "motorsport",
       "theme": "dark",
       "title": "Redline Racing",
-      "summary": "A fast, high-contrast motorsport team site: results ticker, animated race car, next-race countdown card, constructors' standings table, driver cards and a race calendar.",
+      "summary": "A high-contrast motorsport team site with a scroll-driven qualifying lap: grandstands and kerbs rushing past, speed streaks, lap clock, rev lights and sector bars, a chequered finish, then standings, drivers and the calendar.",
       "tags": [
         "landing page",
         "hero",
-        "animated",
+        "scroll scene",
+        "parallax",
+        "GSAP",
         "data table",
         "calendar",
-        "forms",
-        "no JavaScript needed"
+        "forms"
       ],
       "previewPath": "/previews/redline-racing/index.html",
       "filesBase": "/previews/redline-racing",
@@ -184,12 +212,17 @@
         {
           "path": "styles.css",
           "language": "css"
+        },
+        {
+          "path": "script.js",
+          "language": "js"
         }
       ],
       "sections": [
         "Ticker",
         "Header",
         "Hero",
+        "Hot lap scene",
         "Next race",
         "Standings",
         "Drivers",
@@ -200,7 +233,10 @@
       "fonts": [
         "System font stack (Bahnschrift / Arial Narrow fallback)"
       ],
-      "externalDeps": [],
+      "externalDeps": [
+        "GSAP 3.12.5 (cdnjs, script tag)",
+        "GSAP ScrollTrigger 3.12.5 (cdnjs, script tag)"
+      ],
       "responsive": true,
       "createdAt": "2026-11-02",
       "license": {
@@ -217,9 +253,78 @@
         "originalIp": true,
         "aiGenerated": true,
         "verifiedOn": "2026-11-02",
-        "notes": "Original layout, copy and inline SVG artwork. Code written with AI assistance. Team, drivers, results and standings are fictional. No third-party images, fonts, logos, team names or trademarks."
+        "notes": "Original layout, copy, inline SVG artwork and generated scene tiles. Code written with AI assistance. Team, drivers, results and standings are fictional. No third-party images, fonts, logos, team names or trademarks. The scroll scene loads GSAP and ScrollTrigger from cdnjs under GSAP's standard no-charge license; they are not bundled in these files."
       },
       "posterPath": "/previews/redline-racing/poster.webp"
+    },
+    {
+      "id": "kestrel-m9",
+      "section": "templates",
+      "category": "motorcycle",
+      "theme": "dark",
+      "title": "Kestrel M9",
+      "summary": "A dusk-lit motorcycle site with a coastal ride you scroll through: palms strobing past, a sun sinking into the sea, a bike that leans into the bends with live lean-angle and speed readouts, plus lineup, technology and a test-ride form.",
+      "tags": [
+        "landing page",
+        "hero",
+        "scroll scene",
+        "parallax",
+        "GSAP",
+        "colour switcher",
+        "forms"
+      ],
+      "previewPath": "/previews/kestrel-m9/index.html",
+      "posterPath": "/previews/kestrel-m9/poster.webp",
+      "filesBase": "/previews/kestrel-m9",
+      "files": [
+        {
+          "path": "index.html",
+          "language": "html"
+        },
+        {
+          "path": "styles.css",
+          "language": "css"
+        },
+        {
+          "path": "script.js",
+          "language": "js"
+        }
+      ],
+      "sections": [
+        "Header",
+        "Hero",
+        "Stats",
+        "Coastal ride scene",
+        "Lineup",
+        "Technology",
+        "Test ride form",
+        "Footer"
+      ],
+      "fonts": [
+        "System font stack (Futura / Century Gothic fallback)"
+      ],
+      "externalDeps": [
+        "GSAP 3.12.5 (cdnjs, script tag)",
+        "GSAP ScrollTrigger 3.12.5 (cdnjs, script tag)"
+      ],
+      "responsive": true,
+      "createdAt": "2026-11-02",
+      "license": {
+        "name": "MIT",
+        "spdx": "MIT",
+        "licenseFile": "/previews/kestrel-m9/LICENSE.txt",
+        "author": "MotionShelf",
+        "sourceUrl": null,
+        "attributionRequired": false,
+        "attributionText": null,
+        "commercialUse": true,
+        "redistribution": true,
+        "modification": true,
+        "originalIp": true,
+        "aiGenerated": true,
+        "verifiedOn": "2026-11-02",
+        "notes": "Original layout, copy, inline SVG artwork and generated scene tiles. Code written with AI assistance. 'Kestrel' is a fictional brand. No third-party images, fonts, logos or trademarks. The scroll scene loads GSAP and ScrollTrigger from cdnjs under GSAP's standard no-charge license; they are not bundled in these files."
+      }
     }
   ]
 }

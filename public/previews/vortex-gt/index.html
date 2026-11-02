@@ -14,6 +14,7 @@
       <span>VORTEX</span>
     </a>
     <nav class="site-nav" aria-label="Primary">
+      <a href="#journey">Drive</a>
       <a href="#models">Models</a>
       <a href="#performance">Performance</a>
       <a href="#engineering">Engineering</a>
@@ -46,6 +47,7 @@
 
       <div class="hero-stage" aria-hidden="true">
         <div class="speed-lines"><i></i><i></i><i></i><i></i><i></i></div>
+        <canvas class="car3d" data-model="../../assets/models/car-concept.glb" aria-hidden="true"></canvas>
         <svg class="car" viewBox="0 0 800 270" role="img" aria-label="Side view of the Vortex GT">
           <ellipse cx="400" cy="246" rx="360" ry="12" fill="#000" opacity=".45" />
           <path class="car-body" d="M34 190 L66 160 L206 134 L330 94 L476 90 L610 126 L742 148 L774 180 L760 202 L34 202 Z" />
@@ -69,6 +71,41 @@
       <div><strong>340<small>km/h</small></strong><span>Top speed</span></div>
       <div><strong>820<small>hp</small></strong><span>Naturally aspirated V10</span></div>
       <div><strong>1,380<small>kg</small></strong><span>Dry weight</span></div>
+    </section>
+
+    <section class="journey" id="journey" aria-labelledby="journey-title">
+      <div class="journey-stage">
+        <div class="layer stars" aria-hidden="true"></div>
+        <div class="sun-glow" aria-hidden="true"></div>
+        <div class="layer sky-far" aria-hidden="true"></div>
+        <div class="layer sky-near" aria-hidden="true"></div>
+        <div class="road" aria-hidden="true"><div class="road-dashes"></div></div>
+        <div class="streaks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="scene-vehicle" aria-hidden="true"></div>
+        <div class="journey-copy">
+          <article>
+            <p class="eyebrow">Launch</p>
+            <h2 id="journey-title">Zero to the skyline</h2>
+            <p>Scroll to drive. The launch controller holds 6,500&nbsp;rpm and the city starts to blur.</p>
+          </article>
+          <article>
+            <p class="eyebrow">Overtake</p>
+            <h2>Gears at the speed of thought</h2>
+            <p>Seven ratios, shifts in 38 milliseconds, and nothing left in the mirrors.</p>
+          </article>
+          <article>
+            <p class="eyebrow">Top speed</p>
+            <h2>340 and still climbing</h2>
+            <p>Active aero flattens the wing and the horizon stops moving.</p>
+          </article>
+        </div>
+        <div class="hud" aria-hidden="true">
+          <span class="hud-speed" data-speed>0</span>
+          <span class="hud-unit">km/h</span>
+          <div class="hud-gear">Gear <b data-gear>1</b></div>
+          <div class="hud-rev"><i data-rev></i></div>
+        </div>
+      </div>
     </section>
 
     <section class="models" id="models">
@@ -126,8 +163,12 @@
   </main>
 
   <footer class="site-footer">
-    <span>© 2026 Vortex Automotive. Fictional brand — all artwork and copy are original.</span>
+    <span>© 2026 Vortex Automotive. Fictional brand — all artwork and copy are original. 3D model: “Car Concept” by Darmstadt Graphics Group GmbH, based on a public-domain model by Unity Fan (CC BY 4.0).</span>
     <a href="#top">Back to top ↑</a>
   </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="script.js" defer></script>
+  <script src="hero3d.js" defer></script>
 </body>
 </html>

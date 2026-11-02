@@ -93,6 +93,11 @@ for (const item of catalog.items) {
   for (const file of publicFiles) {
     if (!inPublic(file)) errors.push(`${where}: file not found in public/: ${file}`);
   }
+  // A template that pulls scripts from a CDN must say so, so the detail page lists the dependency.
+  const preview = join(root, "public", item.previewPath);
+  if (existsSync(preview) && /<script[^>]+src="https?:/i.test(readFileSync(preview, "utf8")) && item.externalDeps.length === 0) {
+    errors.push(`${where}: preview loads external scripts but externalDeps is empty`);
+  }
 }
 
 // --- hosting limits ---------------------------------------------------------

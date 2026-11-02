@@ -1,0 +1,4 @@
+# Cloudflare Pages headers.
+# Template previews run in sandboxed frames with an opaque origin, so the 3D model they fetch needs CORS.
+/assets/models/*
+  Access-Control-Allow-Origin: *
