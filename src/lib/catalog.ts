@@ -1,7 +1,9 @@
 import raw from "../data/catalog.json";
-import type { Catalog, CatalogItem, Section, SectionId } from "../types";
+import rawAssets from "../data/assets.json";
+import type { Asset, Catalog, CatalogItem, Section, SectionId } from "../types";
 
 export const catalog = raw as Catalog;
+const assetData = rawAssets as unknown as { assets: Asset[] };
 
 export function getSection(id: SectionId): Section {
   const section = catalog.sections.find((s) => s.id === id);
@@ -36,4 +38,8 @@ export function sectionPath(id: SectionId): string {
 
 export function itemPath(item: CatalogItem): string {
   return `/${item.section}/${item.id}`;
+}
+
+export function assetsOf(item: CatalogItem): Asset[] {
+  return (item.assetIds ?? []).flatMap((id) => assetData.assets.filter((a) => a.id === id));
 }

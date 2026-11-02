@@ -102,3 +102,18 @@ td a { color: var(--accent); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; }
 }
+
+/* preview: full screen, note */
+.preview.is-full { display: flex; flex-direction: column; margin: 0; border: 0; border-radius: 0; background: var(--bg); }
+.preview.is-full .stage { flex: 1; min-height: 0; padding: 12px; }
+.preview.is-full .frame { height: 100%; max-height: none; }
+.preview-note { padding: 8px 14px; border-top: 1px solid var(--line); }
+.preview-actions { flex-wrap: wrap; }
+.code-actions { flex-wrap: wrap; }
+
+/* credits + deps */
+.credits, .deps { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.credits li p { margin-top: 4px; }
+.credits a { color: var(--accent); }
+.credit-line { padding: 8px 10px; border-left: 2px solid var(--accent); background: var(--panel-2); border-radius: 0 8px 8px 0; color: var(--text); }
+.deps { gap: 6px; }

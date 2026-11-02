@@ -1,57 +1,38 @@
-import { useEffect, useState } from "react";
-import type { CatalogItem } from "../types";
+import { useState } from "react";
+import type { Asset, CatalogItem } from "../types";
+import { allReady, buildPrompt, copyText, saveBlob, zipFiles, type Sources } from "../lib/sources";
 
-type Loaded = { status: "loading" } | { status: "error" } | { status: "ready"; text: string };
+type Notice = "" | "ok" | "fail";
 
-async function copyText(text: string): Promise<boolean> {
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    // Fallback for non-secure contexts or blocked clipboard access.
-    const area = document.createElement("textarea");
-    area.value = text;
-    area.style.position = "fixed";
-    area.style.opacity = "0";
-    document.body.appendChild(area);
-    area.select();
-    const ok = document.execCommand("copy");
-    area.remove();
-    return ok;
-  }
+// Briefly shows a result label after an action such as copy.
+function useNotice(): [Notice, (ok: boolean) => void] {
+  const [notice, setNotice] = useState<Notice>("");
+  const show = (ok: boolean) => {
+    setNotice(ok ? "ok" : "fail");
+    window.setTimeout(() => setNotice(""), 1800);
+  };
+  return [notice, show];
 }
 
-export function CodeTabs({ item }: { item: CatalogItem }) {
+export function CodeTabs({ item, sources, assets }: { item: CatalogItem; sources: Sources; assets: Asset[] }) {
   const [active, setActive] = useState(0);
-  const [sources, setSources] = useState<Record<string, Loaded>>({});
-  const [copied, setCopied] = useState<"" | "ok" | "fail">("");
-
-  useEffect(() => {
-    let cancelled = false;
-    setSources({});
-    item.files.forEach(async (file) => {
-      let result: Loaded;
-      try {
-        const response = await fetch(`${item.filesBase}/${file.path}`);
-        if (!response.ok) throw new Error(String(response.status));
-        result = { status: "ready", text: await response.text() };
-      } catch {
-        result = { status: "error" };
-      }
-      if (!cancelled) setSources((prev) => ({ ...prev, [file.path]: result }));
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [item]);
+  const [copied, showCopied] = useNotice();
+  const [prompted, showPrompted] = useNotice();
 
   const file = item.files[active];
   const source = sources[file.path] ?? { status: "loading" };
+  const ready = allReady(item, sources);
 
   const onCopy = async () => {
-    if (source.status !== "ready") return;
-    setCopied((await copyText(source.text)) ? "ok" : "fail");
-    window.setTimeout(() => setCopied(""), 1800);
+    if (source.status === "ready") showCopied(await copyText(source.text));
+  };
+  const onPrompt = async () => {
+    if (ready) showPrompted(await copyText(buildPrompt(item, sources, assets)));
+  };
+  const onZip = () => {
+    if (!ready) return;
+    const files = item.files.map((f) => ({ name: f.path, text: (sources[f.path] as { text: string }).text }));
+    saveBlob(`${item.id}.zip`, zipFiles(files));
   };
 
   return (
@@ -70,9 +51,13 @@ export function CodeTabs({ item }: { item: CatalogItem }) {
             </button>
           ))}
         </div>
-        <div className="code-actions">
-          <a className="btn btn-quiet" href={`${item.filesBase}/${file.path}`} download={file.path}>Download</a>
-          <button className="btn" onClick={onCopy} disabled={source.status !== "ready"} aria-live="polite">
+        <div className="code-actions" aria-live="polite">
+          <button className="btn btn-quiet" onClick={onPrompt} disabled={!ready}>
+            {prompted === "ok" ? "Prompt copied ✓" : prompted === "fail" ? "Copy failed" : "Copy as prompt"}
+          </button>
+          <button className="btn btn-quiet" onClick={onZip} disabled={!ready}>Download all (.zip)</button>
+          <a className="btn btn-quiet" href={`${item.filesBase}/${file.path}`} download={file.path}>Download {file.path}</a>
+          <button className="btn" onClick={onCopy} disabled={source.status !== "ready"}>
             {copied === "ok" ? "Copied ✓" : copied === "fail" ? "Copy failed" : `Copy ${file.language.toUpperCase()}`}
           </button>
         </div>

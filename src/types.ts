@@ -26,7 +26,7 @@ export type License = {
 
 export type CodeFile = {
   path: string;
-  language: "html" | "css";
+  language: "html" | "css" | "js";
 };
 
 export type Clearance = "cleared" | "dev-only";
