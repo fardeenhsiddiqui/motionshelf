@@ -1,32 +1,55 @@
-# coding-solution-automation
+# MotionShelf
 
-A personal **Claude Learning Lab**: one real developer tool, built incrementally,
-used as the vehicle for learning what Claude Code can actually do.
+A curated shelf of **original** website templates, UI components and backgrounds.
+Preview them live, copy the HTML/CSS, and check the license before you ship.
 
-## What this is
+Inspired by the browsing experience of component libraries like ThreeUI. All layouts,
+code, graphics and copy here are original. No ThreeUI source, no copyrighted vehicle
+photos, no brand logos.
 
-Rather than a folder of disconnected exercises, this repository grows a single
-useful project one small step at a time. Each phase adds a capability, and each
-capability is chosen because the project needs it — not to collect features.
+## Sections
 
-## What we plan to learn
+| Section | Status |
+| --- | --- |
+| Automotive Templates | Live: first template is **Vortex GT** |
+| UI Components & Backgrounds | Planned |
+| Anime Assets | Later, only with cleared licenses |
 
-- Steering Claude with project instructions (`CLAUDE.md`) and memory
-- Planning and reviewing changes before any code is written
-- Iterating on real code: research, implement, test, commit
-- Slash commands and skills for repeatable workflows
-- Hooks and settings for permissions and automation
-- Subagents for parallel or focused work
-- MCP servers and external integrations — later, once the project needs them
+## Stack
 
-## How it grows
+React + TypeScript + Vite, plain CSS, a static JSON catalog, and sandboxed iframes for
+template previews. No backend, database, auth or Three.js. Deploys as a static site
+(Cloudflare Pages compatible).
 
-Incrementally, and deliberately. The simplest thing that works comes first;
-technology is added only when there is a clear reason. Early phases will look
-almost empty, and that is the point.
+## Run it
 
-## Status
+```bash
+npm install
+npm run dev      # local dev server
+npm run build    # validate catalog + typecheck + production build into dist/
+npm run preview  # serve the production build
+```
 
-Phase 0 — repository scaffolding and working agreements. No source code yet.
+## How it is organized
 
-Learning Claude Code + Git
+```
+src/data/catalog.json        every item, with its license record
+src/lib/                     catalog helpers and a tiny History API router
+src/components/, src/pages/  the app UI
+public/previews/<id>/        each template as plain index.html + styles.css + LICENSE.txt
+scripts/validate-catalog.mjs fails the build if license metadata or files are missing
+```
+
+## Adding a template
+
+1. Put `index.html`, `styles.css` and `LICENSE.txt` in `public/previews/<id>/`.
+2. Add an entry to `src/data/catalog.json`, including the full `license` record.
+3. Run `npm run build`. The validator tells you what is missing.
+
+## Notes
+
+- Previews use `sandbox="allow-same-origin"` (scripts off). Vite's dev and preview servers
+  render fully opaque-origin sandboxed frames blank. A template that needs JavaScript
+  should be previewed from a separate origin instead of adding `allow-scripts` here.
+- This repo also doubles as a personal Claude Code learning project; see `CLAUDE.md` for
+  the working agreements.

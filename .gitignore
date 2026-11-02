@@ -21,3 +21,8 @@ tmp/
 
 # Language- and build-tool-specific entries will be added when the project
 # actually uses them.
+
+# Node / Vite
+node_modules/
+dist/
+*.tsbuildinfo

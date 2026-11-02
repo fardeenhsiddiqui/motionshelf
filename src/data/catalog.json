@@ -1,0 +1,58 @@
+{
+  "sections": [
+    {
+      "id": "templates",
+      "label": "Automotive Templates",
+      "description": "Supercar, racing and dealership website templates. Plain HTML and CSS you can copy straight into a project.",
+      "status": "live"
+    },
+    {
+      "id": "components",
+      "label": "UI Components & Backgrounds",
+      "description": "Hero sections, backgrounds and reusable website components.",
+      "status": "soon"
+    },
+    {
+      "id": "anime",
+      "label": "Anime Assets",
+      "description": "Original anime-style characters and backgrounds. Only items with a cleared license will be listed.",
+      "status": "soon"
+    }
+  ],
+  "items": [
+    {
+      "id": "vortex-gt",
+      "section": "templates",
+      "title": "Vortex GT",
+      "summary": "A bold, angular supercar landing page with an animated SVG hero car, a paint switcher built in pure CSS, performance stats, a model range and a reservation form.",
+      "tags": ["supercar", "landing page", "dark", "hero", "animated", "no JavaScript needed"],
+      "previewPath": "/previews/vortex-gt/index.html",
+      "filesBase": "/previews/vortex-gt",
+      "files": [
+        { "path": "index.html", "language": "html" },
+        { "path": "styles.css", "language": "css" }
+      ],
+      "sections": ["Header", "Hero", "Stats", "Models", "Engineering", "Reserve form", "Footer"],
+      "fonts": ["System font stack (Bahnschrift / Arial Narrow fallback)"],
+      "externalDeps": [],
+      "responsive": true,
+      "createdAt": "2026-11-02",
+      "license": {
+        "name": "MIT",
+        "spdx": "MIT",
+        "licenseFile": "/previews/vortex-gt/LICENSE.txt",
+        "author": "MotionShelf",
+        "sourceUrl": null,
+        "attributionRequired": false,
+        "attributionText": null,
+        "commercialUse": true,
+        "redistribution": true,
+        "modification": true,
+        "originalIp": true,
+        "aiGenerated": true,
+        "verifiedOn": "2026-11-02",
+        "notes": "Original layout, copy and inline SVG artwork. Code written with AI assistance. 'Vortex' is a fictional brand. No third-party images, fonts, logos or trademarks."
+      }
+    }
+  ]
+}
