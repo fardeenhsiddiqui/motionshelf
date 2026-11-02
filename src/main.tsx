@@ -7,6 +7,7 @@ import "./styles/tokens.css";
 import "./styles.css";
 import "./styles/home.css";
 import "./styles/gallery.css";
+import "./styles/showroom.css";
 import { App } from "./App";
 
 createRoot(document.getElementById("root")!).render(

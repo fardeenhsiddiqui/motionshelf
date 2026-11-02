@@ -43,3 +43,7 @@ export function itemPath(item: CatalogItem): string {
 export function assetsOf(item: CatalogItem): Asset[] {
   return (item.assetIds ?? []).flatMap((id) => assetData.assets.filter((a) => a.id === id));
 }
+
+export function getAsset(id: string): Asset | undefined {
+  return assetData.assets.find((a) => a.id === id);
+}
