@@ -118,3 +118,17 @@ td a { color: var(--accent); }
 .credit-line { padding: 8px 10px; border-left: 2px solid var(--accent); background: var(--panel-2); border-radius: 0 8px 8px 0; color: var(--text); }
 .deps { gap: 6px; }
 .licensing-block { margin-top: 40px; }
+
+/* Preview frame: inert until the visitor opts in, so it never traps page scrolling. */
+.frame-wrap { position: relative; max-width: 100%; }
+.frame-wrap .frame { display: block; width: 100%; max-width: none; }
+.frame.is-inert { pointer-events: none; }
+.frame-lock { position: absolute; inset: 0; z-index: 1; display: grid; place-content: center; gap: 8px; border: 0; border-radius: 10px; background: rgba(7, 8, 11, 0.32); color: #fff; font: inherit; text-align: center; cursor: pointer; }
+.frame-lock-cta { padding: 12px 22px; border-radius: 999px; background: var(--text); color: var(--bg); font-weight: 600; }
+.frame-lock:hover .frame-lock-cta, .frame-lock:focus-visible .frame-lock-cta { background: var(--accent); color: #fff; }
+.frame-lock small { font-size: 13px; opacity: 0.85; }
+.preview.is-full .frame-wrap { height: 100%; }
+@media (max-width: 640px) {
+  .preview-bar .segmented { display: none; }
+  .frame-wrap { width: 100% !important; }
+}

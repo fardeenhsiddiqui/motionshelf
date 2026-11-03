@@ -165,3 +165,18 @@ Q1 to Q3 do not need approval and I am proceeding with them.
 4. **Q3** visual quality.
 5. Pause for your decisions on Q4 and Q5, then implement.
 6. **Q6** full re-test (including the real-phone pass above). Deploy only after that.
+
+## 9. Progress
+
+**Q1 resilience and "stuck" fixes: done** (measured on a local build of the new code, same method as the findings).
+
+| Finding | Before | After |
+|---|---|---|
+| C1 blank page when the 3D chunk or model fails | `#root` empty | Page stays up; poster plus "The 3D view could not load" note |
+| C2 preview traps scrolling | Wheel over preview: page moved 0 px | Locked by default: page moved about 2,000 px. After "Click to interact": frame scrolls, page does not, Done button shown. Escape, Done, or scrolling away releases it. Viewport toggles hidden on phones |
+| C3 home page leak | +455 nodes and +24 listeners per visit | 0 nodes per visit, listeners flat (174 to 175 over 10 visits) |
+| H1 hero console errors and extra load | 3 console errors, 3 live iframes on home | 0 errors, 0 live iframes. Hover previews now run in the isolated sandbox with scripts on (`?thumb` skips the 3D model) |
+
+Root cause of C3: motion's `useScroll({ target })` retained the page. Replaced by `useScrollProgress`, one passive scroll listener removed on unmount.
+
+Not yet re-checked on a real phone. See section 7.

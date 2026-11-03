@@ -1,6 +1,8 @@
 import { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
-import { motion, useInView, useMotionValueEvent, useReducedMotion, useScroll } from "motion/react";
+import { motion, useInView, useMotionValueEvent, useReducedMotion } from "motion/react";
 import { getAsset } from "../../lib/catalog";
+import { stickyTravel, useScrollProgress } from "../../lib/useScrollProgress";
+import { ErrorBoundary } from "../ErrorBoundary";
 import { Reveal } from "../Reveal";
 import type { Input } from "./Scene";
 
@@ -44,7 +46,7 @@ export function Showroom() {
   const [failed, setFailed] = useState(false);
   const [ready, setReady] = useState(false);
   const [chapter, setChapter] = useState(0);
-  const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] });
+  const scrollYProgress = useScrollProgress(section, stickyTravel);
 
   useMotionValueEvent(scrollYProgress, "change", (value) => {
     setChapter(Math.min(CHAPTERS.length - 1, Math.round(value * (CHAPTERS.length - 1))));
@@ -82,9 +84,11 @@ export function Showroom() {
         >
           <img className={ready ? "showroom-poster is-hidden" : "showroom-poster"} src={POSTER} alt="" decoding="async" />
           {wanted && (
+            <ErrorBoundary fallback={null} onError={onFail}>
             <Suspense fallback={null}>
               <Scene progress={scrollYProgress} input={input} still={reduce} monitor={monitor} active={visible} onReady={onReady} onFail={onFail} />
             </Suspense>
+            </ErrorBoundary>
           )}
           <div className="showroom-vignette" />
         </div>
@@ -107,7 +111,7 @@ export function Showroom() {
             {needsTap && !optIn && supported && !failed && (
               <button className="btn-pill btn-primary" onClick={() => setOptIn(true)}>Load 3D showroom (≈2 MB)</button>
             )}
-            {(!supported || failed) && <p className="showroom-note">3D is unavailable on this device, so a still image is shown.</p>}
+            {(!supported || failed) && <p className="showroom-note">The 3D view could not load, so a still image is shown.</p>}
             {ready && <p className="showroom-hint">Drag to rotate</p>}
             {credit?.attributionRequired && (
               <p className="showroom-credit">

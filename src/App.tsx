@@ -4,6 +4,7 @@ import type { SectionId } from "./types";
 import { catalog, getItem } from "./lib/catalog";
 import { usePath } from "./lib/router";
 import { SmoothScroll } from "./lib/smoothScroll";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 import { SiteHeader } from "./components/SiteHeader";
 import { SiteFooter } from "./components/SiteFooter";
 import { HomePage } from "./pages/HomePage";
@@ -28,16 +29,27 @@ function route(path: string): ReactNode {
   return <NotFoundPage />;
 }
 
+function PageError() {
+  return (
+    <div className="empty">
+      <h1>Something went wrong</h1>
+      <p>This page failed to load. Reloading usually fixes it.</p>
+      <button className="btn" onClick={() => window.location.reload()}>Reload</button>
+    </div>
+  );
+}
+
 export function App() {
   const path = usePath();
   const isHome = path === "/";
+  const page = <ErrorBoundary key={path} fallback={<PageError />}>{route(path)}</ErrorBoundary>;
 
   return (
     <div className="shell">
       <SmoothScroll />
       <SiteHeader path={path} overlay={isHome} />
       {isHome ? (
-        <main>{route(path)}</main>
+        <main>{page}</main>
       ) : (
         <motion.main
           key={path}
@@ -46,7 +58,7 @@ export function App() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
-          {route(path)}
+          {page}
         </motion.main>
       )}
       <SiteFooter />

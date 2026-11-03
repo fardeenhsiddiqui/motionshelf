@@ -1,8 +1,9 @@
 import { useRef, type PointerEvent } from "react";
-import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
+import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
 import { catalog, itemPath } from "../../lib/catalog";
 import { Link } from "../../lib/router";
 import { scrollToId } from "../../lib/smoothScroll";
+import { pastTop, useScrollProgress } from "../../lib/useScrollProgress";
 import { PreviewThumb } from "../PreviewThumb";
 import type { CatalogItem } from "../../types";
 
@@ -33,7 +34,7 @@ function Frame({ item, className }: { item: CatalogItem; className: string }) {
   return (
     <Link href={itemPath(item)} className={`stack-frame ${className}`} aria-label={`Open ${item.title}`}>
       <div className="frame-bar"><i /><i /><i /><span>{item.title}</span></div>
-      <PreviewThumb src={item.previewPath} title={item.title} />
+      <PreviewThumb src={item.previewPath} poster={item.posterPath} title={item.title} />
     </Link>
   );
 }
@@ -75,7 +76,7 @@ function PreviewStack({ items }: { items: CatalogItem[] }) {
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const scrollYProgress = useScrollProgress(ref, pastTop);
   const textY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 140]);
   const fade = useTransform(scrollYProgress, [0, 0.75], [1, reduce ? 1 : 0]);
   const roadY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 80]);

@@ -1,9 +1,10 @@
 // Vortex GT: optional 3D hero. Replaces the SVG car with a real-time model when WebGL is available.
 // three.js is loaded from esm.sh (pinned). If anything fails, or motion is reduced, the SVG car simply stays.
+// ?thumb (used by gallery thumbnails) skips the model download.
 // The model path comes from data-model on the canvas, so move the .glb wherever your project keeps assets.
 (function () {
   var canvas = document.querySelector(".car3d");
-  if (!canvas || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (!canvas || /[?&]thumb/.test(location.search) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   var gl = document.createElement("canvas").getContext("webgl2");
   if (!gl) return;
 

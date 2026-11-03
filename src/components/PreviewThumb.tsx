@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { previewSrc } from "../lib/preview";
 
 const DESKTOP_WIDTH = 1280;
 const DESKTOP_HEIGHT = 800;
@@ -49,9 +50,10 @@ export function PreviewThumb({ src, title, poster }: Props) {
       {poster && <img src={poster} alt="" loading="lazy" decoding="async" width={DESKTOP_WIDTH} height={DESKTOP_HEIGHT} />}
       {live && (
         <iframe
-          src={src}
+          src={`${previewSrc(src)}?thumb`}
           title={`${title} preview`}
-          sandbox="allow-same-origin"
+          sandbox="allow-scripts"
+          scrolling="no"
           tabIndex={-1}
           aria-hidden="true"
           style={{ width: DESKTOP_WIDTH, height: DESKTOP_HEIGHT, transform: `scale(${scale})` }}

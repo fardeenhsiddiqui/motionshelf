@@ -15,6 +15,8 @@ export function PreviewFrame({ item }: { item: CatalogItem }) {
   const [viewport, setViewport] = useState<ViewportId>("desktop");
   const [frameKey, setFrameKey] = useState(0);
   const [full, setFull] = useState(false);
+  const [engaged, setEngaged] = useState(false);
+  const stage = useRef<HTMLDivElement>(null);
   const current = VIEWPORTS.find((v) => v.id === viewport)!;
   const src = previewSrc(item.previewPath);
 
@@ -23,6 +25,17 @@ export function PreviewFrame({ item }: { item: CatalogItem }) {
     document.addEventListener("fullscreenchange", onChange);
     return () => document.removeEventListener("fullscreenchange", onChange);
   }, []);
+
+  // The preview is a full scrolling page, so it only captures the wheel and touch once you opt in.
+  // It lets go again on Escape, on Done, or when it scrolls out of view.
+  useEffect(() => {
+    if (!engaged) return;
+    const onKey = (event: KeyboardEvent) => { if (event.key === "Escape") setEngaged(false); };
+    const observer = new IntersectionObserver(([entry]) => { if (!entry.isIntersecting) setEngaged(false); }, { threshold: 0.05 });
+    if (stage.current) observer.observe(stage.current);
+    window.addEventListener("keydown", onKey);
+    return () => { window.removeEventListener("keydown", onKey); observer.disconnect(); };
+  }, [engaged]);
 
   const toggleFull = async () => {
     try {
@@ -49,20 +62,28 @@ export function PreviewFrame({ item }: { item: CatalogItem }) {
           ))}
         </div>
         <div className="preview-actions">
+          {engaged && <button className="btn" onClick={() => setEngaged(false)}>Done</button>}
           <button className="btn btn-quiet" onClick={() => setFrameKey((k) => k + 1)}>Reload</button>
           <a className="btn btn-quiet" href={src} target="_blank" rel="noopener noreferrer">Open in new tab ↗</a>
           <button className="btn" onClick={toggleFull} aria-pressed={full}>{full ? "Exit full screen" : "Full screen"}</button>
         </div>
       </div>
-      <div className="stage">
-        <iframe
-          key={frameKey}
-          className="frame"
-          src={src}
-          title={`${item.title} live preview`}
-          sandbox={INTERACTIVE_SANDBOX}
-          style={{ width: current.width ?? "100%" }}
-        />
+      <div className="stage" ref={stage}>
+        <div className="frame-wrap" style={{ width: current.width ?? "100%" }}>
+          <iframe
+            key={frameKey}
+            className={engaged || full ? "frame" : "frame is-inert"}
+            src={src}
+            title={`${item.title} live preview`}
+            sandbox={INTERACTIVE_SANDBOX}
+          />
+          {!engaged && !full && (
+            <button className="frame-lock" onClick={() => setEngaged(true)}>
+              <span className="frame-lock-cta">Click to interact</span>
+              <small>Until then the page scrolls normally</small>
+            </button>
+          )}
+        </div>
       </div>
       <p className="preview-note muted small">
         Sandboxed: the preview cannot read this site's storage or DOM{hasSeparatePreviewOrigin ? " and loads from a separate origin" : ""}.
