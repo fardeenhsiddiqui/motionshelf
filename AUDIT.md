@@ -190,3 +190,16 @@ Not yet re-checked on a real phone. See section 7.
 - Template page: the header shows 4 feature tags, the full list is in Details. Preview "Done" control stays visible while the preview is active. Licensing tables are keyboard-scrollable regions.
 - /browse: the feature chips sit behind a "Features" disclosure, and the search placeholder is no longer cut off.
 - Console clean (errors and warnings) on all 11 routes at 1440, 820 and 390 px, and no horizontal overflow on a phone.
+
+**Q3 visual quality: done.**
+
+- Removed: the scrolling marquee, the "Four cinematic experiences" block (unbuilt concepts drawn as CSS art), and the sticky "How it works" story with its mock UI and fake terminal ("Built in 0.2s"). The home page is now hero, the real templates, the 3D showroom, and a closing call to action. Deleted `Marquee.tsx`, `Experiences.tsx`, `Steps.tsx` and their CSS.
+- Hero: removed the aurora orbs, grain, pulsing "pill" badge and traffic-light window dots. The invented "4 experiences in development" and "MIT licensed code" lines became values computed from the catalog ("4 live templates", "MIT code, credits listed per asset"). Gradient text and the gradient button are now the solid ember accent.
+- Gradients and glows: removed the CTA glow, the active filter tile glow and `--grad-brand`.
+- Templates: no em dashes in copy, no coloured left stripes, a "TBC" placeholder instead of a dash in the Redline calendar. All four posters regenerated at 1280x800 without the baked-in scrollbar.
+- Loading states: skeleton and "taking longer than usual" message for the preview frame; skeleton lines for the code panel. Errors and empties reuse the shared `.empty` panel.
+- Fixed a Q1 bug found during this work: the Vortex `?thumb` check had a literal backspace character instead of `\b`, so hover thumbnails still downloaded the 3D model and the downloadable `hero3d.js` contained a control character. Now `URLSearchParams`; verified that thumb mode requests no 3D library or model.
+- Featured heading and card rail now align (130 px); both previously differed by 58 px of doubled padding.
+- Re-verified after the removals: 0 controls under 44 px on a phone, 12 px minimum text, keyboard and menu checks pass, console clean on all 11 routes at 3 widths, and the home-page leak loop still shows 0 growth per visit.
+
+Kept on purpose: Inter for dense UI text with Unbounded as the display face; the four category tiles on /browse (more templates are coming); header blur (the only remaining glass use, kept for legibility over moving content); sample specifications inside the templates, which describe fictional vehicles and are meant to be replaced.

@@ -22,7 +22,7 @@
 .cat-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
 .cat-tile { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; text-align: left; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer; transition: transform 0.25s var(--ease-out), border-color 0.2s, background 0.2s; }
 .cat-tile:hover:not(:disabled) { transform: translateY(-3px); border-color: var(--line-strong); }
-.cat-tile.is-active { border-color: var(--accent); background: linear-gradient(160deg, var(--accent-soft), var(--panel) 70%); box-shadow: 0 10px 30px -14px var(--glow); }
+.cat-tile.is-active { border-color: var(--accent); background: var(--accent-soft); }
 .cat-tile.is-empty { opacity: 0.5; cursor: default; }
 .cat-name { font-family: var(--font-display); font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
 .cat-meta { font-size: 12px; color: var(--muted); }

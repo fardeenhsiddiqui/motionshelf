@@ -4,7 +4,7 @@
 // The model path comes from data-model on the canvas, so move the .glb wherever your project keeps assets.
 (function () {
   var canvas = document.querySelector(".car3d");
-  if (!canvas || /[?&]thumb/.test(location.search) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (!canvas || new URLSearchParams(location.search).has("thumb") || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   var gl = document.createElement("canvas").getContext("webgl2");
   if (!gl) return;
 

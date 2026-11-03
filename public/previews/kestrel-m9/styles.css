@@ -92,7 +92,7 @@ h2 { font-size: clamp(30px, 4.4vw, 56px); }
 .tech h2 { margin: 12px 0 18px; }
 .tech p { color: var(--muted); }
 .checks { display: grid; gap: 14px; }
-.checks li { padding: 16px 20px; background: var(--bg-2); border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0; }
+.checks li { padding: 16px 20px; background: var(--bg-2); border: 1px solid rgba(255, 255, 255, .1); border-radius: 12px; }
 
 /* book */
 .book { text-align: center; background: linear-gradient(180deg, var(--bg), #1d1a4d); }

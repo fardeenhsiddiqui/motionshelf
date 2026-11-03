@@ -18,7 +18,6 @@
   --accent-2: #ffb020;
   --accent-soft: rgba(255, 90, 54, 0.14);
   --glow: rgba(255, 90, 54, 0.35);
-  --grad-brand: linear-gradient(110deg, #ff5a36 0%, #ff8a3d 55%, #ffb020 100%);
 
   /* type */
   --font-display: "Unbounded Variable", "Arial Black", system-ui, sans-serif;

@@ -33,7 +33,7 @@ function Words({ text, delay = 0, className }: { text: string; delay?: number; c
 function Frame({ item, className }: { item: CatalogItem; className: string }) {
   return (
     <Link href={itemPath(item)} className={`stack-frame ${className}`} aria-label={`Open ${item.title}`}>
-      <div className="frame-bar"><i /><i /><i /><span>{item.title}</span></div>
+      <div className="frame-bar"><span>{item.title}</span></div>
       <PreviewThumb src={item.previewPath} poster={item.posterPath} title={item.title} />
     </Link>
   );
@@ -82,30 +82,28 @@ export function Hero() {
   const roadY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 80]);
 
   const live = catalog.items.length;
+  const licences = [...new Set(catalog.items.map((item) => item.license.spdx))].join(", ");
   const stackItems = catalog.items.filter((item) => item.section === "templates").slice(0, 3);
 
   return (
     <section className="hero" ref={ref} aria-labelledby="hero-title">
       <div className="hero-bg" aria-hidden="true">
-        <div className="aurora aurora-a" />
-        <div className="aurora aurora-b" />
         <motion.div className="road" style={{ y: roadY }}>
           <div className="road-plane" />
           <div className="road-glow" />
         </motion.div>
         <div className="streaks"><i /><i /><i /><i /><i /><i /></div>
-        <div className="grain" />
       </div>
 
       <div className="hero-inner">
         <motion.div className="hero-copy" style={{ y: textY, opacity: fade }}>
           <motion.p
-            className="pill"
+            className="eyebrow"
             initial={reduce ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
           >
-            <span className="pulse" /> Animated website experiences
+            Animated website experiences
           </motion.p>
           <h1 id="hero-title">
             <Words text="Websites" delay={0.2} className="h1-line" />
@@ -126,7 +124,7 @@ export function Hero() {
             transition={{ duration: 1, delay: 1, ease: EASE }}
           >
             <Link href="/browse" className="btn-pill btn-primary">Browse templates</Link>
-            <button className="btn-pill btn-outline" onClick={() => scrollToId("experiences")}>See what's coming</button>
+            <button className="btn-pill btn-outline" onClick={() => scrollToId("showroom")}>Watch the 3D showroom</button>
           </motion.div>
           <motion.ul
             className="hero-facts"
@@ -135,8 +133,7 @@ export function Hero() {
             transition={{ duration: 1, delay: 1.3 }}
           >
             <li><b>{live}</b> live templates</li>
-            <li><b>4</b> experiences in development</li>
-            <li><b>MIT</b> licensed code</li>
+            <li><b>{licences}</b> code, credits listed per asset</li>
           </motion.ul>
         </motion.div>
 

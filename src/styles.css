@@ -115,7 +115,7 @@ td a { color: var(--accent); }
 .credits, .deps { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
 .credits li p { margin-top: 4px; }
 .credits a { color: var(--accent); }
-.credit-line { padding: 8px 10px; border-left: 2px solid var(--accent); background: var(--panel-2); border-radius: 0 8px 8px 0; color: var(--text); }
+.credit-line { padding: 8px 10px; border: 1px solid var(--line); background: var(--panel-2); border-radius: 8px; color: var(--text); }
 .deps { gap: 6px; }
 .licensing-block { margin-top: 40px; }
 
@@ -123,7 +123,7 @@ td a { color: var(--accent); }
 .frame-wrap { position: relative; max-width: 100%; }
 .frame-wrap .frame { display: block; width: 100%; max-width: none; }
 .frame.is-inert { pointer-events: none; }
-.frame-lock { position: absolute; inset: 0; z-index: 1; display: grid; place-content: center; gap: 8px; border: 0; border-radius: 10px; background: rgba(7, 8, 11, 0.32); color: #fff; font: inherit; text-align: center; cursor: pointer; }
+.frame-lock { position: absolute; inset: 0; z-index: 2; display: grid; place-content: center; gap: 8px; border: 0; border-radius: 10px; background: rgba(7, 8, 11, 0.32); color: #fff; font: inherit; text-align: center; cursor: pointer; }
 .frame-lock-cta { padding: 12px 22px; border-radius: 999px; background: var(--text); color: var(--bg); font-weight: 600; }
 .frame-lock:hover .frame-lock-cta, .frame-lock:focus-visible .frame-lock-cta { background: var(--accent); color: #fff; }
 .frame-lock small { font-size: 13px; opacity: 0.85; }
@@ -138,10 +138,13 @@ html { scroll-padding-top: calc(var(--header-h) + 16px); }
 [tabindex="-1"]:focus { outline: none; }
 .skip-link { position: fixed; left: 12px; top: 8px; z-index: 100; padding: 12px 18px; border-radius: 999px; background: var(--text); color: var(--bg); font-weight: 600; transform: translateY(-200%); }
 .skip-link:focus { transform: none; }
-.more-filters summary { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; color: var(--muted); font-size: 14px; cursor: pointer; }
+.more-filters summary { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 14px; cursor: pointer; list-style: none; }
+.more-filters summary::-webkit-details-marker { display: none; }
+.more-filters summary::after { content: ""; width: 7px; height: 7px; margin-top: -3px; border: solid currentColor; border-width: 0 2px 2px 0; transform: rotate(45deg); transition: transform 0.2s; }
+.more-filters[open] summary::after { margin-top: 3px; transform: rotate(-135deg); }
 .more-filters summary:hover { color: var(--text); }
 .more-filters .chips { padding: 6px 0 4px; }
-.frame-done { position: sticky; top: calc(var(--header-h) + 8px); z-index: 2; height: 0; display: flex; justify-content: flex-end; padding-right: 12px; }
+.frame-done { position: sticky; top: calc(var(--header-h) + 8px); z-index: 3; height: 0; display: flex; justify-content: flex-end; padding-right: 12px; }
 .frame-done .btn { margin-top: 12px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5); }
 /* Every control is at least 44px tall on touch screens and narrow windows. */
 @media (pointer: coarse), (max-width: 900px) {
@@ -153,3 +156,13 @@ html { scroll-padding-top: calc(var(--header-h) + 16px); }
   td a, .credits a, .license-name a { display: inline-flex; align-items: center; min-height: 44px; padding-block: 0; }
   .chips .chip { font-size: 14px; }
 }
+
+/* Loading states */
+.frame-skeleton, .skeleton-lines i { background: linear-gradient(100deg, var(--panel-2) 30%, #212736 50%, var(--panel-2) 70%) 0 0 / 200% 100%; animation: shimmer 1.4s linear infinite; }
+@keyframes shimmer { to { background-position: -200% 0; } }
+.frame-skeleton { position: absolute; inset: 0; z-index: 1; border-radius: 10px; pointer-events: none; }
+.frame-status { position: absolute; left: 0; right: 0; bottom: 24px; z-index: 1; text-align: center; color: var(--muted); font-size: 14px; pointer-events: none; }
+.skeleton-lines { display: grid; gap: 12px; }
+.skeleton-lines i { display: block; height: 12px; border-radius: 6px; }
+.skeleton-lines i:nth-child(2n) { width: 82%; }
+.skeleton-lines i:nth-child(3n) { width: 64%; }

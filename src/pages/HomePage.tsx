@@ -1,20 +1,14 @@
 import { Hero } from "../components/home/Hero";
-import { Marquee } from "../components/home/Marquee";
-import { Experiences } from "../components/home/Experiences";
-import { Steps } from "../components/home/Steps";
-import { Showroom } from "../components/showroom/Showroom";
 import { Featured } from "../components/home/Featured";
+import { Showroom } from "../components/showroom/Showroom";
 import { CtaBand } from "../components/home/CtaBand";
 
 export function HomePage() {
   return (
     <>
       <Hero />
-      <Marquee />
-      <Experiences />
-      <Showroom />
-      <Steps />
       <Featured />
+      <Showroom />
       <CtaBand />
     </>
   );

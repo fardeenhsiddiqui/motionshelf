@@ -76,7 +76,9 @@ export function CodeTabs({ item, sources, assets }: { item: CatalogItem; sources
         </div>
       </div>
       <pre className="code-body" id={`panel-${item.id}`} role="tabpanel" aria-labelledby={`tab-${item.id}-${active}`} tabIndex={0}>
-        {source.status === "loading" && <span className="muted">Loading…</span>}
+        {source.status === "loading" && (
+          <span className="skeleton-lines" role="status" aria-label="Loading code"><i /><i /><i /><i /><i /></span>
+        )}
         {source.status === "error" && <span className="muted">Could not load {file.path}. Try the Download button.</span>}
         {source.status === "ready" && <code>{source.text}</code>}
       </pre>

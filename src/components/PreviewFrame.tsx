@@ -16,6 +16,8 @@ export function PreviewFrame({ item }: { item: CatalogItem }) {
   const [frameKey, setFrameKey] = useState(0);
   const [full, setFull] = useState(false);
   const [engaged, setEngaged] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const [slow, setSlow] = useState(false);
   const stage = useRef<HTMLDivElement>(null);
   const current = VIEWPORTS.find((v) => v.id === viewport)!;
   const src = previewSrc(item.previewPath);
@@ -25,6 +27,14 @@ export function PreviewFrame({ item }: { item: CatalogItem }) {
     document.addEventListener("fullscreenchange", onChange);
     return () => document.removeEventListener("fullscreenchange", onChange);
   }, []);
+
+  // Show a skeleton until the frame has loaded; after 10 seconds say so, and point at Reload.
+  useEffect(() => {
+    setLoaded(false);
+    setSlow(false);
+    const timer = window.setTimeout(() => setSlow(true), 10000);
+    return () => window.clearTimeout(timer);
+  }, [frameKey, src]);
 
   // The preview is a full scrolling page, so it only captures the wheel and touch once you opt in.
   // It lets go again on Escape, on Done, or when it scrolls out of view.
@@ -78,7 +88,14 @@ export function PreviewFrame({ item }: { item: CatalogItem }) {
             src={src}
             title={`${item.title} live preview`}
             sandbox={INTERACTIVE_SANDBOX}
+            onLoad={() => setLoaded(true)}
           />
+          {!loaded && (
+            <>
+              <div className="frame-skeleton" aria-hidden="true" />
+              <p className="frame-status" role="status">{slow ? "This is taking longer than usual. Try Reload." : "Loading preview…"}</p>
+            </>
+          )}
           {!engaged && !full && (
             <button className="frame-lock" onClick={() => setEngaged(true)}>
               <span className="frame-lock-cta">Tap or click to interact</span>
