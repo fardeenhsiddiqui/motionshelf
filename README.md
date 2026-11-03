@@ -25,7 +25,7 @@ No backend, database or auth. Deploys as a static site on Cloudflare Pages.
 ```bash
 npm install
 npm run dev            # local dev server
-npm run build          # validate catalog + typecheck + production build into dist/
+npm run build          # validate catalog + typecheck + production build + prerender into dist/
 npm run build:release  # same, but fails on assets not cleared for redistribution
 npm run preview        # serve the production build
 ```
@@ -61,6 +61,23 @@ Template previews run script-enabled code, so they are isolated twice:
    is a second project (`motionshelf-previews`) that receives the identical `dist/`.
 
 The in-app Claude browser pane blocks opaque-origin frames, so check previews in a normal browser.
+
+## SEO and prerendering
+
+`npm run build` ends with `scripts/prerender.mjs`. It writes a real HTML file for every route into `dist/`
+(`browse.html`, `templates/vortex-gt.html`, and so on) with its own title, description, canonical URL, Open Graph
+and Twitter tags, JSON-LD (breadcrumbs, and a `CreativeWork` for each template) and readable content. It also writes
+`404.html`, `robots.txt` and `sitemap.xml`, then checks its own output (one title, h1 and canonical per page, unique
+titles, sitemap URLs that exist, no `noindex` page in the sitemap) and fails the build if anything is wrong.
+
+- Titles and descriptions come from `src/lib/seo.ts`, shared with the app, so client-side navigation keeps the
+  document title in step. Node 22.18 or newer runs it directly (no extra dependency).
+- `VITE_SITE_URL` in `.env.production` is the public origin for canonical URLs and the sitemap. Change it with a custom domain.
+- Sections with no templates yet (`/components`, `/anime`) are `noindex` and left out of the sitemap until they have items.
+- Cloudflare Pages serves `404.html` with a 404 status for unknown URLs, so there is no SPA fallback. Every real route is a file.
+- The previews project serves the same build; its pages carry canonical URLs pointing at the main site, so they are not duplicates.
+- `public/og.jpg` is the default social preview (1200x630). Template pages use their own poster.
+- After the first deploy: add the site in Google Search Console and Bing Webmaster Tools, and submit `/sitemap.xml`.
 
 ## Assets and clearance
 

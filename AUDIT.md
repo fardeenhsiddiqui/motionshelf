@@ -203,3 +203,15 @@ Not yet re-checked on a real phone. See section 7.
 - Re-verified after the removals: 0 controls under 44 px on a phone, 12 px minimum text, keyboard and menu checks pass, console clean on all 11 routes at 3 widths, and the home-page leak loop still shows 0 growth per visit.
 
 Kept on purpose: Inter for dense UI text with Unbounded as the display face; the four category tiles on /browse (more templates are coming); header blur (the only remaining glass use, kept for legibility over moving content); sample specifications inside the templates, which describe fictional vehicles and are meant to be replaced.
+
+**Q4 SEO prerendering: done.**
+
+- `scripts/prerender.mjs` (no new dependency; Node runs the shared `src/lib/seo.ts` directly) writes one HTML file per route: 10 routes plus `404.html`, with unique titles and descriptions, canonical URLs, Open Graph and Twitter tags, JSON-LD (`WebSite`, `BreadcrumbList`, `CreativeWork` for templates) and readable content for crawlers.
+- `robots.txt` (allows posters, blocks `/previews/`, points at the sitemap) and `sitemap.xml` (8 URLs; template `lastmod` from the catalog) are generated, not guessed. They previously returned the app shell with HTTP 200.
+- `/components` and `/anime` have no templates yet, so they are `noindex` and excluded from the sitemap.
+- Unknown URLs now get `404.html` with a real 404 status (on Cloudflare Pages a root `404.html` replaces the SPA fallback). The app still renders its own not-found page.
+- `useDocumentMeta` keeps title, description, canonical and robots correct during client-side navigation.
+- `public/og.jpg`: 1200x630 social preview captured from the real hero.
+- The build verifies its own output and fails on a missing canonical, a duplicate title, an h1 count other than one, a sitemap URL without a file, and similar. Tested by deleting `og.jpg` (build fails with a clear list).
+- Verified against the built `dist/` served with Pages-style routing: 13 URLs return the right status, one h1 and one canonical each; JSON-LD parses; with JavaScript off the template page is readable; with it on the prerendered block is replaced; titles and robots follow client-side navigation including back; console clean on 13 URLs at 3 widths.
+- Not verifiable locally, so check after the first deploy: that Cloudflare serves `/browse` from `browse.html` and `/templates` from `templates.html` without a redirect, and that `/nope` returns 404 (commands in the final report). Search Console and Bing Webmaster Tools verification and sitemap submission are manual steps for the site owner.

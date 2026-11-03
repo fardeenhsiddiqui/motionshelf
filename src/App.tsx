@@ -4,6 +4,7 @@ import type { SectionId } from "./types";
 import { catalog, getItem } from "./lib/catalog";
 import { usePath } from "./lib/router";
 import { SmoothScroll } from "./lib/smoothScroll";
+import { useDocumentMeta } from "./lib/useDocumentMeta";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { SiteHeader } from "./components/SiteHeader";
 import { SiteFooter } from "./components/SiteFooter";
@@ -42,6 +43,7 @@ function PageError() {
 export function App() {
   const path = usePath();
   const isHome = path === "/";
+  useDocumentMeta(path);
   const page = <ErrorBoundary key={path} fallback={<PageError />}>{route(path)}</ErrorBoundary>;
 
   // After a client-side route change, move focus to the new page heading so keyboard and screen reader users follow along.

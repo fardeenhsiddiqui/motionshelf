@@ -8,8 +8,8 @@
     "validate": "node scripts/validate-catalog.mjs",
     "validate:release": "node scripts/validate-catalog.mjs --release",
     "typecheck": "tsc --noEmit",
-    "build": "npm run validate && npm run typecheck && vite build",
-    "build:release": "npm run validate:release && npm run typecheck && vite build",
+    "build": "npm run validate && npm run typecheck && vite build && node scripts/prerender.mjs",
+    "build:release": "npm run validate:release && npm run typecheck && vite build && node scripts/prerender.mjs",
     "preview": "vite preview",
     "deploy:previews": "npm run build:release && npx wrangler@4 pages deploy dist --project-name motionshelf-previews --branch main",
     "deploy": "npm run build:release && npx wrangler@4 pages deploy dist --project-name motionshelf --branch main"
@@ -32,5 +32,8 @@
     "@vitejs/plugin-react": "^6.1.2",
     "typescript": "^7.0.2",
     "vite": "^8.3.5"
+  },
+  "engines": {
+    "node": ">=22.18"
   }
 }
