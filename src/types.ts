@@ -65,6 +65,8 @@ export type CatalogItem = {
   id: string;
   section: SectionId;
   category: string;
+  /** Display name of the category, joined in by the repository. */
+  categoryLabel: string;
   theme: Theme;
   title: string;
   summary: string;

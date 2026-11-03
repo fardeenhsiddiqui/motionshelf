@@ -1,10 +1,11 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef } from "react";
 import { MotionConfig, motion } from "motion/react";
-import type { SectionId } from "./types";
-import { catalog, getItem } from "./lib/catalog";
+import type { Section } from "./types";
 import { usePath } from "./lib/router";
 import { SmoothScroll } from "./lib/smoothScroll";
 import { useDocumentMeta } from "./lib/useDocumentMeta";
+import { useItem, useSections } from "./lib/useCatalog";
+import { DataView } from "./components/DataView";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { SiteHeader } from "./components/SiteHeader";
 import { SiteFooter } from "./components/SiteFooter";
@@ -14,20 +15,36 @@ import { TemplatePage } from "./pages/TemplatePage";
 import { LicensingPage } from "./pages/LicensingPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 
-const SECTION_IDS = new Set<string>(catalog.sections.map((s) => s.id));
+function TemplateRoute({ section, id }: { section: Section; id: string }) {
+  const item = useItem(id);
+  return (
+    <DataView result={item} what="this template" isEmpty={(found) => found === null || found.section !== section.id} empty={<NotFoundPage />}>
+      {(found) => found && <TemplatePage item={found} />}
+    </DataView>
+  );
+}
 
-function route(path: string): ReactNode {
+// Anything that is not the home page, /browse or /licensing must name a section, so it waits for the section list.
+function SectionRoute({ parts }: { parts: string[] }) {
+  const sections = useSections();
+  return (
+    <DataView result={sections} what="this page">
+      {(all) => {
+        const section = all.find((s) => s.id === parts[0]);
+        if (!section || parts.length > 2) return <NotFoundPage />;
+        if (parts.length === 1) return <GalleryPage key={section.id} section={section.id} />;
+        return <TemplateRoute key={parts[1]} section={section} id={parts[1]} />;
+      }}
+    </DataView>
+  );
+}
+
+function Route({ path }: { path: string }) {
   const parts = path.split("/").filter(Boolean);
   if (parts.length === 0) return <HomePage />;
-  if (parts[0] === "browse" && parts.length === 1) return <GalleryPage key="all" />;
-  if (parts[0] === "licensing" && parts.length === 1) return <LicensingPage />;
-  if (SECTION_IDS.has(parts[0])) {
-    const section = parts[0] as SectionId;
-    if (parts.length === 1) return <GalleryPage key={section} section={section} />;
-    const item = parts.length === 2 ? getItem(parts[1]) : undefined;
-    if (item && item.section === section) return <TemplatePage key={item.id} item={item} />;
-  }
-  return <NotFoundPage />;
+  if (parts.length === 1 && parts[0] === "browse") return <GalleryPage key="all" />;
+  if (parts.length === 1 && parts[0] === "licensing") return <LicensingPage />;
+  return <SectionRoute parts={parts} />;
 }
 
 function PageError() {
@@ -44,17 +61,28 @@ export function App() {
   const path = usePath();
   const isHome = path === "/";
   useDocumentMeta(path);
-  const page = <ErrorBoundary key={path} fallback={<PageError />}>{route(path)}</ErrorBoundary>;
+  const page = <ErrorBoundary key={path} fallback={<PageError />}><Route path={path} /></ErrorBoundary>;
 
   // After a client-side route change, move focus to the new page heading so keyboard and screen reader users follow along.
   const firstRender = useRef(true);
   useEffect(() => {
     if (firstRender.current) { firstRender.current = false; return; }
     const main = document.getElementById("main");
-    const target = main?.querySelector<HTMLElement>("h1") ?? main;
-    if (!target) return;
-    target.tabIndex = -1;
-    target.focus({ preventScroll: true });
+    if (!main) return;
+    const focus = (target: HTMLElement) => { target.tabIndex = -1; target.focus({ preventScroll: true }); };
+    const heading = main.querySelector<HTMLElement>("h1");
+    if (heading) { focus(heading); return; }
+    // The page is still loading its data: focus the main area now, and the heading as soon as it appears.
+    focus(main);
+    const watcher = new MutationObserver(() => {
+      const found = main.querySelector<HTMLElement>("h1");
+      if (!found) return;
+      if (document.activeElement === main) focus(found);
+      watcher.disconnect();
+    });
+    watcher.observe(main, { childList: true, subtree: true });
+    const stop = window.setTimeout(() => watcher.disconnect(), 5000);
+    return () => { watcher.disconnect(); window.clearTimeout(stop); };
   }, [path]);
 
   return (

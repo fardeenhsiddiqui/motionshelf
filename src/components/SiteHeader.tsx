@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { catalog, sectionPath } from "../lib/catalog";
+import { sectionPath } from "../lib/paths";
+import { useSections } from "../lib/useCatalog";
 import { Link } from "../lib/router";
 
 function Logo() {
@@ -22,6 +23,8 @@ export function SiteHeader({ path, overlay }: { path: string; overlay: boolean }
   const [open, setOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
   const first = path.split("/").filter(Boolean)[0];
+  const sections = useSections();
+  const sectionList = sections.status === "ready" ? sections.data : [];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -47,7 +50,7 @@ export function SiteHeader({ path, overlay }: { path: string; overlay: boolean }
   const solid = scrolled || !overlay || open;
   const links = [
     { href: "/browse", label: "Browse", current: first === "browse" },
-    ...catalog.sections.map((s) => ({ href: sectionPath(s.id), label: s.label, current: first === s.id, soon: s.status === "soon" })),
+    ...sectionList.map((s) => ({ href: sectionPath(s.id), label: s.label, current: first === s.id, soon: s.status === "soon" })),
     { href: "/licensing", label: "Licensing", current: first === "licensing" },
   ];
 

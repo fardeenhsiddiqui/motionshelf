@@ -14,14 +14,14 @@ function useNotice(): [Notice, (ok: boolean) => void] {
   return [notice, show];
 }
 
-export function CodeTabs({ item, sources, assets }: { item: CatalogItem; sources: Sources; assets: Asset[] }) {
+export function CodeTabs({ item, sources, assets }: { item: CatalogItem; sources: Sources; assets: Asset[] | null }) {
   const [active, setActive] = useState(0);
   const [copied, showCopied] = useNotice();
   const [prompted, showPrompted] = useNotice();
 
   const file = item.files[active];
   const source = sources[file.path] ?? { status: "loading" };
-  const ready = allReady(item, sources);
+  const ready = allReady(item, sources) && assets !== null;
 
   // Arrow keys, Home and End move between file tabs, as in the WAI-ARIA tabs pattern.
   const onTabKey = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -37,7 +37,7 @@ export function CodeTabs({ item, sources, assets }: { item: CatalogItem; sources
     if (source.status === "ready") showCopied(await copyText(source.text));
   };
   const onPrompt = async () => {
-    if (ready) showPrompted(await copyText(buildPrompt(item, sources, assets)));
+    if (ready) showPrompted(await copyText(buildPrompt(item, sources, assets ?? [])));
   };
   const onZip = () => {
     if (!ready) return;

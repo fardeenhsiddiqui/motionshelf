@@ -1,7 +1,11 @@
-import { allAssets, catalog, itemPath } from "../lib/catalog";
+import { itemPath } from "../lib/paths";
 import { Link } from "../lib/router";
+import { useAssets, useItems } from "../lib/useCatalog";
+import { combine } from "../lib/useData";
+import { DataView } from "../components/DataView";
 
 export function LicensingPage() {
+  const loaded = combine(useItems(), useAssets());
   return (
     <>
       <header className="page-head">
@@ -19,49 +23,55 @@ export function LicensingPage() {
         </ul>
       </div>
 
-      <div className="table-wrap" role="region" aria-label="License of each template" tabIndex={0}>
-        <table>
-          <thead>
-            <tr><th>Item</th><th>License</th><th>Author</th><th>Commercial</th><th>Attribution</th><th>AI-assisted</th><th>Verified</th></tr>
-          </thead>
-          <tbody>
-            {catalog.items.map((item) => (
-              <tr key={item.id}>
-                <td><Link href={itemPath(item)}>{item.title}</Link></td>
-                <td><a href={item.license.licenseFile} target="_blank" rel="noopener noreferrer">{item.license.spdx}</a></td>
-                <td>{item.license.author}</td>
-                <td>{item.license.commercialUse ? "Yes" : "No"}</td>
-                <td>{item.license.attributionRequired ? "Required" : "None"}</td>
-                <td>{item.license.aiGenerated ? "Yes" : "No"}</td>
-                <td>{item.license.verifiedOn}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <DataView result={loaded} what="the license records" isEmpty={([items]) => items.length === 0} empty={<div className="empty"><h2>No templates listed yet</h2><p>License records appear here as templates are added.</p></div>}>
+        {([items, assets]) => (
+          <>
+            <div className="table-wrap" role="region" aria-label="License of each template" tabIndex={0}>
+              <table>
+                <thead>
+                  <tr><th>Item</th><th>License</th><th>Author</th><th>Commercial</th><th>Attribution</th><th>AI-assisted</th><th>Verified</th></tr>
+                </thead>
+                <tbody>
+                  {items.map((item) => (
+                    <tr key={item.id}>
+                      <td><Link href={itemPath(item)}>{item.title}</Link></td>
+                      <td><a href={item.license.licenseFile} target="_blank" rel="noopener noreferrer">{item.license.spdx}</a></td>
+                      <td>{item.license.author}</td>
+                      <td>{item.license.commercialUse ? "Yes" : "No"}</td>
+                      <td>{item.license.attributionRequired ? "Required" : "None"}</td>
+                      <td>{item.license.aiGenerated ? "Yes" : "No"}</td>
+                      <td>{item.license.verifiedOn}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-      <div className="prose licensing-block">
-        <h2>Third-party assets</h2>
-        <p className="muted">Files used by the site or by templates that are not original to MotionShelf.</p>
-      </div>
-      <div className="table-wrap" role="region" aria-label="Third-party assets" tabIndex={0}>
-        <table>
-          <thead>
-            <tr><th>Asset</th><th>License</th><th>Author</th><th>Attribution</th><th>Source</th></tr>
-          </thead>
-          <tbody>
-            {allAssets().map((asset) => (
-              <tr key={asset.id}>
-                <td>{asset.title}</td>
-                <td><a href={asset.license.url} target="_blank" rel="noopener noreferrer">{asset.license.name}</a></td>
-                <td>{asset.author}</td>
-                <td>{asset.attributionRequired ? asset.attributionText : "None"}</td>
-                <td><a href={asset.source.url} target="_blank" rel="noopener noreferrer">Source</a></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            <div className="prose licensing-block">
+              <h2>Third-party assets</h2>
+              <p className="muted">Files used by the site or by templates that are not original to MotionShelf.</p>
+            </div>
+            <div className="table-wrap" role="region" aria-label="Third-party assets" tabIndex={0}>
+              <table>
+                <thead>
+                  <tr><th>Asset</th><th>License</th><th>Author</th><th>Attribution</th><th>Source</th></tr>
+                </thead>
+                <tbody>
+                  {assets.map((asset) => (
+                    <tr key={asset.id}>
+                      <td>{asset.title}</td>
+                      <td><a href={asset.license.url} target="_blank" rel="noopener noreferrer">{asset.license.name}</a></td>
+                      <td>{asset.author}</td>
+                      <td>{asset.attributionRequired ? asset.attributionText : "None"}</td>
+                      <td><a href={asset.source.url} target="_blank" rel="noopener noreferrer">Source</a></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+      </DataView>
 
       <div className="prose licensing-block">
         <h2>Libraries and fonts</h2>

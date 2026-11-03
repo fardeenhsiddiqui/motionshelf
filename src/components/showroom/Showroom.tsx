@@ -1,6 +1,6 @@
 import { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
 import { motion, useInView, useMotionValueEvent, useReducedMotion } from "motion/react";
-import { getAsset } from "../../lib/catalog";
+import { useAssets } from "../../lib/useCatalog";
 import { stickyTravel, useScrollProgress } from "../../lib/useScrollProgress";
 import { ErrorBoundary } from "../ErrorBoundary";
 import { Reveal } from "../Reveal";
@@ -10,6 +10,7 @@ import type { Input } from "./Scene";
 const Scene = lazy(() => import("./Scene"));
 
 const POSTER = "/assets/showroom-poster.webp";
+const MODEL_ASSET = ["car-concept"];
 
 const CHAPTERS = [
   { title: "Studio lit", text: "Soft boxes and rim lights, built in code. No HDR download, no baked video." },
@@ -53,7 +54,10 @@ export function Showroom() {
   });
 
   const monitor = typeof window === "undefined" || !new URLSearchParams(window.location.search).has("perf-off");
-  const wanted = near && supported && !failed && (!needsTap || optIn);
+  // The model is only shown once its credit has loaded, so it never appears without its attribution.
+  const creditResult = useAssets(MODEL_ASSET);
+  const credit = creditResult.status === "ready" ? creditResult.data[0] : undefined;
+  const wanted = near && supported && !failed && credit !== undefined && (!needsTap || optIn);
   const onReady = useCallback(() => setReady(true), []);
   const onFail = useCallback(() => setFailed(true), []);
 
@@ -67,7 +71,6 @@ export function Showroom() {
     };
   }, []);
 
-  const credit = getAsset("car-concept");
 
   return (
     <section className="showroom" id="showroom" ref={section} aria-labelledby="showroom-title">
@@ -112,7 +115,7 @@ export function Showroom() {
             {needsTap && !optIn && supported && !failed && (
               <button className="btn-pill btn-primary" onClick={() => setOptIn(true)}>Load 3D showroom (≈2 MB)</button>
             )}
-            {(!supported || failed) && <p className="showroom-note">The 3D view could not load, so a still image is shown.</p>}
+            {(!supported || failed || creditResult.status === "error") && <p className="showroom-note">The 3D view could not load, so a still image is shown.</p>}
             {ready && <p className="showroom-hint">Drag to rotate</p>}
             {credit?.attributionRequired && (
               <p className="showroom-credit">

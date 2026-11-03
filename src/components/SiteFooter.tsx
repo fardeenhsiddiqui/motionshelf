@@ -1,7 +1,10 @@
-import { catalog, sectionPath } from "../lib/catalog";
+import { sectionPath } from "../lib/paths";
+import { useSections } from "../lib/useCatalog";
 import { Link } from "../lib/router";
 
 export function SiteFooter() {
+  const sections = useSections();
+  const sectionList = sections.status === "ready" ? sections.data : [];
   return (
     <footer className="site-footer">
       <div className="footer-grid">
@@ -12,7 +15,7 @@ export function SiteFooter() {
         <nav aria-label="Library">
           <p className="footer-title">Library</p>
           <Link href="/browse">Browse all</Link>
-          {catalog.sections.map((s) => <Link key={s.id} href={sectionPath(s.id)}>{s.label}</Link>)}
+          {sectionList.map((s) => <Link key={s.id} href={sectionPath(s.id)}>{s.label}</Link>)}
         </nav>
         <nav aria-label="Legal">
           <p className="footer-title">Trust</p>

@@ -1,6 +1,7 @@
 import { useRef, type PointerEvent } from "react";
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
-import { catalog, itemPath } from "../../lib/catalog";
+import { itemPath } from "../../lib/paths";
+import { useItems } from "../../lib/useCatalog";
 import { Link } from "../../lib/router";
 import { scrollToId } from "../../lib/smoothScroll";
 import { pastTop, useScrollProgress } from "../../lib/useScrollProgress";
@@ -81,9 +82,11 @@ export function Hero() {
   const fade = useTransform(scrollYProgress, [0, 0.75], [1, reduce ? 1 : 0]);
   const roadY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 80]);
 
-  const live = catalog.items.length;
-  const licences = [...new Set(catalog.items.map((item) => item.license.spdx))].join(", ");
-  const stackItems = catalog.items.filter((item) => item.section === "templates").slice(0, 3);
+  const result = useItems();
+  const items = result.status === "ready" ? result.data : [];
+  const live = items.length;
+  const licences = [...new Set(items.map((item) => item.license.spdx))].join(", ");
+  const stackItems = items.filter((item) => item.section === "templates").slice(0, 3);
 
   return (
     <section className="hero" ref={ref} aria-labelledby="hero-title">
@@ -126,7 +129,7 @@ export function Hero() {
             <Link href="/browse" className="btn-pill btn-primary">Browse templates</Link>
             <button className="btn-pill btn-outline" onClick={() => scrollToId("showroom")}>Watch the 3D showroom</button>
           </motion.div>
-          <motion.ul
+          {live > 0 && <motion.ul
             className="hero-facts"
             initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -134,7 +137,7 @@ export function Hero() {
           >
             <li><b>{live}</b> live templates</li>
             <li><b>{licences}</b> code, credits listed per asset</li>
-          </motion.ul>
+          </motion.ul>}
         </motion.div>
 
         <PreviewStack items={stackItems} />

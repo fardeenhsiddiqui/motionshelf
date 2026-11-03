@@ -9,9 +9,15 @@ import "./styles/home.css";
 import "./styles/gallery.css";
 import "./styles/showroom.css";
 import { App } from "./App";
+import { primeCatalog } from "./lib/useCatalog";
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-);
+function mount() {
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  );
+}
+
+// Load the catalog first (at most 50 ms) so the first render already has its data.
+primeCatalog().then(mount, mount);

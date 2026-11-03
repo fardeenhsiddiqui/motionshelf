@@ -35,7 +35,9 @@ npm run preview        # serve the production build
 ```
 src/data/catalog.json         every item, with its license record
 src/data/assets.json          every external asset: source, author, license, clearance
-src/lib/                      catalog helpers, router, smooth scroll, preview + download helpers
+src/data/                     the CatalogRepository interface and its JSON-backed implementation
+src/lib/                      data hooks, router, smooth scroll, SEO metadata, preview + download helpers
+docs/ARCHITECTURE.md          layers, loading/error/empty states, and how a REST API would plug in
 src/components/, src/pages/   the app UI (src/components/showroom is the lazy 3D chunk)
 public/previews/<id>/         each template as index.html, styles.css, script.js, LICENSE.txt, poster.webp
 public/_headers               Cloudflare Pages headers (CORS for the 3D model)

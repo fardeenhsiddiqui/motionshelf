@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { catalog } from "./catalog";
 import { metaFor } from "./seo";
+import { useCategories, useItems, useSections } from "./useCatalog";
 
 const SITE_URL = ((import.meta.env.VITE_SITE_URL as string | undefined) ?? "").replace(/\/+$/, "");
 
@@ -16,8 +16,16 @@ function headTag<T extends HTMLElement>(selector: string, create: () => T): T {
 // Pages are prerendered with the right tags for crawlers (scripts/prerender.mjs). This keeps the
 // document title and description right when the visitor navigates inside the app.
 export function useDocumentMeta(path: string) {
+  const sectionsResult = useSections();
+  const categoriesResult = useCategories();
+  const itemsResult = useItems();
+  const sections = sectionsResult.status === "ready" ? sectionsResult.data : null;
+  const categories = categoriesResult.status === "ready" ? categoriesResult.data : null;
+  const items = itemsResult.status === "ready" ? itemsResult.data : null;
+
   useEffect(() => {
-    const meta = metaFor(path, catalog);
+    if (!sections || !categories || !items) return;
+    const meta = metaFor(path, { sections, categories, items });
     document.title = meta.title;
 
     headTag<HTMLMetaElement>('meta[name="description"]', () => Object.assign(document.createElement("meta"), { name: "description" })).content = meta.description;
@@ -31,5 +39,5 @@ export function useDocumentMeta(path: string) {
     } else {
       robots?.remove();
     }
-  }, [path]);
+  }, [path, sections, categories, items]);
 }

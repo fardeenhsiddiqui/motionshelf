@@ -215,3 +215,41 @@ Kept on purpose: Inter for dense UI text with Unbounded as the display face; the
 - The build verifies its own output and fails on a missing canonical, a duplicate title, an h1 count other than one, a sitemap URL without a file, and similar. Tested by deleting `og.jpg` (build fails with a clear list).
 - Verified against the built `dist/` served with Pages-style routing: 13 URLs return the right status, one h1 and one canonical each; JSON-LD parses; with JavaScript off the template page is readable; with it on the prerendered block is replaced; titles and robots follow client-side navigation including back; console clean on 13 URLs at 3 widths.
 - Not verifiable locally, so check after the first deploy: that Cloudflare serves `/browse` from `browse.html` and `/templates` from `templates.html` without a redirect, and that `/nope` returns 404 (commands in the final report). Search Console and Bing Webmaster Tools verification and sitemap submission are manual steps for the site owner.
+
+**Q5 backend-ready data layer: done.** Full description in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+- `CatalogRepository` (async interface) with a JSON-backed `staticRepository`. Components read data only through hooks (`useSections`, `useCategories`, `useItems`, `useItem`, `useAssets`) over one small `useData` hook (cache, one request per key, retry). `src/lib/catalog.ts`, which mixed data and helpers, is gone; pure helpers live in `src/lib/paths.ts` and `src/data/filterItems.ts`.
+- One `DataView` renders loading, error and empty states for every data-backed view. Verified with a test-only simulation build (`VITE_DATA_SIMULATION=1`, `?data=slow|error|flaky|empty`, compiled out of normal builds): header and footer stay up in every state; errors have **Try again** and recover; empty states are specific; a fast load never flashes a skeleton, a slow load shows one at about 155 ms; a missing template renders the not-found page, not an error.
+- Attribution rule enforced in code: the 3D model mounts only after its credit asset has loaded, and prompt and zip wait for the credits.
+- Found and fixed while testing: route-change focus landed on `<main>` for pages that now load asynchronously. It now moves to the heading as soon as it appears.
+- Current behaviour is unchanged with the bundled JSON: 0 console errors on 13 URLs at 3 widths, 0 controls under 44 px on a phone, 0 nodes of growth per home visit, 13 prerendered URLs verified.
+
+## 10. Final status of every finding
+
+| Finding | Status |
+|---|---|
+| C1 blank page when the 3D chunk or model fails | Fixed (Q1), re-verified on the final build |
+| C2 preview traps scrolling | Fixed (Q1). Touch behaviour still needs a real phone |
+| C3 home page memory and listener leak | Fixed (Q1). 0 growth per visit on the final build |
+| H1 hero console errors and extra load | Fixed (Q1), plus a broken `?thumb` check found and fixed in Q3 |
+| H2 SEO missing | Fixed (Q4). Search Console and Bing submission are manual |
+| H3 mobile and desktop differ | Fixed in emulation (Q2). Real-phone check pending |
+| H4 invented content and mock UI | Fixed (Q3) |
+| H5 no Terms or Privacy page | **Open.** Not done in this phase. The site collects nothing today. Add a short privacy statement and terms before adding analytics, forms or accounts |
+| M1 navigation focus, title, scroll | Focus and title fixed (Q2, Q4). Back/forward scroll restoration is still untested |
+| M2 too many filters on /browse | Reduced (features behind a disclosure). Four category tiles kept on purpose |
+| M3 generic AI tells | Fixed (Q3). Inter kept for dense text with Unbounded as the display face |
+| M4 `useMemo` in the gallery | Fixed as a side effect of the Q5 rewrite |
+
+## 11. Remaining issues and what is not verified
+
+- **The live site still runs the old code.** `https://motionshelf.pages.dev` was deployed before this audit. The blank-page, scroll-trap, leak, SEO and mobile problems exist there until you redeploy.
+- **No real device was tested.** See the Android checklist in section 7. Safari, Firefox, a screen reader and a keyboard-only pass on a real machine are also untested.
+- **Cloudflare Pages behaviour** (clean URLs from `browse.html`, a real 404 status, `/templates` served from `templates.html` beside a `templates/` folder, correct `robots.txt` and `sitemap.xml` content types) was verified against a local server that mimics Pages, not Pages itself. Check after deploying.
+- **Privacy and terms pages** (H5 above).
+- **Vortex paint switcher** is hidden while the 3D car is shown, because the model's paint is baked into its texture.
+- **Template scripts** load GSAP from cdnjs and the Vortex 3D hero loads three.js from esm.sh. They render fully without them (verified), but animation and the 3D hero need the CDNs.
+- **The previews project** serves the full site too. Its pages carry canonical URLs pointing at the main site, so they are not duplicates, but it is still reachable.
+- **Building needs Node 22.18 or newer** (it runs TypeScript directly for prerendering).
+- **The three oldest commits** still carry the co-author line, because removing it needs a history rewrite.
+- **Template sample content** (specifications, prices, dates) describes fictional vehicles and is meant to be replaced by whoever uses a template.

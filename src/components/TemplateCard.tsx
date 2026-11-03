@@ -1,5 +1,5 @@
 import type { CatalogItem } from "../types";
-import { categoryLabel, itemPath } from "../lib/catalog";
+import { itemPath } from "../lib/paths";
 import { Link } from "../lib/router";
 import { PreviewThumb } from "./PreviewThumb";
 
@@ -8,7 +8,7 @@ export function TemplateCard({ item }: { item: CatalogItem }) {
     <Link href={itemPath(item)} className="card">
       <PreviewThumb src={item.previewPath} poster={item.posterPath} title={item.title} />
       <div className="card-body">
-        <p className="kicker">{categoryLabel(item.category)} · {item.theme}</p>
+        <p className="kicker">{item.categoryLabel} · {item.theme}</p>
         <div className="card-title">
           <h3>{item.title}</h3>
           <span className="badge">{item.license.spdx}</span>

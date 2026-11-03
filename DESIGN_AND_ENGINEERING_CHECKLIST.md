@@ -89,7 +89,7 @@ Animation rules: animate `transform` and `opacity` only; clean up every listener
 
 - **Prefer the simplest solution** (`CLAUDE.md`). No new dependency, framework or service without a stated reason and approval. No architectural change without explaining why first.
 - **Maintainable, reusable components.** One component, one job. Shared UI lives in `src/components`. Pure logic lives in `src/lib` with no React. Pages compose; they do not hold business rules.
-- **Data access.** Components reach data only through `src/lib/catalog.ts` (later its async successor), never by importing JSON directly.
+- **Data access.** Components read catalog data only through the hooks in `src/lib/useCatalog.ts` and render every result with `DataView` (loading, error, empty). Never import the JSON or call `fetch` for catalog data in a component. See `docs/ARCHITECTURE.md`.
 - **Error handling.** An error boundary wraps every lazy or network dependent subtree, so one failure never blanks the app. Failures degrade to a poster or message.
 - **Config.** All environment dependent values come from `import.meta.env.VITE_*`. No secrets in the repo or the bundle, ever.
 - **Types and validation.** No `any`. Data from outside the bundle (a future API) is validated at runtime before use.

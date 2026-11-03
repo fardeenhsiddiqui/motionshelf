@@ -1,8 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import type { SectionId, Theme } from "../types";
-import { catalog, getSection, itemsInSection, matchesQuery, sectionPath } from "../lib/catalog";
+import type { CatalogItem, Category, Section, SectionId, Theme } from "../types";
+import { filterItems } from "../data/filterItems";
+import { sectionPath } from "../lib/paths";
 import { Link } from "../lib/router";
+import { useCategories, useItems, useSections } from "../lib/useCatalog";
+import { combine } from "../lib/useData";
+import { DataView } from "../components/DataView";
 import { TemplateCard } from "../components/TemplateCard";
 
 const THEMES: { id: Theme | "all"; label: string }[] = [
@@ -13,7 +17,19 @@ const THEMES: { id: Theme | "all"; label: string }[] = [
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
+// Loads what the gallery needs, then hands it to the view. Filtering is instant and in memory.
 export function GalleryPage({ section }: { section?: SectionId }) {
+  const loaded = combine(useSections(), useCategories(), useItems());
+  return (
+    <DataView result={loaded} what="templates">
+      {([sections, categories, items]) => <Gallery section={section} sections={sections} categories={categories} items={items} />}
+    </DataView>
+  );
+}
+
+type GalleryProps = { section?: SectionId; sections: Section[]; categories: Category[]; items: CatalogItem[] };
+
+function Gallery({ section, sections, categories: allCategories, items }: GalleryProps) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string | null>(null);
   const [theme, setTheme] = useState<Theme | "all">("all");
@@ -33,22 +49,22 @@ export function GalleryPage({ section }: { section?: SectionId }) {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const info = section ? getSection(section) : null;
-  const inSection = itemsInSection(section);
+  const info = section ? sections.find((s) => s.id === section) ?? null : null;
+  const inSection = useMemo(() => filterItems(items, { section }), [items, section]);
 
   // Every category stays visible so the shelf shows what is coming; empty ones are disabled.
   const categories = useMemo(
-    () => catalog.categories.map((c) => ({ ...c, count: inSection.filter((item) => item.category === c.id).length })),
-    [inSection],
+    () => allCategories.map((c) => ({ ...c, count: inSection.filter((item) => item.category === c.id).length })),
+    [allCategories, inSection],
   );
   const tags = useMemo(() => [...new Set(inSection.flatMap((item) => item.tags))].sort(), [inSection]);
 
-  const results = inSection.filter((item) => (
-    matchesQuery(item, query)
-    && (!category || item.category === category)
-    && (theme === "all" || item.theme === theme)
-    && (!tag || item.tags.includes(tag))
-  ));
+  const results = filterItems(inSection, {
+    text: query,
+    category: category ?? undefined,
+    theme: theme === "all" ? undefined : theme,
+    tag: tag ?? undefined,
+  });
   const filtering = query.trim() !== "" || category !== null || theme !== "all" || tag !== null;
   const clearFilters = () => { setQuery(""); setCategory(null); setTheme("all"); setTag(null); };
 
@@ -65,11 +81,11 @@ export function GalleryPage({ section }: { section?: SectionId }) {
       </header>
 
       <nav className="section-tabs" aria-label="Sections">
-        <Link href="/browse" aria-current={section ? undefined : "page"}>All <span className="count">{catalog.items.length}</span></Link>
-        {catalog.sections.map((s) => (
+        <Link href="/browse" aria-current={section ? undefined : "page"}>All <span className="count">{items.length}</span></Link>
+        {sections.map((s) => (
           <Link key={s.id} href={sectionPath(s.id)} aria-current={section === s.id ? "page" : undefined}>
             {s.label}
-            {s.status === "soon" ? <span className="soon">Soon</span> : <span className="count">{itemsInSection(s.id).length}</span>}
+            {s.status === "soon" ? <span className="soon">Soon</span> : <span className="count">{items.filter((item) => item.section === s.id).length}</span>}
           </Link>
         ))}
       </nav>
@@ -126,18 +142,18 @@ export function GalleryPage({ section }: { section?: SectionId }) {
         {tags.length > 0 && (
           <details className="more-filters" open={tag !== null}>
             <summary>Features{tag ? `: ${tag}` : ""}</summary>
-          <div className="chips" role="group" aria-label="Filter by feature">
-            {tags.map((name) => (
-              <button
-                key={name}
-                className={name === tag ? "chip is-active" : "chip"}
-                aria-pressed={name === tag}
-                onClick={() => setTag(name === tag ? null : name)}
-              >
-                {name}
-              </button>
-            ))}
-          </div>
+            <div className="chips" role="group" aria-label="Filter by feature">
+              {tags.map((name) => (
+                <button
+                  key={name}
+                  className={name === tag ? "chip is-active" : "chip"}
+                  aria-pressed={name === tag}
+                  onClick={() => setTag(name === tag ? null : name)}
+                >
+                  {name}
+                </button>
+              ))}
+            </div>
           </details>
         )}
       </div>
@@ -172,13 +188,15 @@ export function GalleryPage({ section }: { section?: SectionId }) {
         </div>
       )}
 
-      {results.length === 0 && !filtering && info && (
+      {results.length === 0 && !filtering && (
         <div className="empty">
-          <h2>{info.status === "soon" ? "Coming soon" : "Nothing here yet"}</h2>
+          <h2>{info?.status === "soon" ? "Coming soon" : "Nothing here yet"}</h2>
           <p>
             {section === "anime"
               ? "This section opens once there are original or properly licensed assets to list. Every asset will carry its license."
-              : "This section is next on the list. Automotive templates are live now."}
+              : info
+                ? "This section is next on the list. Automotive templates are live now."
+                : "There are no templates to show yet."}
           </p>
         </div>
       )}
