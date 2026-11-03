@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type KeyboardEvent } from "react";
 import type { Asset, CatalogItem } from "../types";
 import { allReady, buildPrompt, copyText, saveBlob, zipFiles, type Sources } from "../lib/sources";
 
@@ -23,6 +23,16 @@ export function CodeTabs({ item, sources, assets }: { item: CatalogItem; sources
   const source = sources[file.path] ?? { status: "loading" };
   const ready = allReady(item, sources);
 
+  // Arrow keys, Home and End move between file tabs, as in the WAI-ARIA tabs pattern.
+  const onTabKey = (event: KeyboardEvent<HTMLDivElement>) => {
+    const count = item.files.length;
+    const next = event.key === "ArrowRight" ? (active + 1) % count : event.key === "ArrowLeft" ? (active + count - 1) % count : event.key === "Home" ? 0 : event.key === "End" ? count - 1 : -1;
+    if (next < 0) return;
+    event.preventDefault();
+    setActive(next);
+    document.getElementById(`tab-${item.id}-${next}`)?.focus();
+  };
+
   const onCopy = async () => {
     if (source.status === "ready") showCopied(await copyText(source.text));
   };
@@ -38,12 +48,15 @@ export function CodeTabs({ item, sources, assets }: { item: CatalogItem; sources
   return (
     <section className="code" aria-label="Source code">
       <div className="code-bar">
-        <div role="tablist" className="code-tabs">
+        <div role="tablist" aria-label="Source files" className="code-tabs" onKeyDown={onTabKey}>
           {item.files.map((f, index) => (
             <button
               key={f.path}
+              id={`tab-${item.id}-${index}`}
               role="tab"
               aria-selected={index === active}
+              aria-controls={`panel-${item.id}`}
+              tabIndex={index === active ? 0 : -1}
               className={index === active ? "tab is-active" : "tab"}
               onClick={() => setActive(index)}
             >
@@ -62,7 +75,7 @@ export function CodeTabs({ item, sources, assets }: { item: CatalogItem; sources
           </button>
         </div>
       </div>
-      <pre className="code-body" tabIndex={0}>
+      <pre className="code-body" id={`panel-${item.id}`} role="tabpanel" aria-labelledby={`tab-${item.id}-${active}`} tabIndex={0}>
         {source.status === "loading" && <span className="muted">Loading…</span>}
         {source.status === "error" && <span className="muted">Could not load {file.path}. Try the Download button.</span>}
         {source.status === "ready" && <code>{source.text}</code>}

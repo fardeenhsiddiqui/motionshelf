@@ -180,3 +180,13 @@ Q1 to Q3 do not need approval and I am proceeding with them.
 Root cause of C3: motion's `useScroll({ target })` retained the page. Replaced by `useScrollProgress`, one passive scroll listener removed on unmount.
 
 Not yet re-checked on a real phone. See section 7.
+
+**Q2 mobile and accessibility: done** (measured on a local build; 390 px touch emulation, not a real phone).
+
+- Controls under 44 px on a phone: home 6, /browse 24, template page 18, licensing 15 before; **0 on every route after** (measured on `/`, `/browse`, `/templates`, `/licensing`, two template pages, `/nope`).
+- Smallest text raised from 11 px to 12 px everywhere except the "In development" pill that Q3 removes. Muted text contrast raised (`--faint` is now `#7e879a`).
+- Keyboard: skip link; focus moves to the page heading after every route change; arrow keys, Home and End move between file tabs; Escape closes the mobile menu and returns focus to its button; the menu button reports open or closed state.
+- Reduced motion: with `prefers-reduced-motion: reduce`, 0 CSS animations run on the home page (16 otherwise) and smooth scrolling is off. Framer-motion animations follow the setting through `MotionConfig`.
+- Template page: the header shows 4 feature tags, the full list is in Details. Preview "Done" control stays visible while the preview is active. Licensing tables are keyboard-scrollable regions.
+- /browse: the feature chips sit behind a "Features" disclosure, and the search placeholder is no longer cut off.
+- Console clean (errors and warnings) on all 11 routes at 1440, 820 and 390 px, and no horizontal overflow on a phone.

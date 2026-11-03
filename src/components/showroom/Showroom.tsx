@@ -70,10 +70,11 @@ export function Showroom() {
   const credit = getAsset("car-concept");
 
   return (
-    <section className="showroom" ref={section} aria-labelledby="showroom-title">
+    <section className="showroom" id="showroom" ref={section} aria-labelledby="showroom-title">
       <div className="showroom-sticky">
         <div
           className="showroom-stage"
+          aria-hidden="true"
           onPointerDown={(event) => { drag.current = { x: event.clientX }; input.current.lastTouch = performance.now(); }}
           onPointerMove={(event) => {
             if (!drag.current) return;
@@ -99,7 +100,7 @@ export function Showroom() {
             <h2 id="showroom-title" className="section-title">A car that moves with your scroll</h2>
           </Reveal>
 
-          <div className="showroom-chapter" aria-live="polite">
+          <div className="showroom-chapter">
             <motion.div key={chapter} initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}>
               <span className="showroom-n">0{chapter + 1} / 0{CHAPTERS.length}</span>
               <h3>{CHAPTERS[chapter].title}</h3>

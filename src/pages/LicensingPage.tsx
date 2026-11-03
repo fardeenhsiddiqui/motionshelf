@@ -19,7 +19,7 @@ export function LicensingPage() {
         </ul>
       </div>
 
-      <div className="table-wrap">
+      <div className="table-wrap" role="region" aria-label="License of each template" tabIndex={0}>
         <table>
           <thead>
             <tr><th>Item</th><th>License</th><th>Author</th><th>Commercial</th><th>Attribution</th><th>AI-assisted</th><th>Verified</th></tr>
@@ -44,7 +44,7 @@ export function LicensingPage() {
         <h2>Third-party assets</h2>
         <p className="muted">Files used by the site or by templates that are not original to MotionShelf.</p>
       </div>
-      <div className="table-wrap">
+      <div className="table-wrap" role="region" aria-label="Third-party assets" tabIndex={0}>
         <table>
           <thead>
             <tr><th>Asset</th><th>License</th><th>Author</th><th>Attribution</th><th>Source</th></tr>

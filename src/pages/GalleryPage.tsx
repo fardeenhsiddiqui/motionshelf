@@ -82,7 +82,7 @@ export function GalleryPage({ section }: { section?: SectionId }) {
               ref={search}
               type="search"
               className="search"
-              placeholder="Search experiences, categories, features…"
+              placeholder="Search templates"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
             />
@@ -124,6 +124,8 @@ export function GalleryPage({ section }: { section?: SectionId }) {
         </div>
 
         {tags.length > 0 && (
+          <details className="more-filters" open={tag !== null}>
+            <summary>Features{tag ? `: ${tag}` : ""}</summary>
           <div className="chips" role="group" aria-label="Filter by feature">
             {tags.map((name) => (
               <button
@@ -136,6 +138,7 @@ export function GalleryPage({ section }: { section?: SectionId }) {
               </button>
             ))}
           </div>
+          </details>
         )}
       </div>
 

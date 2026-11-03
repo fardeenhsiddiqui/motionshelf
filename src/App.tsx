@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
-import { motion } from "motion/react";
+import { useEffect, useRef, type ReactNode } from "react";
+import { MotionConfig, motion } from "motion/react";
 import type { SectionId } from "./types";
 import { catalog, getItem } from "./lib/catalog";
 import { usePath } from "./lib/router";
@@ -44,24 +44,39 @@ export function App() {
   const isHome = path === "/";
   const page = <ErrorBoundary key={path} fallback={<PageError />}>{route(path)}</ErrorBoundary>;
 
+  // After a client-side route change, move focus to the new page heading so keyboard and screen reader users follow along.
+  const firstRender = useRef(true);
+  useEffect(() => {
+    if (firstRender.current) { firstRender.current = false; return; }
+    const main = document.getElementById("main");
+    const target = main?.querySelector<HTMLElement>("h1") ?? main;
+    if (!target) return;
+    target.tabIndex = -1;
+    target.focus({ preventScroll: true });
+  }, [path]);
+
   return (
-    <div className="shell">
-      <SmoothScroll />
-      <SiteHeader path={path} overlay={isHome} />
-      {isHome ? (
-        <main>{page}</main>
-      ) : (
-        <motion.main
-          key={path}
-          className="page"
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        >
-          {page}
-        </motion.main>
-      )}
-      <SiteFooter />
-    </div>
+    <MotionConfig reducedMotion="user">
+      <div className="shell">
+        <a className="skip-link" href="#main">Skip to content</a>
+        <SmoothScroll />
+        <SiteHeader path={path} overlay={isHome} />
+        {isHome ? (
+          <main id="main" tabIndex={-1}>{page}</main>
+        ) : (
+          <motion.main
+            id="main"
+            key={path}
+            className="page"
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {page}
+          </motion.main>
+        )}
+        <SiteFooter />
+      </div>
+    </MotionConfig>
   );
 }

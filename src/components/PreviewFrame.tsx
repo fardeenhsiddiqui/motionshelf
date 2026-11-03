@@ -62,7 +62,6 @@ export function PreviewFrame({ item }: { item: CatalogItem }) {
           ))}
         </div>
         <div className="preview-actions">
-          {engaged && <button className="btn" onClick={() => setEngaged(false)}>Done</button>}
           <button className="btn btn-quiet" onClick={() => setFrameKey((k) => k + 1)}>Reload</button>
           <a className="btn btn-quiet" href={src} target="_blank" rel="noopener noreferrer">Open in new tab ↗</a>
           <button className="btn" onClick={toggleFull} aria-pressed={full}>{full ? "Exit full screen" : "Full screen"}</button>
@@ -70,6 +69,9 @@ export function PreviewFrame({ item }: { item: CatalogItem }) {
       </div>
       <div className="stage" ref={stage}>
         <div className="frame-wrap" style={{ width: current.width ?? "100%" }}>
+          {engaged && !full && (
+            <div className="frame-done"><button className="btn" onClick={() => setEngaged(false)}>Done</button></div>
+          )}
           <iframe
             key={frameKey}
             className={engaged || full ? "frame" : "frame is-inert"}
@@ -79,7 +81,7 @@ export function PreviewFrame({ item }: { item: CatalogItem }) {
           />
           {!engaged && !full && (
             <button className="frame-lock" onClick={() => setEngaged(true)}>
-              <span className="frame-lock-cta">Click to interact</span>
+              <span className="frame-lock-cta">Tap or click to interact</span>
               <small>Until then the page scrolls normally</small>
             </button>
           )}

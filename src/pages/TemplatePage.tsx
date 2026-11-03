@@ -22,7 +22,7 @@ export function TemplatePage({ item }: { item: CatalogItem }) {
       <header className="page-head">
         <h1>{item.title}</h1>
         <p>{item.summary}</p>
-        <div className="tags"><span className="tag tag-category">{categoryLabel(item.category)}</span>{item.tags.map((tag) => <span key={tag} className="tag">{tag}</span>)}</div>
+        <div className="tags"><span className="tag tag-category">{categoryLabel(item.category)}</span>{item.tags.slice(0, 4).map((tag) => <span key={tag} className="tag">{tag}</span>)}</div>
       </header>
 
       <PreviewFrame item={item} />
@@ -40,6 +40,7 @@ export function TemplatePage({ item }: { item: CatalogItem }) {
               <dt>Theme</dt><dd>{item.theme === "dark" ? "Dark" : "Light"}</dd>
               <dt>Responsive</dt><dd>{item.responsive ? "Yes" : "No"}</dd>
               <dt>Sections</dt><dd>{item.sections.join(", ")}</dd>
+              <dt>Features</dt><dd>{item.tags.join(", ")}</dd>
               <dt>Fonts</dt><dd>{item.fonts.join(", ")}</dd>
               <dt>Added</dt><dd>{item.createdAt}</dd>
             </dl>

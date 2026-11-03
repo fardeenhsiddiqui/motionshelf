@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { catalog, sectionPath } from "../lib/catalog";
 import { Link } from "../lib/router";
 
@@ -20,6 +20,7 @@ function Logo() {
 export function SiteHeader({ path, overlay }: { path: string; overlay: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
   const first = path.split("/").filter(Boolean)[0];
 
   useEffect(() => {
@@ -30,6 +31,18 @@ export function SiteHeader({ path, overlay }: { path: string; overlay: boolean }
   }, []);
 
   useEffect(() => setOpen(false), [path]);
+
+  // Escape closes the mobile menu and hands focus back to its button.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setOpen(false);
+      menuButton.current?.focus();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
 
   const solid = scrolled || !overlay || open;
   const links = [
@@ -44,7 +57,7 @@ export function SiteHeader({ path, overlay }: { path: string; overlay: boolean }
         <Logo />
         <span>MotionShelf</span>
       </Link>
-      <nav className={open ? "site-nav is-open" : "site-nav"} aria-label="Primary">
+      <nav id="site-nav" className={open ? "site-nav is-open" : "site-nav"} aria-label="Primary">
         {links.map((l) => (
           <Link key={l.href} href={l.href} aria-current={l.current ? "page" : undefined}>
             {l.label}
@@ -53,7 +66,7 @@ export function SiteHeader({ path, overlay }: { path: string; overlay: boolean }
         ))}
       </nav>
       <Link href="/browse" className="btn-pill header-cta">Browse templates</Link>
-      <button className="menu-btn" aria-label="Menu" aria-expanded={open} onClick={() => setOpen((v) => !v)}>
+      <button ref={menuButton} className="menu-btn" aria-label={open ? "Close menu" : "Open menu"} aria-controls="site-nav" aria-expanded={open} onClick={() => setOpen((v) => !v)}>
         <span /><span />
       </button>
     </header>

@@ -17,7 +17,7 @@
 .search { width: 100%; padding: 13px 64px 13px 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; color: var(--text); font: inherit; transition: border-color 0.2s, box-shadow 0.2s; }
 .search::placeholder { color: var(--faint); }
 .search:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
-.search-wrap kbd { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); padding: 2px 7px; border: 1px solid var(--line-strong); border-radius: 6px; color: var(--faint); font: 11px var(--mono); pointer-events: none; }
+.search-wrap kbd { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); padding: 2px 7px; border: 1px solid var(--line-strong); border-radius: 6px; color: var(--faint); font: 12px var(--mono); pointer-events: none; }
 
 .cat-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
 .cat-tile { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; text-align: left; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer; transition: transform 0.25s var(--ease-out), border-color 0.2s, background 0.2s; }
