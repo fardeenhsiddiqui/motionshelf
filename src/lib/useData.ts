@@ -28,6 +28,16 @@ function request<T>(key: string, load: () => Promise<T>): Promise<T> {
   return pending;
 }
 
+/** Store a value that is already known, so the first render of a view that needs it is not a loading state. */
+export function seed<T>(key: string, value: T): void {
+  cache.set(key, value);
+}
+
+/** Read a value that is already cached, if any. */
+export function peek<T>(key: string): T | undefined {
+  return cache.get(key) as T | undefined;
+}
+
 /** Start a read ahead of time. Errors are ignored here; the hook that needs the data reports them. */
 export function prefetch<T>(key: string, load: () => Promise<T>): Promise<void> {
   return request(key, load).then(() => undefined, () => undefined);

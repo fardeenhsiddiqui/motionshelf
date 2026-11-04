@@ -1,7 +1,7 @@
-import { Suspense, useLayoutEffect, useMemo, useRef, useState, type RefObject } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Lightformer, PerformanceMonitor, useGLTF } from "@react-three/drei";
-import { MathUtils, Box3, CanvasTexture, SRGBColorSpace, Vector3, type Group } from "three";
+import { MathUtils, Box3, CanvasTexture, SRGBColorSpace, Vector3, type Group, type Material, type Mesh, type Object3D, type Texture, type WebGLRenderer } from "three";
 import type { MotionValue } from "motion/react";
 
 export type Input = { dragYaw: number; lastTouch: number };
@@ -35,10 +35,44 @@ function sample(progress: number) {
   };
 }
 
+// The loaded model is cached and shared by every mount, but react-three-fiber never disposes a <primitive>.
+// Each renderer leaves listeners on the shared geometry and textures, which kept its canvas and WebGL context
+// alive after the page unmounted: one canvas, context, 23 textures and 131 buffers leaked per visit. Releasing
+// the GPU resources removes those listeners. The parsed model stays cached, so nothing is downloaded again.
+function releaseGpuResources(root: Object3D) {
+  root.traverse((object) => {
+    const mesh = object as Mesh;
+    mesh.geometry?.dispose();
+    const materials: Material[] = Array.isArray(mesh.material) ? mesh.material : mesh.material ? [mesh.material] : [];
+    for (const material of materials) {
+      for (const value of Object.values(material)) if ((value as Texture | null)?.isTexture) (value as Texture).dispose();
+      material.dispose();
+    }
+  });
+}
+
+// three.js keeps one shared "DFG_LUT" lighting texture at module level and uploads it into every renderer
+// (getDFGLUT in three/src/renderers/shaders/DFGLUTData.js). Each renderer adds a dispose listener to it, and
+// WebGLRenderer.dispose() never removes them, so every old renderer, its WebGL context and its canvas (and
+// through the canvas, the whole detached page DOM) stayed in memory: one canvas and about 236 nodes per visit.
+// Disposing the texture fires the event the listeners wait for. The next renderer uploads it again.
+// It is read from the model's own materials: React has already detached the model from the R3F scene when cleanups run.
+function releaseSharedLut(gl: WebGLRenderer, root: Object3D) {
+  root.traverse((object) => {
+    const material = (object as Mesh).material as Material | Material[] | undefined;
+    for (const m of Array.isArray(material) ? material : material ? [material] : []) {
+      const lut = (gl.properties.get(m) as { uniforms?: Record<string, { value?: Texture } | undefined> }).uniforms?.dfgLUT?.value;
+      lut?.dispose();
+    }
+  });
+}
+
 function Car({ progress, input, still }: { progress: MotionValue<number>; input: RefObject<Input>; still: boolean }) {
   const { scene } = useGLTF(MODEL, false, true);
   const group = useRef<Group>(null);
   const yaw = useRef(KEYS[0].yaw);
+  const gl = useThree((state) => state.gl);
+  useEffect(() => () => { releaseSharedLut(gl, scene); releaseGpuResources(scene); }, [gl, scene]);
 
   // Fit on the body panels only: this model's wheel and brake meshes report inflated bounds.
   // The model is authored on the ground plane (y = 0) and points down +z.
@@ -139,13 +173,15 @@ type SceneProps = {
   input: RefObject<Input>;
   still: boolean;
   monitor: boolean;
+  /** Show the fps and quality readout (development only, ?perf). */
+  meter: boolean;
   active: boolean;
   onReady: () => void;
   onFail: () => void;
 };
 
 // The whole 3D scene. Loaded lazily, so three.js stays out of the main bundle.
-export default function Scene({ progress, input, still, monitor, active, onReady, onFail }: SceneProps) {
+export default function Scene({ progress, input, still, monitor, meter, active, onReady, onFail }: SceneProps) {
   const [tier, setTier] = useState<Tier>(2);
   const [fps, setFps] = useState(0);
   const ready = useRef(false);
@@ -184,7 +220,7 @@ export default function Scene({ progress, input, still, monitor, active, onReady
           <Studio />
         </Suspense>
       </Canvas>
-      {monitor && <p className="showroom-meter" aria-hidden="true">{fps > 0 ? `${fps} fps · ` : ""}{["Low", "Medium", "High"][tier]} quality</p>}
+      {meter && <p className="showroom-meter" aria-hidden="true">{fps > 0 ? `${fps} fps · ` : ""}{["Low", "Medium", "High"][tier]} quality</p>}
     </>
   );
 }

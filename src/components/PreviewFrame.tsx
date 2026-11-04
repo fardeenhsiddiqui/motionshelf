@@ -19,6 +19,9 @@ export function PreviewFrame({ item }: { item: CatalogItem }) {
   const [loaded, setLoaded] = useState(false);
   const [slow, setSlow] = useState(false);
   const stage = useRef<HTMLDivElement>(null);
+  const lock = useRef<HTMLButtonElement>(null);
+  const done = useRef<HTMLButtonElement>(null);
+  const wasEngaged = useRef(false);
   const current = VIEWPORTS.find((v) => v.id === viewport)!;
   const src = previewSrc(item.previewPath);
 
@@ -45,6 +48,14 @@ export function PreviewFrame({ item }: { item: CatalogItem }) {
     if (stage.current) observer.observe(stage.current);
     window.addEventListener("keydown", onKey);
     return () => { window.removeEventListener("keydown", onKey); observer.disconnect(); };
+  }, [engaged]);
+
+  // Keep keyboard focus somewhere sensible when the button that had it is replaced: on Done when engaging
+  // (Tab then enters the preview, Shift+Tab comes back to Done), and on the preview button when releasing.
+  useEffect(() => {
+    if (engaged) done.current?.focus();
+    else if (wasEngaged.current) lock.current?.focus();
+    wasEngaged.current = engaged;
   }, [engaged]);
 
   const toggleFull = async () => {
@@ -80,10 +91,11 @@ export function PreviewFrame({ item }: { item: CatalogItem }) {
       <div className="stage" ref={stage}>
         <div className="frame-wrap" style={{ width: current.width ?? "100%" }}>
           {engaged && !full && (
-            <div className="frame-done"><button className="btn" onClick={() => setEngaged(false)}>Done</button></div>
+            <div className="frame-done"><button ref={done} className="btn" onClick={() => setEngaged(false)}>Done</button></div>
           )}
           <iframe
             key={frameKey}
+            tabIndex={engaged || full ? 0 : -1}
             className={engaged || full ? "frame" : "frame is-inert"}
             src={src}
             title={`${item.title} live preview`}
@@ -97,7 +109,7 @@ export function PreviewFrame({ item }: { item: CatalogItem }) {
             </>
           )}
           {!engaged && !full && (
-            <button className="frame-lock" onClick={() => setEngaged(true)}>
+            <button ref={lock} className="frame-lock" onClick={() => setEngaged(true)}>
               <span className="frame-lock-cta">Tap or click to interact</span>
               <small>Until then the page scrolls normally</small>
             </button>

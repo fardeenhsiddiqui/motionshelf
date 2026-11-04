@@ -253,3 +253,132 @@ Kept on purpose: Inter for dense UI text with Unbounded as the display face; the
 - **Building needs Node 22.18 or newer** (it runs TypeScript directly for prerendering).
 - **The three oldest commits** still carry the co-author line, because removing it needs a history rewrite.
 - **Template sample content** (specifications, prices, dates) describes fictional vehicles and is meant to be replaced by whoever uses a template.
+
+
+## 12. Phase 3: production quality, comprehensive testing and issue resolution
+
+Method: Chrome 156 and Edge 156 (both Chromium) driven over the DevTools protocol against the **deployed site**, then
+the same suites against a local production build served with Cloudflare Pages-style routing and gzip. Device sizes
+and touch were emulated. **No physical phone, Firefox or Safari/WebKit was available**, so none of those were tested
+(see section 12.6 and 12.7).
+
+### 12.1 Issues found, root causes and fixes
+
+Severity: Critical = site unusable or data loss; High = visible failure or major cost for many visitors; Medium =
+real defect with a workaround or limited reach; Low = polish.
+
+| ID | Sev | Issue | Reproduction | Root cause | Fix (files) | Verified |
+|---|---|---|---|---|---|---|
+| P3-01 | High | **3D showroom leaks a canvas, a WebGL context and about 236 DOM nodes on every visit.** After roughly 16 visits browsers drop old contexts and 3D would fail | Home, scroll to the showroom, navigate away, repeat. Count live canvases with `Runtime.queryObjects` | three.js 0.182 keeps one module-level `DFG_LUT` texture and every renderer adds a dispose listener to it that `renderer.dispose()` never removes. The cached model's geometry and textures are also shared, and react-three-fiber never disposes a `<primitive>`. Old renderers stayed reachable, and through the canvas's parent pointers so did the detached page DOM | `showroom/Scene.tsx`: release the model's GPU resources and the shared texture when the scene unmounts | 8 visits: canvases, contexts, nodes, listeners, buffers and programs flat (was +1 canvas, +236 nodes, +28 listeners, +131 buffers per visit). 4 remounts render correctly |
+| P3-02 | High | **Home page downloads the 3D scene code and model (2.7 MB raw) at load**, before any scroll | Load `/` and list requests: `Scene-*.js` and `car-concept.glb` start at about 0.2 s | "Near the viewport" used a 600 px margin and latched once. At first render the page above had not laid out, so the showroom top was at 1,329 px instead of its final 1,956 px, inside the margin | `showroom/Showroom.tsx`: 300 px margin with an explanation | Initial load 28 requests / 3.5 MB to 10 requests / 0.8 MB (local, uncompressed). 3D is ready before the section arrives on scroll |
+| P3-03 | High | **Home page burns 12.5% of a CPU core idle on a laptop and 49% at phone-class speed**, nothing happening on screen | Fresh load of `/`, wait 6 s, read `TaskDuration`. Stopping CSS animations drops it to 0.1% | Five perpetual animations at once: the road (animated `background-position`, a main-thread repaint every frame), six streaks, three bobbing preview frames and the scroll cue | `styles/home.css`, `home/Hero.tsx`: one compositor-friendly road animation (`transform`), the rest removed, paused when the hero is off-screen | Idle 12.5% to 0.5% (desktop) and 49% to 2.0% (4x CPU). Off-screen: 0 running animations |
+| P3-04 | Medium | **Smooth-scroll loop runs every frame forever** on every page | Fresh load of `/licensing`, idle 6 s | Lenis was driven by an unconditional `requestAnimationFrame` loop | `lib/smoothScroll.tsx`: loop runs only while a scroll is in progress | Idle 2.2% to 0.03% (desktop) and 9.7% to 0.03% (4x CPU). Wheel still eases (21 steps), settles, PageDown, hero button and route changes work |
+| P3-05 | High | **Large layout shift on template pages**: CLS 0.36 desktop, 0.70 phone-class (target 0.1) | Load `/templates/vortex-gt`, read `layout-shift` entries | The template item loaded asynchronously, so `<main>` was empty at first render and the footer sat mid-screen, then jumped 2,300 px when content arrived | `lib/useData.ts`, `lib/useCatalog.ts` (seed per-item cache from the loaded list), `styles.css` (`.page { min-height: 100svh }`) | CLS 0.000 on home, browse, section, licensing, template (desktop and phone) |
+| P3-06 | Medium | **Home LCP 2.3 to 2.6 s on a fast desktop** | Load `/`, read LCP | Entrance animations staggered content in over about 2.3 s and the main preview poster was lazy-loaded | `home/Hero.tsx` (about 0.9 s entrance), `PreviewThumb.tsx` (eager, high priority), `scripts/prerender.mjs` (preload the poster and the two latin fonts) | LCP 1.3 s. Phone-class medians: home 6.8 s to 5.6 s, long tasks 4.9 s to 2.9 s |
+| P3-07 | Medium | **After a WebGL context loss the showroom stage went blank** (page alive, note shown, but no poster) | `WEBGL_lose_context.loseContext()` on the canvas | The poster stayed hidden because "ready" was never cleared on failure | `showroom/Showroom.tsx` | Poster and message shown; no exceptions; navigation still works |
+| P3-08 | Medium | **A debug "64 fps · High quality" readout was shown to every visitor** (unnecessary UI, 11 px text) | Scroll to the showroom | The meter was tied to the adaptive-quality monitor, which is on by default | `showroom/Scene.tsx`, `Showroom.tsx`: meter only with `?perf` | Not present by default |
+| P3-09 | Low | **Console warning on every page with 3D**: `THREE.Clock has been deprecated` | Load `/` on production, scroll to the showroom | `@react-three/fiber` 9.8.2 (latest stable) constructs a `THREE.Clock`, deprecated in three r183 | `package.json`: three and @types/three pinned to exactly 0.182.0 | Console clean with 3D mounted. **Revisit when R3F releases a version that no longer uses Clock** |
+| P3-10 | Medium | **Keyboard: the locked preview iframe was a Tab stop with no focus ring**, and once inside, the exit was Shift+Tab through the template's links | Tab through `/templates/vortex-gt` | iframes are focusable by default; the lock only blocked pointer input | `PreviewFrame.tsx`: `tabIndex` -1 while locked; focus moves to **Done** on engage, and back to the preview button on release | Tab reaches the button; Enter engages; Tab enters the frame; Shift+Tab returns to Done; Enter releases |
+| P3-11 | Medium | **Heading levels skip on `/browse`** (h1 straight to h3 card titles) | Read the heading outline | `TemplateCard` always rendered an `h3` | `TemplateCard.tsx` (`headingLevel`), `GalleryPage.tsx`, `gallery.css` | No skipped levels on any route |
+| P3-12 | Low | **Contrast 4.30:1** on the "768px / 390px" viewport labels | Computed-colour check | `opacity: 0.7` | `styles.css` | 0 contrast failures on 5 page types |
+| P3-13 | Low | **10.8 px text** in the viewport toggle at widths above 640 px | Minimum font probe at tablet, landscape and laptop sizes | `<small>` default size | `styles.css` | Minimum text 12 px on every route and device size |
+| P3-14 | Medium | **Phone landscape: the main hero button was cut off at the fold, and template breadcrumb separators sat above the links** | 844x390 and 667x375 screenshots | Hero sized by viewport width; the Q2 tap-target change left separators unaligned | `styles.css` (short-landscape rules, `.crumbs` alignment) | Primary button fully in view at 640x360, 667x375, 844x390, 915x412 and all larger sizes |
+| P3-15 | Low | **Mixed CRLF/LF line endings in a downloadable template file** (`ridgeback-x/styles.css`) | Count `\r` in the served file | Created on Windows with mixed endings | File normalised; new `.gitattributes` keeps `public/previews/**` on LF | No carriage returns in any template file |
+| P3-16 | Info | Edge reports "Tracking Prevention blocked access to storage for cdnjs.cloudflare.com" on template pages | Open a template in Edge | Templates load GSAP from a third-party CDN | **Not changed on purpose.** Self-hosting GSAP would remove it, but redistributing GSAP inside downloadable templates is a licensing decision for the owner (section 12.7). Scripts load and run | n/a |
+
+### 12.2 Investigated and found not to be bugs
+
+Recorded so nobody re-investigates them:
+
+- **Back/forward, rapid clicking, odd URLs**: correct with real mouse events (history entries without a user gesture are skipped by Chrome, which fooled my first scripted test). Scroll position is restored on back. `/browse/` redirects to `/browse`; `/BROWSE` is a 404.
+- **Touch scroll over the locked preview**: the page scrolls (316 px vs 305 px over plain text). My first test used an unreliable synthesised gesture.
+- **3D drag and rendering**: the scene renders about 3,100 draw calls per second, drag changes the picture (isolated by emulating reduced motion, which disables idle rotation), rendering stops off-screen (0 draw calls) and resumes on return.
+- **Failed CDNs, failed 3D chunk, failed model**: templates still render with the CDNs blocked, and the app never goes blank.
+- **Iframe isolation**: from inside each preview frame, parent DOM, parent storage, cookies and `top` all throw `SecurityError`, and `self.origin` is `null`.
+- **Copy, prompt, single-file and ZIP downloads**: byte-identical to the live source for all four templates (the ZIP opens with a standard tool). Windows normalises clipboard newlines, which is not a site issue.
+- **Hero button lands 88 px below the showroom's top edge**: Lenis computes this; the heading is comfortably visible.
+- **Frame rate at 4x CPU throttle varies from 21 to 56 fps** between runs. This machine renders WebGL in software, so it is a diagnostic, not a gate.
+
+### 12.3 Before and after
+
+Same-environment comparisons (old commit `feeb58c` against the fixed build, both served gzip'd by the same test
+server, interleaved A/B runs, medians). Absolute times were inflated by a busy machine; the direction held in every run set.
+
+| Measurement | Before | After |
+|---|---|---|
+| Home idle CPU, 4x CPU, nothing moving | 49% of a core | 2.0% |
+| Home idle CPU, desktop | 12.5% | 0.5% |
+| Static page idle CPU (4x CPU) | 7.8% (`/licensing`) | 0.09% (`/browse`) |
+| Home first load | 28 requests, 3.5 MB (raw) | 10 requests, 0.8 MB (raw) |
+| Home LCP, desktop | 2.3 to 2.6 s | 1.3 s |
+| Home LCP, phone-class (4x CPU, slow 4G), median of 6 | 6.8 s | 5.6 s |
+| Home long-task time, phone-class | 4.9 s | 2.9 s |
+| Template CLS | 0.364 desktop, 0.698 phone-class | 0.000 |
+| Template long-task time, phone-class | 3.1 s | 2.0 s |
+| Showroom visits: DOM nodes / listeners / canvases per visit | +236 / +28 / +1 | 0 / 0 / 0 |
+| 72 navigations across every route: nodes, listeners, heap | not measured | +0, +0, +0.4 MB |
+| Initial JavaScript (gzip) | 136 kB | 136 kB (unchanged; budget 150 kB) |
+| 3D scene code (lazy, gzip) / model | 285 kB / 1.7 MB, loaded at page load | same files, loaded only when the section is near |
+| Showroom frame rate, desktop | 60 fps | 60 fps |
+
+### 12.4 Test coverage
+
+All suites live in the session scratchpad (they drive Chrome DevTools directly, not part of the repo) and were run on
+the live site, then on the final build.
+
+| Area | What was checked | Result |
+|---|---|---|
+| Routes and SEO | 13 URLs: status, unique title, one canonical, one h1, JSON-LD parses, noindex only where intended, 404 status, robots, sitemap, no-JS content, head follows client-side navigation | Pass on live (Edge and Chrome) and on the final build |
+| Navigation and interaction | Back/forward, 12 rapid clicks, history spam, 7 unusual URLs, gallery search, theme, category, feature filters, Clear filters, `/` and Ctrl+K | Pass |
+| Templates (4) | Frame loads, separate origin, sandbox attribute, iframe isolation, GSAP ran, 3D in sandbox, viewport toggles, Reload, interact/Done, fullscreen, every code tab, Copy, Copy as prompt, ZIP, single download | Pass |
+| 3D showroom | Load, fps, camera, drag, off-screen pause, context loss, memory over 8 visits, phone opt-in, remount rendering | Pass (fps at 4x throttle informational) |
+| Stability | 72-navigation tour over every route, 8-visit showroom loop, idle cost by page, smooth-scroll behaviour | Pass |
+| Devices (emulated) | iPhone SE, iPhone 14, Pixel 7, Galaxy S8 portrait; iPhone 14, Pixel 7, iPhone SE landscape; iPad portrait and landscape; laptop. 9 routes each: overflow, tap targets, text size, console. Touch: menu, tap, swipe | Pass |
+| Accessibility | Real Tab traversal on 5 page types, focus visibility, accessibility-tree names, computed contrast, landmarks, heading order, alt text, iframe titles, zoom | Pass |
+| Performance | LCP, FCP, CLS, long tasks, requests, bytes, idle CPU, interleaved A/B under phone-class throttling | See 12.3 |
+
+Browsers: Chrome 156 and Edge 156 (Chromium). Firefox and WebKit were not installed and were not downloaded.
+
+### 12.5 Production verification (before these fixes are deployed)
+
+The deployed site was verified on 2026-11-04. Routes, titles, canonicals, 404 status, robots, sitemap, template
+previews, isolation, copy and downloads all pass. Cloudflare serves `/browse` and `/templates` directly with no
+redirect, `/browse/` redirects to `/browse`, and unknown paths return 404. The deployed site **still shows P3-01 to
+P3-15**, because those fixes are in the repository but not yet deployed (deploying needs a Cloudflare token, which is
+not stored anywhere).
+
+### 12.6 Remaining limitations
+
+- No physical-device testing. Touch behaviour, iOS Safari (toolbars, `svh` units, WebGL limits), Android Chrome
+  performance and thermal behaviour are unverified.
+- Firefox and Safari/WebKit untested.
+- No screen reader pass. Contrast was computed for text on solid backgrounds; text over gradients or images was skipped.
+- WebGL was rendered in software here, so showroom frame rates are not representative of real GPUs.
+- Terms and Privacy pages are still not written (H5). The site collects nothing today.
+- `three` is pinned to 0.182.0 because of P3-09. Revisit when `@react-three/fiber` stops using `THREE.Clock`.
+- P3-16 is unchanged.
+- Initial JavaScript is 136 kB gzip. A further reduction would need replacing parts of the animation library; it is
+  within budget, so it was left alone.
+
+### 12.7 Needs the owner (not done on purpose)
+
+1. **Redeploy** to ship the fixes (commands in `README.md`; needs a Cloudflare API token set in your own shell).
+2. **GSAP licensing and hosting**: decide whether to self-host GSAP inside templates (removes the Edge notice and the
+   CDN dependency) after checking GreenSock's current license terms for redistribution.
+3. **Terms and Privacy pages**: decide the wording before adding analytics, forms or accounts.
+4. **Real feedback**: send `docs/USER_FEEDBACK.md` to developers and freelancers. No feedback exists yet.
+
+### 12.8 Android checklist (about 10 minutes)
+
+Use Chrome on mobile data, after redeploying.
+
+1. Home: scroll top to bottom without stopping. Any freeze or jank?
+2. Tap **Load 3D showroom** (about 2 MB). It should load; then swipe vertically over the car (the page should
+   scroll) and horizontally on the car (it should rotate).
+3. Navigate Home, Browse, a template, back, forward. No blank screens or stuck loading.
+4. On a template, swipe up with your thumb on the preview: the **page** should scroll. Tap **Tap or click to
+   interact**, scroll inside the preview, tap **Done**.
+5. Rotate to landscape on the home page: the **Browse templates** button should be fully visible.
+6. Browse: tap every filter, type in search, make sure no tap misses.
+7. Tap **Copy HTML** and paste somewhere; tap **Download all (.zip)** and open the file.
+8. Optional: USB debugging and `chrome://inspect` on your PC to read the console, and tell me anything red.

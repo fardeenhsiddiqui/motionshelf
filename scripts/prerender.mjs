@@ -6,7 +6,7 @@
 //
 // File layout matches Cloudflare Pages: /browse is served from browse.html, /templates/x from
 // templates/x.html, unknown URLs get 404.html with a 404 status.
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { metaFor, routePaths, SITE_NAME } from "../src/lib/seo.ts";
 
@@ -28,6 +28,8 @@ const esc = (text) => String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").
 const itemPath = (item) => `/${item.section}/${item.id}`;
 const categoryLabel = (id) => catalog.categories.find((c) => c.id === id)?.label ?? id;
 const template = readFileSync(join(dist, "index.html"), "utf8");
+// The headline and body fonts (latin subsets): the browser would only discover them after downloading the CSS.
+const fontPreloads = readdirSync(join(dist, "assets")).filter((f) => /^(unbounded|inter)-latin-wght-normal-.*.woff2$/.test(f)).map((f) => `<link rel="preload" as="font" type="font/woff2" href="/assets/${f}" crossorigin />`);
 if (!template.includes('<div id="root"></div>')) {
   console.error('Prerender: dist/index.html has no empty <div id="root"></div> to fill. Run it right after `vite build` (npm run build does), not twice on the same dist.');
   process.exit(1);
@@ -79,8 +81,11 @@ function render(meta) {
   const defaultImage = meta.image === "/og.jpg";
   const ld = structuredData(meta);
   const head = [
+    ...fontPreloads,
     `<link rel="canonical" href="${esc(url)}" />`,
     meta.noindex ? '<meta name="robots" content="noindex, follow" />' : "",
+    // The home page's main hero image is its largest paint: start fetching it before the app loads.
+    meta.kind === "home" && catalog.items[0] ? `<link rel="preload" as="image" href="${esc(catalog.items[0].posterPath)}" fetchpriority="high" />` : "",
     `<meta property="og:site_name" content="${SITE_NAME}" />`,
     '<meta property="og:type" content="website" />',
     `<meta property="og:title" content="${esc(meta.title)}" />`,

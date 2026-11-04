@@ -1,0 +1,2 @@
+# Template files are downloaded and copied as-is, so keep LF line endings whatever the checkout platform.
+public/previews/** text eol=lf

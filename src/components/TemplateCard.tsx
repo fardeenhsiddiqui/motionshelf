@@ -3,14 +3,15 @@ import { itemPath } from "../lib/paths";
 import { Link } from "../lib/router";
 import { PreviewThumb } from "./PreviewThumb";
 
-export function TemplateCard({ item }: { item: CatalogItem }) {
+export function TemplateCard({ item, headingLevel = "h3" }: { item: CatalogItem; headingLevel?: "h2" | "h3" }) {
+  const Heading = headingLevel;
   return (
     <Link href={itemPath(item)} className="card">
       <PreviewThumb src={item.previewPath} poster={item.posterPath} title={item.title} />
       <div className="card-body">
         <p className="kicker">{item.categoryLabel} · {item.theme}</p>
         <div className="card-title">
-          <h3>{item.title}</h3>
+          <Heading>{item.title}</Heading>
           <span className="badge">{item.license.spdx}</span>
         </div>
         <p>{item.summary}</p>

@@ -1,5 +1,6 @@
 import { repository, type ItemQuery } from "../data";
-import { prefetch, useData } from "./useData";
+import type { CatalogItem } from "../types";
+import { peek, prefetch, seed, useData } from "./useData";
 
 // The hooks components use to read catalog data. Keys must identify the request, so two calls with
 // the same arguments share one cached read.
@@ -27,4 +28,6 @@ export async function primeCatalog(): Promise<void> {
     prefetch(keys.assets(undefined), () => repository.listAssets()),
   ]);
   await Promise.race([reads, new Promise((resolve) => setTimeout(resolve, 50))]);
+  // A template page needs its own item. Seed those from the list so its first render already has the data.
+  for (const item of peek<CatalogItem[]>(keys.items({})) ?? []) seed(keys.item(item.id), item);
 }

@@ -39,7 +39,10 @@ export function Showroom() {
   const input = useRef<Input>({ dragYaw: 0, lastTouch: 0 });
   const drag = useRef<{ x: number } | null>(null);
   const reduce = useReducedMotion() ?? false;
-  const near = useInView(section, { once: true, margin: "600px 0px" });
+  // Start loading the 3D code and model shortly before the section scrolls in. The margin is small on purpose: on first
+  // render the page above has not finished laying out, so the section is briefly much closer than it will be, and a
+  // large margin latched "near" immediately and downloaded 2.7 MB before the visitor scrolled.
+  const near = useInView(section, { once: true, margin: "300px 0px" });
   const visible = useInView(section);
   const [optIn, setOptIn] = useState(false);
   const [supported] = useState(webglAvailable);
@@ -53,7 +56,9 @@ export function Showroom() {
     setChapter(Math.min(CHAPTERS.length - 1, Math.round(value * (CHAPTERS.length - 1))));
   });
 
-  const monitor = typeof window === "undefined" || !new URLSearchParams(window.location.search).has("perf-off");
+  const params = typeof window === "undefined" ? new URLSearchParams() : new URLSearchParams(window.location.search);
+  const monitor = !params.has("perf-off");
+  const meter = params.has("perf");
   // The model is only shown once its credit has loaded, so it never appears without its attribution.
   const creditResult = useAssets(MODEL_ASSET);
   const credit = creditResult.status === "ready" ? creditResult.data[0] : undefined;
@@ -86,11 +91,11 @@ export function Showroom() {
             input.current.lastTouch = performance.now();
           }}
         >
-          <img className={ready ? "showroom-poster is-hidden" : "showroom-poster"} src={POSTER} alt="" decoding="async" />
+          <img className={ready && !failed ? "showroom-poster is-hidden" : "showroom-poster"} src={POSTER} alt="" loading="lazy" decoding="async" />
           {wanted && (
             <ErrorBoundary fallback={null} onError={onFail}>
             <Suspense fallback={null}>
-              <Scene progress={scrollYProgress} input={input} still={reduce} monitor={monitor} active={visible} onReady={onReady} onFail={onFail} />
+              <Scene progress={scrollYProgress} input={input} still={reduce} monitor={monitor} meter={meter} active={visible} onReady={onReady} onFail={onFail} />
             </Suspense>
             </ErrorBoundary>
           )}

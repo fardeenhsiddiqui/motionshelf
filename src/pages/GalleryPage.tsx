@@ -174,7 +174,7 @@ function Gallery({ section, sections, categories: allCategories, items }: Galler
               exit={{ opacity: 0, scale: 0.96 }}
               transition={{ duration: 0.45, ease: EASE }}
             >
-              <TemplateCard item={item} />
+              <TemplateCard item={item} headingLevel="h2" />
             </motion.div>
           ))}
         </AnimatePresence>

@@ -10,7 +10,7 @@ code { font-family: var(--mono); font-size: 0.92em; background: var(--panel-2); 
 .small { font-size: 13px; }
 
 /* app pages (browse, detail, licensing) */
-.page { width: 100%; max-width: var(--max-w); margin: 0 auto; padding: calc(var(--header-h) + clamp(24px, 4vw, 56px)) var(--gutter) clamp(56px, 8vw, 120px); }
+.page { min-height: 100svh; width: 100%; max-width: var(--max-w); margin: 0 auto; padding: calc(var(--header-h) + clamp(24px, 4vw, 56px)) var(--gutter) clamp(56px, 8vw, 120px); }
 .count, .soon { font-size: 12px; padding: 2px 7px; border-radius: 999px; background: var(--panel-2); color: var(--muted); }
 .soon { background: var(--accent-soft); color: var(--accent); }
 
@@ -49,7 +49,7 @@ code { font-family: var(--mono); font-size: 0.92em; background: var(--panel-2); 
 .preview-actions { display: flex; gap: 8px; }
 .segmented { display: inline-flex; padding: 3px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; }
 .seg { padding: 6px 14px; border: 0; border-radius: 8px; background: transparent; color: var(--muted); font-size: 13px; cursor: pointer; }
-.seg small { opacity: 0.7; }
+.seg small { opacity: 1; }
 .seg.is-active { background: var(--panel-2); color: var(--text); }
 .stage { display: flex; justify-content: center; padding: 16px; background: repeating-conic-gradient(#0e1118 0% 25%, #0b0d12 0% 50%) 0 0 / 20px 20px; }
 .frame { max-width: 100%; height: min(78vh, 760px); border: 1px solid var(--line); border-radius: 10px; background: #fff; }
@@ -166,3 +166,18 @@ html { scroll-padding-top: calc(var(--header-h) + 16px); }
 .skeleton-lines i { display: block; height: 12px; border-radius: 6px; }
 .skeleton-lines i:nth-child(2n) { width: 82%; }
 .skeleton-lines i:nth-child(3n) { width: 64%; }
+
+/* Short landscape screens (phones on their side): size the hero by height so the main actions stay in view. */
+.seg small { font-size: 12px; }
+.crumbs { align-items: center; }
+@media (max-height: 520px) and (orientation: landscape) {
+  :root { --header-h: 56px; }
+  .hero { min-height: 0; }
+  .hero-inner { padding-block: 12px 20px; }
+  .hero h1 { margin: 8px 0 10px; font-size: clamp(28px, 10vh, 48px); }
+  .hero .h1-line { display: inline; }
+  .hero-lede { font-size: 15px; }
+  .hero-actions { margin: 14px 0 0; }
+  .hero-facts { display: none; }
+  .page-head h1 { font-size: clamp(26px, 9vh, 40px); }
+}

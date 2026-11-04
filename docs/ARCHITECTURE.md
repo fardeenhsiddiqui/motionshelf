@@ -105,6 +105,8 @@ defaults in `.env.production`:
 Build with `VITE_DATA_SIMULATION=1` and add `?data=` to any URL: `slow` (1.5 s per read), `error` (every read fails),
 `flaky` (each read fails once, so **Try again** works) or `empty`. A normal build contains none of this code.
 
+The 3D showroom has two flags that work in any build: `?perf` shows an fps and quality readout, and `?perf-off` turns off the adaptive quality monitor (useful when measuring).
+
 ## Deliberately not added
 
 A state-management library, a data-fetching library, an ORM, GraphQL, a router library. None solves a current problem.

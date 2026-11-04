@@ -82,6 +82,18 @@ Source: the supplied "30 reasons your site looks vibecoded" list.
 | Concurrent live iframes on one page | 1 (2 in a comparison). Posters otherwise |
 | Large assets (over 1 MB) | Lazy, opt-in on phones and on data saver |
 | Memory | Navigating between routes 20 times must not grow DOM node or listener counts |
+| Idle CPU | A page with nothing moving stays under 1% of one core at 4x CPU throttle. Measure it; do not assume |
+| Continuous animation | One at a time, compositor-only (`transform`, `opacity`), paused while off-screen |
+| First-load transfer | Nothing the visitor has not asked for: 3D code and models load only when the section is near |
+| Layout shift | CLS 0 on every route, including pages that load data asynchronously (seed the data or reserve the space) |
+
+Lessons from Phase 3 (see `AUDIT.md` section 12):
+
+- A "near the viewport" trigger that latches once must be tested on **first render**, when the layout above it has not settled. A margin that looks fine on a settled page can fire immediately.
+- Anything that creates a WebGL renderer must be mounted and unmounted 8 times in a test, with canvases, contexts, DOM nodes and listeners counted afterwards. Shared module-level resources in libraries can keep old renderers alive.
+- Measure idle cost, not just load cost: a fresh page left alone for 6 seconds, at 4x CPU throttle.
+- Compare performance changes old-against-new in the same environment, interleaved, with medians. Single runs on a busy machine vary by a second or more.
+- Pages must be tested with real keyboard events and real mouse events. Scripted `.click()` calls have no user gesture and behave differently (for example, history entries are skipped on Back).
 
 Animation rules: animate `transform` and `opacity` only; clean up every listener, observer, timer, ticker and `requestAnimationFrame` on unmount; pause off-screen work; remove `will-change` after use.
 
