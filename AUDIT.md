@@ -487,3 +487,103 @@ scroll-driven ones.
 - **Needs the owner:** redeploy (Cloudflare token in your own shell); GSAP self-hosting and licence decision;
   Terms and Privacy pages; real feedback from `docs/USER_FEEDBACK.md`; choose whether to commission or license a
   3D vehicle model per template and an original anime character.
+
+## 14. Phase 5: mobile cropping, Vortex 3D cost, Terms and Privacy, GSAP licensing, deployment
+
+Starting point: `e76d526`. Code commit: `dbd4fa3`. Tested in headless Chrome 157 and Edge 157 only. Firefox, Safari
+and WebKit are **not available** on this machine (checked: none installed, none downloaded), so nothing was
+tested in them.
+
+### 14.1 Sakura Dusk and Neon Rain on portrait screens
+
+- **Cause.** The scene artwork is a 16:9 SVG drawn with `preserveAspectRatio="slice"`. On a portrait phone that
+  shows only the middle ~26 % of the width, so the blossom tree, the gate and most neon signs were cut off.
+- **Fix.** On portrait screens (`max-aspect-ratio: 1/1`) each layer keeps its full 16:9 width and the camera pans
+  across it as you scroll: layers start offset (the tree starts in view) and travel further than on desktop, so the
+  gate and every sign come into view in turn. Desktop and landscape are unchanged.
+- **Checked** in screenshots at 390 x 844 across the scroll (tree at the start, gate mid-scene, RAMEN and OPEN signs
+  at the end) and by the automated anime tests at desktop, tablet, phone and phone landscape in Chrome.
+
+### 14.2 Vortex GT 3D canvas
+
+- **Finding.** `hero3d.js` drew the 249k-triangle model at the display rate for as long as the page was open, even
+  for a slow auto-rotation, and kept a `requestAnimationFrame` loop waking up while off screen.
+- **Changes.** Idle auto-rotation is drawn at 30 fps; dragging and the 2.5 s after it still run at full rate; the
+  loop stops completely when the car is off screen and restarts when it returns; touch devices cap the pixel ratio
+  at 1.5 (desktop keeps 2). Model, lighting, antialiasing and rotation speed are unchanged.
+- **Evidence.** Counting WebGL draw calls per second in the same browser (base against new, interleaved, repeated):
+  **2829 to 1410 per second in view, 0 off screen in both**. That is half the rendering work for a motion that only
+  turns about 0.5 degrees per frame. Main-thread percentages at 4x throttle did not separate the two, because
+  software WebGL here is saturated either way, so I report the draw-call count, not a CPU percentage.
+- **Not measured.** Real GPU frame times and battery on a phone. A 30 fps idle rotation is a judgement about
+  smoothness, not a measured perception result; if you see stepping on a real device, raise the 30 ms gap in
+  `hero3d.js`.
+
+### 14.3 Terms and Privacy
+
+- New pages `/terms` and `/privacy`, linked from the footer, in the sitemap and prerendered with their full text
+  (the words live in `src/lib/legal.ts`, shared by the app and the prerender script). Both have one `h1`, pass the
+  device matrix in Chrome and Edge, and carry canonical URLs and breadcrumbs like the other pages.
+- The privacy text states only what I verified: no accounts, no analytics, no cookies or browser storage (searched
+  the source: none), self-hosted fonts and model, Cloudflare Pages as host, `cdnjs.cloudflare.com` and `esm.sh`
+  contacted by live previews, template demo forms do not submit. The production home page contains no analytics
+  beacon (checked after deploy).
+- Contact is the public GitHub issues page, because no other contact address exists. **These pages are not legal
+  advice and were not reviewed by a lawyer.** They deliberately name no company, jurisdiction or governing law,
+  because none was given to me; add those if you register a business or want a specific court. If you add
+  analytics, forms, accounts, uploads or payments, update both pages in the same change.
+
+### 14.4 GSAP licensing review
+
+Source read: https://gsap.com/standard-license/ ("Standard 'No Charge' GSAP License", copyright Webflow, effective
+30 April 2025, last modified 30 May 2025).
+
+- Free for commercial use on any website, web app or digital interface, including the former paid plugins.
+- Prohibited: use in tools that let people build visual animations without code and compete with Webflow;
+  reverse engineering to build such a tool; removing or altering proprietary notices. Webflow may terminate.
+- **Not addressed in the text:** redistributing or bundling the GSAP files inside products others download, and
+  which GSAP versions the 2025 text covers.
+- **Decision: do not self-host or bundle GSAP.** MotionShelf offers templates as downloads, and the license is
+  silent on redistributing the library files, so copies of `gsap.min.js` inside the zips would rely on a gap.
+  Loading from cdnjs avoids redistribution, and the templates already render without it (checked with the CDNs
+  blocked). Self-hosting would also not help the templates users download, because their paths would break.
+- **Done:** moved the templates from GSAP 3.12.5 to **3.13.0**, a release made after the license took effect, so
+  the version question does not arise; behaviour tests pass on 3.13.0 in Chrome and Edge. The catalog notes now
+  name the license and say the user accepts it when using the library. The Terms say the same.
+- **Open question for the owner:** if you want to ship GSAP inside downloads, ask Webflow through the contact link
+  on the license page and keep the answer. If you ever build a visual animation editor on top of this, read the
+  prohibited-use clause first.
+
+### 14.5 Verification
+
+| Check | Result |
+|---|---|
+| `npm run typecheck` | Passes |
+| `npm run build:release` (validate, typecheck, build, prerender) | Passes: 15 routes + 404, 14 sitemap URLs, 1 noindex |
+| Template behaviour tests, 4 templates, Chrome and Edge (local) | All pass on GSAP 3.13.0 |
+| Anime behaviour tests, 3 pages x 4 sizes, Chrome (local) | All pass |
+| App tests (gallery, categories, detail pages, sandbox attribute) | All pass |
+| 12-device matrix on `/terms`, `/privacy`, `/anime`, `/` in Chrome, `/terms` and `/privacy` in Edge | All pass |
+| WebKit, Safari, Firefox | **Not tested** (not available) |
+
+### 14.6 Deployment
+
+- Deployed with `wrangler pages deploy` using the existing local Wrangler login (no token printed or stored).
+- Previews project: https://dba3e524.motionshelf-previews.pages.dev (alias https://motionshelf-previews.pages.dev).
+- Main project: https://496cf581.motionshelf.pages.dev (alias https://motionshelf.pages.dev).
+- Verified on production: all 19 app routes return the expected status (unknown URL returns a real 404), `robots.txt`
+  and `sitemap.xml` have the right types (14 URLs), every template's files and poster return 200 on the previews
+  origin, the 3D model is served with CORS, security headers are present, no analytics beacon, and the preview
+  frame on four detail pages points to the previews origin with `sandbox="allow-scripts allow-popups allow-forms"`
+  (no `allow-same-origin`). Behaviour tests were re-run against production in Chrome (templates, anime pages, app
+  routes, device matrix) and all passed. Subresource requests inside the cross-origin frames are not visible to the
+  test tool, so frame behaviour was verified by loading the previews origin directly.
+- Not re-run on production: Edge anime tests, Edge matrix on the new pages' previews.
+
+### 14.7 Remaining blockers and open items
+
+- Firefox and Safari/WebKit testing; physical-device testing (Android and iPhone).
+- Legal review of Terms and Privacy; add a business name, contact address and governing law if wanted.
+- Vortex 30 fps idle rotation is unverified on real hardware.
+- Optional: ask Webflow whether bundling GSAP in downloads is permitted.
+- Real feedback has still not been collected.
