@@ -1,2 +1,8 @@
 # Template files are downloaded and copied as-is, so keep LF line endings whatever the checkout platform.
 public/previews/** text eol=lf
+# Binary files must never be line-ending converted.
+public/previews/**/*.webp binary
+public/previews/**/*.glb binary
+public/previews/**/*.png binary
+public/previews/**/*.jpg binary
+public/previews/**/*.woff2 binary
