@@ -23,7 +23,8 @@
 
   function start(THREE, car, RoomEnvironment) {
     var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // Phones cap at 1.5: the extra pixels are not visible on a small canvas and cost a third more fill time.
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.matchMedia("(pointer: coarse)").matches ? 1.5 : 2));
     renderer.setClearColor(0x000000, 0);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
@@ -83,18 +84,24 @@
       idleAt = performance.now();
     });
 
-    var visible = true;
-    new IntersectionObserver(function (entries) { visible = entries[0].isIntersecting; }).observe(canvas);
-    var last = performance.now();
+    // Render only while the car is on screen. Idle auto-rotation is slow, so it is drawn at 30 fps; dragging and the
+    // moment after it run at the display rate. Both halve the GPU and CPU cost without a visible difference.
+    var visible = false, running = false, lastDraw = 0, last = performance.now();
     function frame(now) {
+      if (!visible) { running = false; return; }
       requestAnimationFrame(frame);
-      if (!visible) return;
+      var interacting = drag || now - idleAt < 2500;
+      if (!interacting && now - lastDraw < 30) return;
+      lastDraw = now;
       var dt = Math.min(0.05, (now - last) / 1000); last = now;
-      if (!drag && now - idleAt > 2500) target.yaw += dt * 0.25;
+      if (!interacting) target.yaw += dt * 0.25;
       pivot.rotation.y += (target.yaw - pivot.rotation.y) * Math.min(1, dt * 5);
       renderer.render(scene, camera);
     }
-    requestAnimationFrame(frame);
+    new IntersectionObserver(function (entries) {
+      visible = entries[0].isIntersecting;
+      if (visible && !running) { running = true; last = performance.now(); requestAnimationFrame(frame); }
+    }).observe(canvas);
 
   }
 })();

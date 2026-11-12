@@ -107,8 +107,8 @@
         "System font stack (Bahnschrift / Arial Narrow fallback)"
       ],
       "externalDeps": [
-        "GSAP 3.12.5 (cdnjs, script tag)",
-        "GSAP ScrollTrigger 3.12.5 (cdnjs, script tag)",
+        "GSAP 3.13.0 (cdnjs, script tag)",
+        "GSAP ScrollTrigger 3.13.0 (cdnjs, script tag)",
         "three.js 0.160.0 (esm.sh, loaded by hero3d.js)"
       ],
       "responsive": true,
@@ -127,7 +127,7 @@
         "originalIp": true,
         "aiGenerated": true,
         "verifiedOn": "2026-11-02",
-        "notes": "Original layout, copy, inline SVG artwork and generated scene tiles. Code written with AI assistance. 'Vortex' is a fictional brand. No third-party images, fonts, logos or trademarks. The scroll scene loads GSAP and ScrollTrigger from cdnjs under GSAP's standard no-charge license; they are not bundled in these files. The optional 3D hero uses the unbranded Car Concept model (CC BY 4.0, see Asset sources and credits), loaded with three.js from esm.sh; without WebGL it falls back to the original SVG car."
+        "notes": "Original layout, copy, inline SVG artwork and generated scene tiles. Code written with AI assistance. 'Vortex' is a fictional brand. No third-party images, fonts, logos or trademarks. The scroll scene loads GSAP and ScrollTrigger from cdnjs under GSAP's Standard No Charge License (Webflow, effective 30 April 2025, gsap.com/standard-license); they are not bundled in these files, so you accept that license when you use them. The optional 3D hero uses the unbranded Car Concept model (CC BY 4.0, see Asset sources and credits), loaded with three.js from esm.sh; without WebGL it falls back to the original SVG car."
       },
       "posterPath": "/previews/vortex-gt/poster.webp",
       "assetIds": [
@@ -181,8 +181,8 @@
         "System serif stack (Iowan Old Style / Palatino / Georgia) and system sans"
       ],
       "externalDeps": [
-        "GSAP 3.12.5 (cdnjs, script tag)",
-        "GSAP ScrollTrigger 3.12.5 (cdnjs, script tag)"
+        "GSAP 3.13.0 (cdnjs, script tag)",
+        "GSAP ScrollTrigger 3.13.0 (cdnjs, script tag)"
       ],
       "responsive": true,
       "createdAt": "2026-11-02",
@@ -200,7 +200,7 @@
         "originalIp": true,
         "aiGenerated": true,
         "verifiedOn": "2026-11-02",
-        "notes": "Original layout, copy, inline SVG artwork and generated scene tiles. Code written with AI assistance. 'Ridgeback' is a fictional brand. Specifications are invented. No third-party images, fonts, logos or trademarks. The scroll scene loads GSAP and ScrollTrigger from cdnjs under GSAP's standard no-charge license; they are not bundled in these files."
+        "notes": "Original layout, copy, inline SVG artwork and generated scene tiles. Code written with AI assistance. 'Ridgeback' is a fictional brand. Specifications are invented. No third-party images, fonts, logos or trademarks. The scroll scene loads GSAP and ScrollTrigger from cdnjs under GSAP's Standard No Charge License (Webflow, effective 30 April 2025, gsap.com/standard-license); they are not bundled in these files, so you accept that license when you use them."
       },
       "posterPath": "/previews/ridgeback-x/poster.webp"
     },
@@ -253,8 +253,8 @@
         "System font stack (Bahnschrift / Arial Narrow fallback)"
       ],
       "externalDeps": [
-        "GSAP 3.12.5 (cdnjs, script tag)",
-        "GSAP ScrollTrigger 3.12.5 (cdnjs, script tag)"
+        "GSAP 3.13.0 (cdnjs, script tag)",
+        "GSAP ScrollTrigger 3.13.0 (cdnjs, script tag)"
       ],
       "responsive": true,
       "createdAt": "2026-11-02",
@@ -272,7 +272,7 @@
         "originalIp": true,
         "aiGenerated": true,
         "verifiedOn": "2026-11-02",
-        "notes": "Original layout, copy, inline SVG artwork and generated scene tiles. Code written with AI assistance. Team, drivers, results and standings are fictional. No third-party images, fonts, logos, team names or trademarks. The scroll scene loads GSAP and ScrollTrigger from cdnjs under GSAP's standard no-charge license; they are not bundled in these files."
+        "notes": "Original layout, copy, inline SVG artwork and generated scene tiles. Code written with AI assistance. Team, drivers, results and standings are fictional. No third-party images, fonts, logos, team names or trademarks. The scroll scene loads GSAP and ScrollTrigger from cdnjs under GSAP's Standard No Charge License (Webflow, effective 30 April 2025, gsap.com/standard-license); they are not bundled in these files, so you accept that license when you use them."
       },
       "posterPath": "/previews/redline-racing/poster.webp"
     },
@@ -323,8 +323,8 @@
         "System font stack (Futura / Century Gothic fallback)"
       ],
       "externalDeps": [
-        "GSAP 3.12.5 (cdnjs, script tag)",
-        "GSAP ScrollTrigger 3.12.5 (cdnjs, script tag)"
+        "GSAP 3.13.0 (cdnjs, script tag)",
+        "GSAP ScrollTrigger 3.13.0 (cdnjs, script tag)"
       ],
       "responsive": true,
       "createdAt": "2026-11-02",
@@ -342,7 +342,7 @@
         "originalIp": true,
         "aiGenerated": true,
         "verifiedOn": "2026-11-02",
-        "notes": "Original layout, copy, inline SVG artwork and generated scene tiles. Code written with AI assistance. 'Kestrel' is a fictional brand. No third-party images, fonts, logos or trademarks. The scroll scene loads GSAP and ScrollTrigger from cdnjs under GSAP's standard no-charge license; they are not bundled in these files."
+        "notes": "Original layout, copy, inline SVG artwork and generated scene tiles. Code written with AI assistance. 'Kestrel' is a fictional brand. No third-party images, fonts, logos or trademarks. The scroll scene loads GSAP and ScrollTrigger from cdnjs under GSAP's Standard No Charge License (Webflow, effective 30 April 2025, gsap.com/standard-license); they are not bundled in these files, so you accept that license when you use them."
       }
     },
     {

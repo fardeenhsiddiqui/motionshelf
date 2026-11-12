@@ -13,6 +13,8 @@ import { HomePage } from "./pages/HomePage";
 import { GalleryPage } from "./pages/GalleryPage";
 import { TemplatePage } from "./pages/TemplatePage";
 import { LicensingPage } from "./pages/LicensingPage";
+import { LegalPage } from "./pages/LegalPage";
+import { privacy, terms } from "./lib/legal";
 import { NotFoundPage } from "./pages/NotFoundPage";
 
 function TemplateRoute({ section, id }: { section: Section; id: string }) {
@@ -24,7 +26,7 @@ function TemplateRoute({ section, id }: { section: Section; id: string }) {
   );
 }
 
-// Anything that is not the home page, /browse or /licensing must name a section, so it waits for the section list.
+// Anything that is not the home page, /browse, /licensing, /terms or /privacy must name a section, so it waits for the section list.
 function SectionRoute({ parts }: { parts: string[] }) {
   const sections = useSections();
   return (
@@ -44,6 +46,8 @@ function Route({ path }: { path: string }) {
   if (parts.length === 0) return <HomePage />;
   if (parts.length === 1 && parts[0] === "browse") return <GalleryPage key="all" />;
   if (parts.length === 1 && parts[0] === "licensing") return <LicensingPage />;
+  if (parts.length === 1 && parts[0] === "terms") return <LegalPage doc={terms} />;
+  if (parts.length === 1 && parts[0] === "privacy") return <LegalPage doc={privacy} />;
   return <SectionRoute parts={parts} />;
 }
 

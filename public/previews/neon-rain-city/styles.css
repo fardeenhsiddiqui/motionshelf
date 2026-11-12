@@ -49,11 +49,11 @@ section[id] { scroll-margin-top: 64px; }
 
 .layer { inset: 0 calc(var(--over, 4) * -1vw) 0 -3vw; will-change: transform; }
 .layer svg { display: block; width: 100%; height: 100%; }
-.l-far   { --over: 5;  transform: translate3d(calc(var(--p) * -3vw + var(--mx, 0) * -.6vw), 0, 0); }
-.l-mid   { --over: 9;  transform: translate3d(calc(var(--p) * -7vw + var(--mx, 0) * -1.2vw), 0, 0); }
-.l-train { --over: 12; transform: translate3d(calc(var(--p) * -7vw), 0, 0); }
-.l-signs { --over: 15; transform: translate3d(calc(var(--p) * -12vw + var(--mx, 0) * -2vw), 0, 0); }
-.l-street { --over: 20; transform: translate3d(calc(var(--p) * -18vw + var(--mx, 0) * -2.6vw), 0, 0); }
+.l-far   { --over: 5;  transform: translate3d(calc(var(--p) * var(--tr, -3) * 1vw + var(--base, 0) * 1vw + var(--mx, 0) * -.6vw), 0, 0); }
+.l-mid   { --over: 9;  transform: translate3d(calc(var(--p) * var(--tr, -7) * 1vw + var(--base, 0) * 1vw + var(--mx, 0) * -1.2vw), 0, 0); }
+.l-train { --over: 12; transform: translate3d(calc(var(--p) * var(--tr, -7) * 1vw + var(--base, 0) * 1vw), 0, 0); }
+.l-signs { --over: 15; transform: translate3d(calc(var(--p) * var(--tr, -12) * 1vw + var(--base, 0) * 1vw + var(--mx, 0) * -2vw), 0, 0); }
+.l-street { --over: 20; transform: translate3d(calc(var(--p) * var(--tr, -18) * 1vw + var(--base, 0) * 1vw + var(--mx, 0) * -2.6vw), 0, 0); }
 .l-char  { --over: 3;  transform: translate3d(calc(var(--mx, 0) * -.8vw), 0, 0); }
 .blink { animation: blink 2.4s steps(1) infinite; }
 .blink:nth-child(2n) { animation-delay: -.9s; }
@@ -124,6 +124,19 @@ section[id] { scroll-margin-top: 64px; }
 }
 @media (max-height: 520px) and (orientation: landscape) { .caps { top: 14%; } .cap p:not(.eyebrow) { display: none; } .cap h1 { font-size: 34px; } }
 
+
+
+/* portrait screens: the artwork keeps its full 16:9 width and the camera pans across it as you scroll,
+   so the tree, gate and signs come into view instead of being cropped away */
+@media (max-aspect-ratio: 1/1) {
+  .layer { inset: 0; }
+  .layer svg { position: absolute; top: 0; left: calc(50% - 88.89svh); width: calc(100svh * 16 / 9); height: 100%; }
+  .l-far { --tr:-30; }
+  .l-mid { --tr:-60; }
+  .l-train { --tr:-60; }
+  .l-signs { --tr:-120; }
+  .l-street { --tr:-150; }
+}
 
 /* loops pause while the scene is off screen */
 .is-paused, .is-paused *, .is-paused *::before, .is-paused *::after { animation-play-state: paused !important; }

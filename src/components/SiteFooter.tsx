@@ -20,6 +20,8 @@ export function SiteFooter() {
         <nav aria-label="Legal">
           <p className="footer-title">Trust</p>
           <Link href="/licensing">Licensing</Link>
+          <Link href="/terms">Terms</Link>
+          <Link href="/privacy">Privacy</Link>
           <span className="muted small">Not affiliated with any vehicle manufacturer.</span>
         </nav>
       </div>

@@ -1,9 +1,10 @@
 import type { Catalog, CatalogItem, Section } from "../types";
+import { privacy, terms } from "./legal.ts";
 
 // Page metadata for every route. Pure functions with no imports besides types, so the same code runs
 // in the browser (client-side navigation) and in scripts/prerender.mjs (build time, run by Node).
 
-export type RouteKind = "home" | "browse" | "section" | "template" | "licensing" | "notfound";
+export type RouteKind = "home" | "browse" | "section" | "template" | "licensing" | "legal" | "notfound";
 
 export type RouteMeta = {
   kind: RouteKind;
@@ -50,6 +51,10 @@ export function metaFor(rawPath: string, catalog: Catalog): RouteMeta {
       title: `Browse ${catalog.items.length} animated website templates | ${SITE_NAME}`,
       description: `Browse ${catalog.items.length} animated website templates. Filter by category, theme and feature. Every template lists its license, author and sources.`,
     };
+  }
+  const legal = parts.length === 1 ? [privacy, terms].find((doc) => doc.path === path) : undefined;
+  if (legal) {
+    return { ...base, kind: "legal", path: legal.path, title: `${legal.title} | ${SITE_NAME}`, description: legal.description };
   }
   if (parts.length === 1 && parts[0] === "licensing") {
     return {
@@ -110,5 +115,7 @@ export function routePaths(catalog: Catalog): string[] {
     ...catalog.sections.map((s) => `/${s.id}`),
     ...catalog.items.map((item) => `/${item.section}/${item.id}`),
     "/licensing",
+    "/terms",
+    "/privacy",
   ];
 }

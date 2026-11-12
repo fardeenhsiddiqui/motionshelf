@@ -9,6 +9,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { metaFor, routePaths, SITE_NAME } from "../src/lib/seo.ts";
+import { legalDocs } from "../src/lib/legal.ts";
 
 const root = new URL("..", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1");
 const dist = join(root, "dist");
@@ -54,6 +55,11 @@ function bodyFor(meta) {
     }
     case "licensing":
       return `<h1>Licensing</h1><p>${esc(meta.description)}</p><ul>${catalog.items.map((i) => `<li><a href="${itemPath(i)}">${esc(i.title)}</a>: ${esc(i.license.spdx)}, by ${esc(i.license.author)}</li>`).join("")}</ul>`;
+    case "legal": {
+      const doc = legalDocs.find((d) => d.path === meta.path);
+      const body = doc.blocks.map((b) => `<h2>${esc(b.heading)}</h2>${(b.paragraphs ?? []).map((p) => `<p>${esc(p)}</p>`).join("")}${b.list ? `<ul>${b.list.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>` : ""}`).join("");
+      return `<h1>${esc(doc.title)}</h1><p>${esc(doc.intro)}</p><p>Last updated ${esc(doc.updated)}</p>${body}`;
+    }
     default:
       return `<h1>Page not found</h1><p>${esc(meta.description)}</p><p><a href="/browse">Back to browse</a></p>`;
   }
@@ -63,6 +69,7 @@ function structuredData(meta) {
   const crumbs = [{ name: "Home", path: "/" }];
   if (meta.kind === "browse") crumbs.push({ name: "Browse", path: "/browse" });
   if (meta.kind === "licensing") crumbs.push({ name: "Licensing", path: "/licensing" });
+  if (meta.kind === "legal") crumbs.push({ name: meta.title.replace(/ \| .*$/, ""), path: meta.path });
   if (meta.kind === "section") crumbs.push({ name: meta.section.label, path: meta.path });
   if (meta.kind === "template") crumbs.push({ name: "Browse", path: "/browse" }, { name: meta.section.label, path: `/${meta.section.id}` }, { name: meta.item.title, path: meta.path });
   const graph = [];
