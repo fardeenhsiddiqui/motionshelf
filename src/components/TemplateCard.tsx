@@ -20,7 +20,7 @@ export function TemplateCard({ item, headingLevel = "h3" }: { item: CatalogItem;
             <span key={tag} className="tag">{tag}</span>
           ))}
         </div>
-        <span className="card-cta">Open template <span aria-hidden="true">→</span></span>
+        <span className="card-cta">{item.section === "templates" ? "Open template" : "Open demo"} <span aria-hidden="true">→</span></span>
       </div>
     </Link>
   );

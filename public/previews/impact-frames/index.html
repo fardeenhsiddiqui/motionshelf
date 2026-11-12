@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Impact Frames: anime and manga effects in pure CSS</title>
+  <meta name="description" content="Impact Frames: original anime and manga effects built with CSS only. Speed lines, halftone screens, impact bursts and focus lines you can drop into any page." />
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="logo" href="#top" aria-label="Impact Frames home">Impact Frames</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#effects">Effects</a>
+      <a href="#use">Use it</a>
+    </nav>
+  </header>
+
+  <main id="top"><span id="main-content" tabindex="-1"></span>
+    <section class="hero" id="hero" aria-labelledby="hero-title">
+      <div class="rays" aria-hidden="true"></div>
+      <div class="screen" aria-hidden="true"></div>
+      <div class="flash" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <p class="eyebrow">Anime and manga effects, CSS only</p>
+        <h1 id="hero-title"><span class="word">IMPACT</span><span class="word word-2">FRAMES</span></h1>
+        <p class="lede">Speed lines, halftone screens, impact bursts and focus lines. Original, tiny and free to copy.</p>
+        <div class="hero-actions">
+          <button class="btn btn-hit" type="button" id="hit">Hit it</button>
+          <a class="btn btn-ghost" href="#effects">See the effects</a>
+        </div>
+      </div>
+      <div class="burst" aria-hidden="true"><span>BOOM</span></div>
+    </section>
+
+    <div class="ticker-wrap"><div class="ticker" aria-hidden="true">
+      <div class="ticker-track"><span>ZOOM</span><span>CRASH</span><span>WHOOSH</span><span>BOOM</span><span>SNAP</span><span>THUD</span><span>ZOOM</span><span>CRASH</span><span>WHOOSH</span><span>BOOM</span><span>SNAP</span><span>THUD</span></div>
+    </div></div>
+
+    <section class="effects" id="effects" aria-labelledby="effects-title">
+      <div class="wrap">
+        <p class="eyebrow">Four effects</p>
+        <h2 id="effects-title">Each one is a few lines of CSS</h2>
+        <div class="panels">
+          <article class="panel reveal">
+            <div class="art art-dash" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i><i></i>
+              <span class="ball"></span>
+            </div>
+            <div class="cap"><span class="num">01</span><h3>Speed lines</h3><p>Streaks slide past a fixed subject, so the subject feels fast without moving.</p></div>
+          </article>
+          <article class="panel reveal">
+            <div class="art art-tone" aria-hidden="true"><span class="dots"></span><span class="orb"></span></div>
+            <div class="cap"><span class="num">02</span><h3>Halftone screen</h3><p>A dot grid with a soft mask gives the printed-ink shading of a manga page.</p></div>
+          </article>
+          <article class="panel reveal">
+            <div class="art art-hit" aria-hidden="true"><span class="star star-a"></span><span class="star star-b"></span><b>BOOM</b></div>
+            <div class="cap"><span class="num">03</span><h3>Impact burst</h3><p>A spiked shape, a thump and a sound word mark the moment of contact.</p></div>
+          </article>
+          <article class="panel reveal">
+            <div class="art art-focus" aria-hidden="true"><span class="focus-lines"></span><span class="eye"><span class="pupil"></span></span></div>
+            <div class="cap"><span class="num">04</span><h3>Focus lines</h3><p>Lines converge on one point and the eye pushes in, to say: look here.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="use" id="use" aria-labelledby="use-title">
+      <div class="wrap">
+        <p class="eyebrow">Use it</p>
+        <h2 id="use-title">Copy one effect or all four</h2>
+        <p class="band-lede">No dependencies and no images: one HTML file, one stylesheet and a few lines of script for the Hit button. Change the three colours in <code>:root</code> and every effect follows.</p>
+        <pre class="code" tabindex="0"><code>:root {
+  --ink: #0b0b0f;
+  --paper: #f6f3ea;
+  --hit: #e5283c;
+}</code></pre>
+        <ul class="facts">
+          <li>Respects <code>prefers-reduced-motion</code>: loops, shake and flash stop. The Hit button still shows the burst.</li>
+          <li>Loops pause while their panel is off screen.</li>
+          <li>All artwork is original and drawn in CSS. No characters, series or brands.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Impact Frames is a MotionShelf demo. Original artwork, MIT licensed.</p>
+  </footer>
+  <script src="script.js" defer></script>
+</body>
+</html>

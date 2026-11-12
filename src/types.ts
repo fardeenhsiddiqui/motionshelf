@@ -57,6 +57,8 @@ export type Asset = {
 export type Category = {
   id: string;
   label: string;
+  /** The section this category belongs to, so each section shows only its own filters. */
+  section: SectionId;
 };
 
 export type Theme = "dark" | "light";

@@ -6,16 +6,33 @@ https://motionshelf.pages.dev. It takes about 10 minutes.
 This file holds the template and a log for **real** responses only. Nothing here is invented. Until someone
 answers, the log is empty.
 
+## Short message (for a chat, DM or email)
+
+Paste this as it is. The link goes to the live site; check it is the version you want people to see before sending.
+
+> Hi, I'm building MotionShelf, a small library of animated website templates (cars, off-road, motorsport,
+> motorcycles) that you can preview, copy and see the license for. I'd value 10 minutes of honest feedback from
+> someone who builds websites: https://motionshelf.pages.dev
+>
+> Open any template, scroll through it, and tell me what felt good, what felt slow or fake, and whether you'd use
+> one in a client project. Bugs and "I wouldn't use this" are just as useful as praise. If it helps, there is a
+> short question list here: [link to the Ask section below, or paste it]. Tell me your device and browser. Thank you!
+
+Two-minute version, for someone with very little time: open one template on your phone and on a laptop, then answer
+only questions 2, 3 and 6 in the list below.
+
 ## Ask (copy this part)
 
 > Thanks for looking at MotionShelf, a library of animated website templates for cars, off-road, motorsport and
 > motorcycles. You can preview each one live, copy the code and see its license. Please spend about 10 minutes:
 >
 > 1. Open the home page, scroll to the bottom, and scroll through the 3D showroom.
-> 2. Open **Browse**, search or filter, and open any template.
+> 2. Open **Browse**, search or filter, and open any template. Also open one from **Anime Assets**.
 > 3. On the template page, click **Tap or click to interact**, scroll inside the preview, then press **Done**.
-> 4. Try **Copy HTML** and **Download all (.zip)**.
-> 5. If you can, repeat steps 1 to 3 on your phone.
+> 4. Inside the preview, scroll the whole page: the pinned driving scene, the menu (the button on a phone), and
+>    hover or tap the model cards.
+> 5. Try **Copy HTML** and **Download all (.zip)**.
+> 6. If you can, repeat steps 1 to 4 on your phone, in portrait and landscape.
 >
 > Then answer the questions below. Short, honest answers help most, including "I didn't notice" and "I wouldn't
 > use this". Tell me what device and browser you used.
@@ -40,11 +57,15 @@ Rate 1 (poor) to 5 (excellent), and say why in a few words.
 - Typography (readable, consistent?):
 - Does it look like a real, original product, or like a generic template? What gave that impression?
 - Anything that looked unnecessary, fake or out of place?
+- Anime Assets: do the scenes and effects look like something you would put on a real page? What is missing
+  (characters, other scenes, other effects)?
 
 ### 3. Animation and smoothness
 
 - Did scrolling feel smooth, or did it ever stutter, freeze or jump? Where exactly?
 - Did the 3D showroom load quickly enough? Could you rotate the car?
+- Did the vehicle and the scrolling driving scene look believable, or like a cartoon placeholder? What would make it
+  better?
 - Did any animation distract from what you were trying to do?
 - Did the page ever feel stuck or unresponsive? What were you doing?
 

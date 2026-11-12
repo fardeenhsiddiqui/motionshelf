@@ -54,8 +54,10 @@ function Gallery({ section, sections, categories: allCategories, items }: Galler
 
   // Every category stays visible so the shelf shows what is coming; empty ones are disabled.
   const categories = useMemo(
-    () => allCategories.map((c) => ({ ...c, count: inSection.filter((item) => item.category === c.id).length })),
-    [allCategories, inSection],
+    () => allCategories
+      .filter((c) => !section || c.section === section)
+      .map((c) => ({ ...c, count: inSection.filter((item) => item.category === c.id).length })),
+    [allCategories, inSection, section],
   );
   const tags = useMemo(() => [...new Set(inSection.flatMap((item) => item.tags))].sort(), [inSection]);
 
@@ -98,7 +100,7 @@ function Gallery({ section, sections, categories: allCategories, items }: Galler
               ref={search}
               type="search"
               className="search"
-              placeholder="Search templates"
+              placeholder={section === "anime" ? "Search anime demos" : "Search templates"}
               value={query}
               onChange={(event) => setQuery(event.target.value)}
             />

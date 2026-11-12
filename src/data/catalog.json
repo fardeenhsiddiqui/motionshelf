@@ -15,26 +15,45 @@
     {
       "id": "anime",
       "label": "Anime Assets",
-      "description": "Original anime-style characters and backgrounds. Only items with a cleared license will be listed.",
-      "status": "soon"
+      "description": "Original anime-style scenes and effects, drawn in code. Every item is original work with its license shown; no third-party characters or art.",
+      "status": "live"
     }
   ],
   "categories": [
     {
       "id": "supercar",
-      "label": "Supercar"
+      "label": "Supercar",
+      "section": "templates"
     },
     {
       "id": "off-road",
-      "label": "Off-road"
+      "label": "Off-road",
+      "section": "templates"
     },
     {
       "id": "motorsport",
-      "label": "Motorsport"
+      "label": "Motorsport",
+      "section": "templates"
     },
     {
       "id": "motorcycle",
-      "label": "Motorcycle"
+      "label": "Motorcycle",
+      "section": "templates"
+    },
+    {
+      "id": "backgrounds",
+      "label": "Backgrounds & scenes",
+      "section": "anime"
+    },
+    {
+      "id": "effects",
+      "label": "Effects",
+      "section": "anime"
+    },
+    {
+      "id": "characters",
+      "label": "Characters",
+      "section": "anime"
     }
   ],
   "items": [
@@ -325,6 +344,197 @@
         "verifiedOn": "2026-11-02",
         "notes": "Original layout, copy, inline SVG artwork and generated scene tiles. Code written with AI assistance. 'Kestrel' is a fictional brand. No third-party images, fonts, logos or trademarks. The scroll scene loads GSAP and ScrollTrigger from cdnjs under GSAP's standard no-charge license; they are not bundled in these files."
       }
+    },
+    {
+      "id": "sakura-dusk",
+      "section": "anime",
+      "category": "backgrounds",
+      "theme": "dark",
+      "title": "Sakura Dusk",
+      "summary": "A painted-style dusk scene with eight parallax layers: sky, setting sun, mountains, a shrine gate, a blossom tree, a lone traveller and falling petals. Scrolling carries the scene from sunset to a starry night with glowing lanterns.",
+      "tags": [
+        "background",
+        "scroll scene",
+        "parallax",
+        "SVG",
+        "petals",
+        "no dependencies"
+      ],
+      "previewPath": "/previews/sakura-dusk/index.html",
+      "filesBase": "/previews/sakura-dusk",
+      "files": [
+        {
+          "path": "index.html",
+          "language": "html"
+        },
+        {
+          "path": "styles.css",
+          "language": "css"
+        },
+        {
+          "path": "script.js",
+          "language": "js"
+        }
+      ],
+      "sections": [
+        "Header",
+        "Pinned scroll scene",
+        "Layers",
+        "Use it",
+        "Footer"
+      ],
+      "fonts": [
+        "System font stack"
+      ],
+      "externalDeps": [],
+      "responsive": true,
+      "createdAt": "2026-11-12",
+      "license": {
+        "name": "MIT",
+        "spdx": "MIT",
+        "licenseFile": "/previews/sakura-dusk/LICENSE.txt",
+        "author": "MotionShelf",
+        "sourceUrl": null,
+        "attributionRequired": false,
+        "attributionText": null,
+        "commercialUse": true,
+        "redistribution": true,
+        "modification": true,
+        "originalIp": true,
+        "aiGenerated": true,
+        "verifiedOn": "2026-11-12",
+        "notes": "Original artwork drawn in code. No third-party images, fonts, characters, logos or trademarks. \"Anime-style\" describes a visual look, not any existing series or character. Code and artwork created with AI assistance. No external dependencies."
+      },
+      "posterPath": "/previews/sakura-dusk/poster.webp",
+      "assetIds": []
+    },
+    {
+      "id": "neon-rain-city",
+      "section": "anime",
+      "category": "backgrounds",
+      "theme": "dark",
+      "title": "Neon Rain",
+      "summary": "A rainy anime-style night city: layered skyline with lit windows, neon signs that wake up and flicker, an elevated train, a wet street with reflections and a traveller under an umbrella. Scrolling walks the street while the rain thickens.",
+      "tags": [
+        "background",
+        "scroll scene",
+        "parallax",
+        "neon",
+        "rain",
+        "SVG",
+        "no dependencies"
+      ],
+      "previewPath": "/previews/neon-rain-city/index.html",
+      "filesBase": "/previews/neon-rain-city",
+      "files": [
+        {
+          "path": "index.html",
+          "language": "html"
+        },
+        {
+          "path": "styles.css",
+          "language": "css"
+        },
+        {
+          "path": "script.js",
+          "language": "js"
+        }
+      ],
+      "sections": [
+        "Header",
+        "Pinned scroll scene",
+        "Layers",
+        "Use it",
+        "Footer"
+      ],
+      "fonts": [
+        "System font stack"
+      ],
+      "externalDeps": [],
+      "responsive": true,
+      "createdAt": "2026-11-12",
+      "license": {
+        "name": "MIT",
+        "spdx": "MIT",
+        "licenseFile": "/previews/neon-rain-city/LICENSE.txt",
+        "author": "MotionShelf",
+        "sourceUrl": null,
+        "attributionRequired": false,
+        "attributionText": null,
+        "commercialUse": true,
+        "redistribution": true,
+        "modification": true,
+        "originalIp": true,
+        "aiGenerated": true,
+        "verifiedOn": "2026-11-12",
+        "notes": "Original artwork drawn in code. No third-party images, fonts, characters, logos or trademarks. \"Anime-style\" describes a visual look, not any existing series or character. Code and artwork created with AI assistance. No external dependencies."
+      },
+      "posterPath": "/previews/neon-rain-city/poster.webp",
+      "assetIds": []
+    },
+    {
+      "id": "impact-frames",
+      "section": "anime",
+      "category": "effects",
+      "theme": "light",
+      "title": "Impact Frames",
+      "summary": "Anime and manga effects in pure CSS: radial speed lines, halftone screens, an impact burst, focus lines and a sound-word ticker, plus a Hit button that fires the burst, flash and shake. Four effect panels you can copy one at a time.",
+      "tags": [
+        "effects",
+        "speed lines",
+        "halftone",
+        "CSS only",
+        "interactive",
+        "no dependencies"
+      ],
+      "previewPath": "/previews/impact-frames/index.html",
+      "filesBase": "/previews/impact-frames",
+      "files": [
+        {
+          "path": "index.html",
+          "language": "html"
+        },
+        {
+          "path": "styles.css",
+          "language": "css"
+        },
+        {
+          "path": "script.js",
+          "language": "js"
+        }
+      ],
+      "sections": [
+        "Header",
+        "Hero with Hit button",
+        "Sound-word ticker",
+        "Effect panels",
+        "Use it",
+        "Footer"
+      ],
+      "fonts": [
+        "System font stack"
+      ],
+      "externalDeps": [],
+      "responsive": true,
+      "createdAt": "2026-11-12",
+      "license": {
+        "name": "MIT",
+        "spdx": "MIT",
+        "licenseFile": "/previews/impact-frames/LICENSE.txt",
+        "author": "MotionShelf",
+        "sourceUrl": null,
+        "attributionRequired": false,
+        "attributionText": null,
+        "commercialUse": true,
+        "redistribution": true,
+        "modification": true,
+        "originalIp": true,
+        "aiGenerated": true,
+        "verifiedOn": "2026-11-12",
+        "notes": "Original artwork drawn in code. No third-party images, fonts, characters, logos or trademarks. \"Anime-style\" describes a visual look, not any existing series or character. Code and artwork created with AI assistance. No external dependencies."
+      },
+      "posterPath": "/previews/impact-frames/poster.webp",
+      "assetIds": []
     }
   ]
 }

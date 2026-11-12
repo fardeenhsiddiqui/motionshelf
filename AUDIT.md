@@ -382,3 +382,108 @@ Use Chrome on mobile data, after redeploying.
 6. Browse: tap every filter, type in search, make sure no tap misses.
 7. Tap **Copy HTML** and paste somewhere; tap **Download all (.zip)** and open the file.
 8. Optional: USB debugging and `chrome://inspect` on your PC to read the console, and tell me anything red.
+
+## 13. Phase 4: browser testing, template polish, anime section
+
+Starting point: commit `61c493f`. Everything below was tested in headless Chrome 157 and Edge 157 over the DevTools
+protocol with real mouse, touch and keyboard events. Firefox and WebKit are **not installed** here and were not
+tested; I did not download them. No physical devices were used.
+
+### 13.1 Part 1: browser testing
+
+| Check | Result |
+|---|---|
+| 12-device matrix (iPhone SE/14, Pixel 7, Galaxy S8, iPad, laptop, 1080p, 1440p; portrait and landscape, touch on for phones and tablets): overflow, tap targets, minimum text, console, one `h1` | App routes `/`, `/browse`, `/templates`, `/anime`, `/licensing`, a template, the three anime pages and the 404: **all pass in Chrome** |
+| The same matrix on the seven standalone template pages in Edge | Pass, except 3 invisible radio inputs (opacity 0, 13 px) behind the 44 px colour swatch labels in three templates. They are not tap targets, so this is a probe false positive |
+| Behaviour tests on the four vehicle templates (scene active, scroll-spy, HUD follows scroll, wheels turn, captions visible, menu open/Escape/link-close on a touch phone, skip link, reduced motion, CDNs blocked, no console errors) | All pass in Chrome and Edge |
+| Behaviour tests on the three anime pages (four sizes incl. landscape, overflow, console, tap targets, skip link, scene steps, pause off screen, Hit button, reduced motion) | All pass in Chrome and Edge |
+
+Reproducible issues found and fixed:
+
+- **A1. Tap targets and tiny text in the templates.** Logos were 30 to 34 px tall, buttons 41 to 42 px, the footer
+  "Back to top" link 21 px, and several labels were 11 px. Root cause: the 44 px rule was only inside
+  `@media (pointer: coarse)`, which does not match in every touch context. Fixed with an unconditional 44 px minimum
+  on the logo, buttons and footer links, and a 12 px text minimum.
+- **A2. Offscreen animation kept running.** `.is-paused *` does not match pseudo-elements, so the Kestrel sea
+  (`.sea::after`) and similar loops never paused. Fixed by pausing `*::before` and `*::after` too, and by pausing the
+  Redline ticker offscreen.
+- **A3. Committed posters were at risk of corruption.** `.gitattributes` marks everything under `public/previews/` as
+  text with LF endings, so git rewrote bytes inside binary `.webp` posters (3 of 4 differed from the files on disk
+  in my first commit). Fixed by marking `webp`, `glb`, `png`, `jpg` and `woff2` there as `binary`; the committed
+  blobs now match the files byte for byte. Posters in `61c493f` are intact (RIFF sizes checked).
+- **A4.** My first idle-CPU comparison showed a false Vortex regression because the baseline server had no 3D model
+  file (404), so the baseline never rendered the 3D hero. Re-run with the model present: equal (98 % vs 98 %).
+
+### 13.2 Part 2: feedback preparation
+
+`docs/USER_FEEDBACK.md` already had a good question list. Added a short paste-ready message for chat or email, a
+two-minute version, steps for the template scroll scene, menu and hover or tap, a question on how believable the
+vehicles and scenes look, and a question on the Anime Assets section. The response log is still empty on purpose:
+**no feedback has been received**, and none is invented.
+
+### 13.3 Part 3: template polish
+
+All four templates were rebuilt around better artwork and richer scenes (scope kept to the four existing templates).
+
+- **Vehicles.** New detailed vector artwork generated from one script: lit body gradients, glass with glint, panel
+  lines, brake discs with calipers and computed spokes, headlight and tail lights. It is SVG, so it recolours with the
+  existing swatches, stays small, and keeps the wheel-spin hooks the scroll scenes use. Vortex still has its separate
+  3D model. A fully 3D model per template would need licensed or commissioned models; I did not research those in
+  this pass, so it is the owner's call.
+- **Environments and scenes.** Vortex: street lamps, headlight beam and exhaust flame on each upshift. Ridgeback:
+  drifting clouds and a dust trail whose density follows scroll speed (replaced ten infinite tweens). Redline: dimmed
+  CSS crowd (stylesheet 188 kB to 19 kB), HUD and caption scrims. Kestrel: gulls, glitter on the sea, headlight beam.
+- **Navigation.** Skip link, current-section highlight, animated underline, a 44 px menu button with Escape and
+  link-close on phones. The menu does not depend on GSAP, so it still works if the CDN is blocked.
+- **Hover and touch.** Lift and border on cards, press feedback on buttons, hover effects only where hover exists.
+- **Readability.** Captions sit on a soft radial scrim so they stay legible over busy scenes; checked in screenshots
+  on desktop and phone.
+- **Mobile performance.** Scene loops (idle vibration, shake, dust, lamps) run only while the scene is on screen;
+  no `drop-shadow` filters on scrubbed elements; camera shake skipped on touch devices; `content-visibility` on
+  sections far below the fold.
+
+Measured idle main-thread time at 4x CPU throttle, interleaved A/B (3 runs each, medians; **headless Chrome with
+software rendering, so only the comparison is meaningful, not the absolute values**):
+
+| Template | In view, before to after | Scrolled to the bottom, before to after |
+|---|---|---|
+| Vortex GT | 98 % to 98 % (the 3D canvas dominates both) | 79 % to 50 % |
+| Ridgeback X | 79 % to 60 % | 76 % to 28 % |
+| Redline Racing | 85 % to 66 % | 75 % to 67 % |
+| Kestrel M9 | 86 % to 81 % | 86 % to 62 % |
+
+That run came before fix A2. After it I only have single, noisy samples (for example Ridgeback and Redline near
+23 % with the scene scrolled away), so I do not claim a number for the final state. These templates are still much
+heavier than the anime scenes below; the next step would be replacing the remaining always-on loops with
+scroll-driven ones.
+
+### 13.4 Part 4: Anime section
+
+- Research and the licence rules are in `docs/ANIME_ASSETS.md`. Decision: **original assets drawn in code, no
+  third-party art, no fonts**, so there is nothing to attribute. VRoid, Live2D, fan art and generator outputs were
+  rejected for redistribution or likeness risk.
+- Three items, built on the existing catalog: **Sakura Dusk** and **Neon Rain** (scroll-driven parallax scenes,
+  category Backgrounds & scenes) and **Impact Frames** (CSS manga effects with a Hit button, category Effects).
+  Category **Characters** exists with no items and shows "Coming soon" on purpose.
+- Architecture change (small, explained here because the project asks for it): categories now belong to a section
+  (`category.section`), so `/anime` shows its own filters instead of the car categories. The validator rejects an
+  item whose category is in another section. Card button, SEO title and search placeholder are section-aware.
+- Section status set to `live`, so it is indexed; the sitemap now has 12 URLs (1 noindex: Components, still empty).
+- Anime pages measured at 4x throttle: Sakura Dusk 0.5 % of a core in view, Neon Rain 5 to 10 % (constant rain),
+  Impact Frames 1 to 5 %; all about 0.1 % once scrolled away. Loops pause off screen; reduced motion shows a still
+  frame with zero running animations.
+- Every item is MIT, `originalIp: true`, `aiGenerated: true`, with `verifiedOn` 2026-11-12.
+
+### 13.5 Remaining issues and what I did not verify
+
+- **Firefox and WebKit** were not available and not tested. Safari-specific risks to check on a Mac or iPhone:
+  `paint-order` on the Impact Frames title, `contain: paint` with sticky stages, CSS `calc()` with `clamp()` in
+  opacity, and `100svh`.
+- **Physical devices** were not used. Emulation does not reproduce thermal throttling or real touch scrolling.
+- Phone view of Sakura Dusk and Neon Rain crops the sides (the tree and some signs are off screen); the centre
+  subject stays visible.
+- Idle CPU numbers come from software-rendered headless Chrome and are for comparison only.
+- Vortex still pays for the 3D canvas while the hero is in view.
+- **Needs the owner:** redeploy (Cloudflare token in your own shell); GSAP self-hosting and licence decision;
+  Terms and Privacy pages; real feedback from `docs/USER_FEEDBACK.md`; choose whether to commission or license a
+  3D vehicle model per template and an original anime character.

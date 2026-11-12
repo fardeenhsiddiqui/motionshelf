@@ -136,7 +136,7 @@ export function Hero() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
-            <li><b>{live}</b> live templates</li>
+            <li><b>{live}</b> live experiences</li>
             <li><b>{licences}</b> code, credits listed per asset</li>
           </motion.ul>}
         </motion.div>

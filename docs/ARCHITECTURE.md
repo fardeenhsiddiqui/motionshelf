@@ -74,7 +74,7 @@ in `src/types.ts` are the contract the API must return.
 
 Mirrors the existing JSON, one table per concept:
 
-- `sections(id, label, description, status)` and `categories(id, label)`
+- `sections(id, label, description, status)` and `categories(id, label, section_id)` (each category belongs to one section, so every section filters by its own categories)
 - `items(id, section_id, category_id, theme, title, summary, tags, preview_path, poster_path, files_base, responsive, created_at)`
 - `item_files(item_id, path, language, position)`
 - `licenses(item_id, name, spdx, license_file, author, attribution_required, attribution_text, commercial_use, redistribution, modification, original_ip, ai_generated, verified_on, notes)`

@@ -86,7 +86,7 @@ export function metaFor(rawPath: string, catalog: Catalog): RouteMeta {
         image: item.posterPath,
         section,
         item,
-        title: `${item.title}: ${category} website template | ${SITE_NAME}`,
+        title: section.id === "templates" ? `${item.title}: ${category} website template | ${SITE_NAME}` : `${item.title}: anime-style web demo | ${SITE_NAME}`,
         description: clip(item.summary),
       };
     }
