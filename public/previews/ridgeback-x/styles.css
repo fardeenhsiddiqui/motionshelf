@@ -204,3 +204,10 @@ main > section:not(.hero):not(.journey):not(.stats) { content-visibility: auto; 
 .dust-trail { position: absolute; left: 4%; top: 78%; width: 30%; height: 20%; pointer-events: none; opacity: var(--dust, 0); transition: opacity .25s; }
 .dust { position: absolute; right: 0; top: 40%; width: 44px; height: 44px; border-radius: 50%; background: radial-gradient(circle, rgba(236, 206, 160, .7), rgba(236, 206, 160, 0) 70%); opacity: 0; animation: puff 1.5s ease-out infinite; }
 @keyframes puff { from { transform: translate(0, 0) scale(.5); opacity: .8; } to { transform: translate(-220px, -26px) scale(3); opacity: 0; } }
+
+/* Touch targets (44px) and a 12px text minimum */
+.logo { min-height: 44px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; }
+.btn-small { font-size: 12px; }
+.site-footer a { display: inline-block; padding: 12px 0; }
+.tag, .hud dt, .countdown dt { font-size: 12px; }

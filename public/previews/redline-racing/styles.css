@@ -218,3 +218,10 @@ tr { transition: background-color .2s; }
 @media (hover: hover) { tbody tr:hover { background: rgba(255, 42, 31, .1); } }
 .stands::after { content: ""; position: absolute; inset: 0; background: rgba(8, 8, 10, .5); }
 .hud::before { content: ""; position: absolute; z-index: -1; inset: -30px -40px -20px -70px; background: radial-gradient(ellipse closest-side at 60% 50%, rgba(var(--scrim), .85), rgba(var(--scrim), 0)); pointer-events: none; }
+
+/* Touch targets (44px) and a 12px text minimum */
+.logo { min-height: 44px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; }
+.btn-small { font-size: 12px; }
+.site-footer a { display: inline-block; padding: 12px 0; }
+.tag, .hud dt, .countdown dt { font-size: 12px; }
