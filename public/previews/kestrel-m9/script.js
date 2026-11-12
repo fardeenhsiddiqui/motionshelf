@@ -1,3 +1,39 @@
+// Navigation: mobile menu, current-section highlight, and pausing looping animation while it is off screen.
+(function () {
+  var header = document.querySelector(".site-header");
+  var toggle = document.querySelector(".nav-toggle");
+  var nav = document.getElementById("site-nav");
+  if (header && toggle && nav) {
+    var setOpen = function (open) {
+      header.classList.toggle("is-menu-open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    };
+    toggle.addEventListener("click", function () { setOpen(toggle.getAttribute("aria-expanded") !== "true"); });
+    nav.addEventListener("click", function (e) { if (e.target.closest("a")) setOpen(false); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") { setOpen(false); toggle.focus(); }
+    });
+    window.matchMedia("(min-width: 761px)").addEventListener("change", function () { setOpen(false); });
+  }
+  if (!("IntersectionObserver" in window)) return;
+  var links = [].slice.call(document.querySelectorAll(".site-nav a[href^='#']"));
+  var byId = {};
+  links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+  var current = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting || !byId[entry.target.id]) return;
+      links.forEach(function (a) { a.removeAttribute("aria-current"); });
+      byId[entry.target.id].setAttribute("aria-current", "true");
+    });
+  }, { rootMargin: "-45% 0px -50% 0px" });
+  Object.keys(byId).forEach(function (sectionId) { var s = document.getElementById(sectionId); if (s) current.observe(s); });
+  var pause = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) { entry.target.classList.toggle("is-paused", !entry.isIntersecting); });
+  });
+  [].slice.call(document.querySelectorAll(".hero, .journey")).forEach(function (s) { pause.observe(s); });
+})();
+
 // Kestrel M9: a scroll-scrubbed coastal ride. Needs GSAP + ScrollTrigger (loaded from the CDN in index.html).
 // Without them (or with reduced motion) the scene stays a still frame and the page is fully usable.
 (function () {
@@ -27,7 +63,10 @@
   tl.to(".hills", { backgroundPositionX: "-700px" }, 0)
     .to(".palms", { backgroundPositionX: "-7200px" }, 0)
     .to(".road", { backgroundPositionX: "-9000px" }, 0)
-    .to(".sun", { y: 70, scale: 0.9 }, 0);
+    .to(".sun", { y: 70, scale: 0.9 }, 0)
+    .to(".gulls", { backgroundPositionX: "-1700px" }, 0)
+    .to(".glitter", { opacity: 0.95, duration: 0.8 }, 0.1)
+    .to(".beam", { opacity: 0.8, duration: 0.5 }, 0.45);
 
   bike.querySelectorAll(".wheel").forEach(function (wheel) {
     var origin = wheel.style.transformOrigin.replace(/px/g, "");
@@ -52,5 +91,6 @@
     }
   });
 
-  gsap.to(bike, { x: 2, duration: 0.1, repeat: -1, yoyo: true, ease: "sine.inOut" });
+  var idle = gsap.to(bike, { x: 2, duration: 0.1, repeat: -1, yoyo: true, ease: "sine.inOut", paused: true });
+  ScrollTrigger.create({ trigger: stage, start: "top bottom", end: "bottom top", onToggle: function (self) { idle.paused(!self.isActive); } });
 })();

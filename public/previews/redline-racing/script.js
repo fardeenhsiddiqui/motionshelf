@@ -1,3 +1,39 @@
+// Navigation: mobile menu, current-section highlight, and pausing looping animation while it is off screen.
+(function () {
+  var header = document.querySelector(".site-header");
+  var toggle = document.querySelector(".nav-toggle");
+  var nav = document.getElementById("site-nav");
+  if (header && toggle && nav) {
+    var setOpen = function (open) {
+      header.classList.toggle("is-menu-open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    };
+    toggle.addEventListener("click", function () { setOpen(toggle.getAttribute("aria-expanded") !== "true"); });
+    nav.addEventListener("click", function (e) { if (e.target.closest("a")) setOpen(false); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") { setOpen(false); toggle.focus(); }
+    });
+    window.matchMedia("(min-width: 761px)").addEventListener("change", function () { setOpen(false); });
+  }
+  if (!("IntersectionObserver" in window)) return;
+  var links = [].slice.call(document.querySelectorAll(".site-nav a[href^='#']"));
+  var byId = {};
+  links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+  var current = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting || !byId[entry.target.id]) return;
+      links.forEach(function (a) { a.removeAttribute("aria-current"); });
+      byId[entry.target.id].setAttribute("aria-current", "true");
+    });
+  }, { rootMargin: "-45% 0px -50% 0px" });
+  Object.keys(byId).forEach(function (sectionId) { var s = document.getElementById(sectionId); if (s) current.observe(s); });
+  var pause = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) { entry.target.classList.toggle("is-paused", !entry.isIntersecting); });
+  });
+  [].slice.call(document.querySelectorAll(".hero, .journey, .ticker")).forEach(function (s) { pause.observe(s); });
+})();
+
 // Redline Racing: one scroll-scrubbed qualifying lap. Needs GSAP + ScrollTrigger (loaded from the CDN in index.html).
 // Without them (or with reduced motion) the scene stays a still frame and the page is fully usable.
 (function () {
@@ -68,6 +104,8 @@
   });
 
   // Chassis vibration and a little camera shake.
-  gsap.to(".scene-vehicle svg", { y: -2, duration: 0.07, repeat: -1, yoyo: true, ease: "sine.inOut" });
-  gsap.to(".journey-stage > .layer, .barrier, .track", { y: 1.5, duration: 0.09, repeat: -1, yoyo: true, ease: "sine.inOut" });
+  // Both loops only run while the scene is on screen, and the camera shake is skipped on touch devices.
+  var shake = [gsap.to(".scene-vehicle svg", { y: -2, duration: 0.07, repeat: -1, yoyo: true, ease: "sine.inOut", paused: true })];
+  if (!window.matchMedia("(pointer: coarse)").matches) shake.push(gsap.to(".journey-stage > .layer, .barrier, .track", { y: 1.5, duration: 0.09, repeat: -1, yoyo: true, ease: "sine.inOut", paused: true }));
+  ScrollTrigger.create({ trigger: stage, start: "top bottom", end: "bottom top", onToggle: function (self) { shake.forEach(function (t) { t.paused(!self.isActive); }); } });
 })();

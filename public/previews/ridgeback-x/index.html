@@ -8,12 +8,25 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <linearGradient id="rb-lit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".28" stop-color="#fff" stop-opacity=".08"/><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".62"/></linearGradient>
+  <linearGradient id="rb-glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34445f"/><stop offset=".45" stop-color="#0d1322"/><stop offset="1" stop-color="#04060b"/></linearGradient>
+  <linearGradient id="rb-glint" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".34"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <radialGradient id="rb-shadow"><stop offset="0" stop-color="#000" stop-opacity=".7"/><stop offset=".6" stop-color="#000" stop-opacity=".25"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+  <radialGradient id="g-rim" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#f1f4fb"/><stop offset=".55" stop-color="#8b93a6"/><stop offset="1" stop-color="#3b4152"/></radialGradient>
+  <radialGradient id="rb-steel" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#c9ccbf"/><stop offset=".6" stop-color="#8c917f"/><stop offset="1" stop-color="#555a50"/></radialGradient>
+  <linearGradient id="rb-pipe" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4d9ea"/><stop offset=".5" stop-color="#8d96b2"/><stop offset="1" stop-color="#3a4160"/></linearGradient>
+  <radialGradient id="rb-rim" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#262d47"/><stop offset="1" stop-color="#0f1322"/></radialGradient>
+  <radialGradient id="rb-head" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#fff6c8" stop-opacity=".8"/><stop offset="1" stop-color="#ffe08a" stop-opacity="0"/></radialGradient>
+  <linearGradient id="rb-tail" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff2d3d"/><stop offset="1" stop-color="#8a0a16"/></linearGradient>
+  </defs></svg>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header">
     <a class="logo" href="#top" aria-label="Ridgeback home">
       <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><path d="M2 26 12 8l6 10 4-6 8 14z" fill="currentColor"/></svg>
       <span>Ridgeback</span>
     </a>
-    <nav class="site-nav" aria-label="Primary">
+    <nav class="site-nav" id="site-nav" aria-label="Primary">
       <a href="#capability">Capability</a>
       <a href="#journey">Journey</a>
       <a href="#terrain">Terrain</a>
@@ -21,9 +34,10 @@
       <a href="#drive">Test drive</a>
     </nav>
     <a class="btn btn-small" href="#drive">Book a drive</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu"><span></span><span></span></button>
   </header>
 
-  <main id="top">
+  <main id="top"><span id="main-content" tabindex="-1"></span>
     <section class="hero" aria-labelledby="hero-title">
       <input class="swatch-input" type="radio" name="paint" id="paint-olive" checked />
       <input class="swatch-input" type="radio" name="paint" id="paint-dune" />
@@ -46,21 +60,36 @@
       </div>
 
       <div class="hero-stage" aria-hidden="true">
-        <svg class="suv" viewBox="0 0 800 300" role="img" aria-label="Side view of the Ridgeback X">
-          <ellipse cx="400" cy="282" rx="350" ry="11" fill="#1f2420" opacity=".25" />
-          <path class="suv-rack" d="M150 96 H520 M170 96 V104 M330 96 V104 M500 96 V104" />
-          <path class="suv-body" d="M62 236 L62 134 L90 104 L548 104 L640 152 L736 160 L752 176 L752 236 Z" />
-          <path class="suv-shade" d="M62 214 L752 214 L752 236 L62 236 Z" />
-          <path class="suv-glass" d="M112 116 L536 116 L612 152 L112 152 Z" />
-          <path class="suv-pillar" d="M236 116 V152 M392 116 V152" />
-          <path class="suv-line" d="M62 176 H752" />
-          <circle class="suv-light" cx="738" cy="184" r="9" />
-          <rect class="suv-tail" x="62" y="146" width="8" height="26" rx="2" />
-          <circle cx="190" cy="236" r="62" fill="#161a17" />
-          <circle cx="610" cy="236" r="62" fill="#161a17" />
-          <g class="wheel" style="transform-origin:190px 236px"><circle cx="190" cy="236" r="52" fill="#262b27" /><circle cx="190" cy="236" r="32" fill="#8c917f" /><path d="M190 208v56M162 236h56M170 216l40 40M210 216l-40 40" stroke="#262b27" stroke-width="6" stroke-linecap="round" /><circle cx="190" cy="236" r="8" fill="#262b27" /></g>
-          <g class="wheel" style="transform-origin:610px 236px"><circle cx="610" cy="236" r="52" fill="#262b27" /><circle cx="610" cy="236" r="32" fill="#8c917f" /><path d="M610 208v56M582 236h56M590 216l40 40M630 216l-40 40" stroke="#262b27" stroke-width="6" stroke-linecap="round" /><circle cx="610" cy="236" r="8" fill="#262b27" /></g>
-        </svg>
+        <svg class="suv" viewBox="0 0 800 306" role="img" aria-label="Side view of the Ridgeback X">
+  <ellipse cx="410" cy="299" rx="380" ry="9" fill="url(#rb-shadow)"/>
+  <g fill="none" stroke="#161a17" stroke-linecap="round"><path d="M110 92H520" stroke-width="6"/><path d="M120 92V100M250 92V100M380 92V100M510 92V100" stroke-width="5"/></g>
+  <rect x="132" y="66" width="34" height="26" rx="3" fill="#6b7a3a"/><rect x="132" y="66" width="34" height="8" rx="2" fill="#fff" opacity=".2"/><rect x="172" y="70" width="34" height="22" rx="3" fill="#8a8f80"/>
+  <path d="M470 84H536V92H470Z" fill="#111413"/><path d="M476 86H530" stroke="#fff6cf" stroke-width="3" stroke-linecap="round"/>
+  <path d="M600 140L612 92" stroke="#121513" stroke-width="7" stroke-linecap="round"/>
+  <path class="suv-body" d="M62 250L62 138Q62 114 86 108L98 100L560 98L640 148L742 156Q758 158 760 174L760 250Z"/>
+  <path d="M62 250L62 138Q62 114 86 108L98 100L560 98L640 148L742 156Q758 158 760 174L760 250Z" fill="url(#rb-lit)"/>
+  <path d="M104 114L548 112L618 148L104 152Z" fill="url(#rb-glass)"/>
+  <path d="M130 114L196 113L160 151L104 152Z" fill="url(#rb-glint)"/><path d="M420 112L484 112L520 150L444 150Z" fill="url(#rb-glint)" opacity=".7"/>
+  <g class="suv-body"><path d="M218 112H232V152H218Z"/><path d="M392 112H406V152H392Z"/></g>
+  <path d="M218 112H232V152H218ZM392 112H406V152H392Z" fill="url(#rb-lit)"/>
+  <path d="M62 176H760" stroke="#000" stroke-opacity=".28" stroke-width="2"/><path d="M62 175H760" stroke="#fff" stroke-opacity=".25" stroke-width="1.2"/>
+  <path d="M224 154V240M398 154V240M562 150V240" stroke="#000" stroke-opacity=".4" stroke-width="2"/>
+  <path d="M340 178H376M510 178H546" stroke="#0c0e0d" stroke-width="5" stroke-linecap="round"/>
+  <path d="M62 250L760 250L760 238L62 238Z" fill="#000" opacity=".3"/>
+  <path d="M120 234H690" stroke="#15181a" stroke-width="12" stroke-linecap="round"/><path d="M120 231H690" stroke="#fff" stroke-opacity=".18" stroke-width="2"/>
+  <path d="M604 130L622 126L624 142L606 146Z" fill="#121513"/>
+  <path d="M62 140H70V174H62Z" fill="#d23b2b"/><path d="M62 140H66V174H62Z" fill="#ff8a78" opacity=".6"/>
+  <ellipse cx="50" cy="196" rx="13" ry="52" fill="#101311"/><ellipse cx="50" cy="196" rx="7" ry="32" fill="#24282a"/><ellipse cx="46" cy="196" rx="3" ry="6" fill="#4a4f4c"/>
+  <path d="M742 168A11 11 0 1 1 742 190A11 11 0 1 1 742 168Z" fill="#101311"/><circle cx="742" cy="179" r="8" fill="#fff6cf"/><circle cx="742" cy="179" r="22" fill="url(#rb-head)" opacity=".8"/>
+  <path d="M758 196Q784 198 786 220L786 246Q786 254 774 254L758 250" fill="none" stroke="#121513" stroke-width="9" stroke-linecap="round"/><path d="M760 214H784" stroke="#121513" stroke-width="6"/>
+  <circle cx="768" cy="236" r="6" fill="#fff6cf"/>
+  <path d="M742 252L790 252L790 262L736 262Z" fill="#0d0f0e"/>
+  <circle cx="186" cy="238" r="70" fill="#070908"/><circle cx="612" cy="238" r="70" fill="#070908"/>
+  <path d="M112 230A74 74 0 0 1 260 230" fill="none" stroke="#1b1f1c" stroke-width="10"/>
+  <path d="M538 230A74 74 0 0 1 686 230" fill="none" stroke="#1b1f1c" stroke-width="10"/>
+  <g class="wheel" style="transform-origin:186px 238px"><circle cx="186" cy="238" r="61" fill="#0a0b0f"/><path d="M240.9 238L247 238M239.52 250.22L245.47 251.57M235.46 261.82L240.96 264.47M228.92 272.23L233.69 276.03M220.23 280.92L224.03 285.69M209.82 287.46L212.47 292.96M198.22 291.52L199.57 297.47M186 292.9L186 299M173.78 291.52L172.43 297.47M162.18 287.46L159.53 292.96M151.77 280.92L147.97 285.69M143.08 272.23L138.31 276.03M136.54 261.82L131.04 264.47M132.48 250.22L126.53 251.57M131.1 238L125 238M132.48 225.78L126.53 224.43M136.54 214.18L131.04 211.53M143.08 203.77L138.31 199.97M151.77 195.08L147.97 190.31M162.18 188.54L159.53 183.04M173.78 184.48L172.43 178.53M186 183.1L186 177M198.22 184.48L199.57 178.53M209.82 188.54L212.47 183.04M220.23 195.08L224.03 190.31M228.92 203.77L233.69 199.97M235.46 214.18L240.96 211.53M239.52 225.78L245.47 224.43" stroke="#2a2f2a" stroke-width="4" stroke-linecap="butt"/><circle cx="186" cy="238" r="54.9" fill="none" stroke="#1b1e27" stroke-width="2"/><circle cx="186" cy="238" r="36" fill="url(#rb-steel)"/><path d="M186 228.64L186 204.16M192.62 231.38L209.93 214.07M195.36 238L219.84 238M192.62 244.62L209.93 261.93M186 247.36L186 271.84M179.38 244.62L162.07 261.93M176.64 238L152.16 238M179.38 231.38L162.07 214.07" stroke="#2b302c" stroke-width="5" stroke-linecap="round"/><circle cx="186" cy="238" r="7.2" fill="#d9d6c8"/><circle cx="216.45" cy="249.08" r="1.8" fill="#fff"/></g>
+  <g class="wheel" style="transform-origin:612px 238px"><circle cx="612" cy="238" r="61" fill="#0a0b0f"/><path d="M666.9 238L673 238M665.52 250.22L671.47 251.57M661.46 261.82L666.96 264.47M654.92 272.23L659.69 276.03M646.23 280.92L650.03 285.69M635.82 287.46L638.47 292.96M624.22 291.52L625.57 297.47M612 292.9L612 299M599.78 291.52L598.43 297.47M588.18 287.46L585.53 292.96M577.77 280.92L573.97 285.69M569.08 272.23L564.31 276.03M562.54 261.82L557.04 264.47M558.48 250.22L552.53 251.57M557.1 238L551 238M558.48 225.78L552.53 224.43M562.54 214.18L557.04 211.53M569.08 203.77L564.31 199.97M577.77 195.08L573.97 190.31M588.18 188.54L585.53 183.04M599.78 184.48L598.43 178.53M612 183.1L612 177M624.22 184.48L625.57 178.53M635.82 188.54L638.47 183.04M646.23 195.08L650.03 190.31M654.92 203.77L659.69 199.97M661.46 214.18L666.96 211.53M665.52 225.78L671.47 224.43" stroke="#2a2f2a" stroke-width="4" stroke-linecap="butt"/><circle cx="612" cy="238" r="54.9" fill="none" stroke="#1b1e27" stroke-width="2"/><circle cx="612" cy="238" r="36" fill="url(#rb-steel)"/><path d="M612 228.64L612 204.16M618.62 231.38L635.93 214.07M621.36 238L645.84 238M618.62 244.62L635.93 261.93M612 247.36L612 271.84M605.38 244.62L588.07 261.93M602.64 238L578.16 238M605.38 231.38L588.07 214.07" stroke="#2b302c" stroke-width="5" stroke-linecap="round"/><circle cx="612" cy="238" r="7.2" fill="#d9d6c8"/><circle cx="642.45" cy="249.08" r="1.8" fill="#fff"/></g>
+</svg>
         <p class="ground-note">Ground clearance <strong>291 mm</strong> · Approach <strong>38°</strong> · Departure <strong>40°</strong></p>
       </div>
     </section>
@@ -75,6 +104,7 @@
     <section class="journey" id="journey" aria-labelledby="journey-title">
       <div class="journey-stage">
         <div class="sun" aria-hidden="true"></div>
+        <div class="layer clouds" aria-hidden="true"></div>
         <div class="layer mtn-far" aria-hidden="true"></div>
         <div class="layer mtn-mid" aria-hidden="true"></div>
         <div class="layer dune" aria-hidden="true"></div>

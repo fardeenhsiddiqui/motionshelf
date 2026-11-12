@@ -1,3 +1,39 @@
+// Navigation: mobile menu, current-section highlight, and pausing looping animation while it is off screen.
+(function () {
+  var header = document.querySelector(".site-header");
+  var toggle = document.querySelector(".nav-toggle");
+  var nav = document.getElementById("site-nav");
+  if (header && toggle && nav) {
+    var setOpen = function (open) {
+      header.classList.toggle("is-menu-open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    };
+    toggle.addEventListener("click", function () { setOpen(toggle.getAttribute("aria-expanded") !== "true"); });
+    nav.addEventListener("click", function (e) { if (e.target.closest("a")) setOpen(false); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") { setOpen(false); toggle.focus(); }
+    });
+    window.matchMedia("(min-width: 761px)").addEventListener("change", function () { setOpen(false); });
+  }
+  if (!("IntersectionObserver" in window)) return;
+  var links = [].slice.call(document.querySelectorAll(".site-nav a[href^='#']"));
+  var byId = {};
+  links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+  var current = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting || !byId[entry.target.id]) return;
+      links.forEach(function (a) { a.removeAttribute("aria-current"); });
+      byId[entry.target.id].setAttribute("aria-current", "true");
+    });
+  }, { rootMargin: "-45% 0px -50% 0px" });
+  Object.keys(byId).forEach(function (sectionId) { var s = document.getElementById(sectionId); if (s) current.observe(s); });
+  var pause = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) { entry.target.classList.toggle("is-paused", !entry.isIntersecting); });
+  });
+  [].slice.call(document.querySelectorAll(".hero, .journey")).forEach(function (s) { pause.observe(s); });
+})();
+
 // Ridgeback X: a scroll-scrubbed desert crossing. Needs GSAP + ScrollTrigger (loaded from the CDN in index.html).
 // Without them (or with reduced motion) the scene stays a still frame and the page is fully usable.
 (function () {
@@ -24,7 +60,8 @@
   });
 
   // Parallax: distant ranges barely move, dunes and rocks sweep past, the sun climbs.
-  tl.to(".mtn-far", { backgroundPositionX: "-500px" }, 0)
+  tl.to(".clouds", { backgroundPositionX: "-700px" }, 0)
+    .to(".mtn-far", { backgroundPositionX: "-500px" }, 0)
     .to(".mtn-mid", { backgroundPositionX: "-1500px" }, 0)
     .to(".dune", { backgroundPositionX: "-3400px" }, 0)
     .to(".rocks", { backgroundPositionX: "-8000px" }, 0)
@@ -55,14 +92,19 @@
     }
   });
 
-  // Dust kicked up behind the rear wheel.
-  for (var i = 0; i < 10; i++) {
+  // Dust kicked up behind the rear wheel: the puffs loop in CSS and the trail fades in with scroll speed.
+  var trail = document.createElement("div");
+  trail.className = "dust-trail";
+  trail.setAttribute("aria-hidden", "true");
+  for (var i = 0; i < 6; i++) {
     var puff = document.createElement("span");
     puff.className = "dust";
-    puff.setAttribute("aria-hidden", "true");
-    slot.appendChild(puff);
-    gsap.fromTo(puff,
-      { x: "6%", y: "86%", opacity: 0.7, scale: 0.4 },
-      { x: "-" + (20 + Math.random() * 40) + "%", y: (60 + Math.random() * 20) + "%", opacity: 0, scale: 2.8 + Math.random() * 2, duration: 1.4, repeat: -1, delay: i * 0.14, ease: "power1.out" });
+    puff.style.animationDelay = i * 0.25 + "s";
+    trail.appendChild(puff);
   }
+  slot.appendChild(trail);
+  ScrollTrigger.create({
+    trigger: stage, start: "top bottom", end: "bottom top",
+    onUpdate: function (self) { trail.style.setProperty("--dust", Math.min(1, Math.abs(self.getVelocity()) / 1800)); }
+  });
 })();

@@ -8,6 +8,19 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <linearGradient id="rl-lit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".28" stop-color="#fff" stop-opacity=".08"/><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".62"/></linearGradient>
+  <linearGradient id="rl-glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34445f"/><stop offset=".45" stop-color="#0d1322"/><stop offset="1" stop-color="#04060b"/></linearGradient>
+  <linearGradient id="rl-glint" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".34"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <radialGradient id="rl-shadow"><stop offset="0" stop-color="#000" stop-opacity=".7"/><stop offset=".6" stop-color="#000" stop-opacity=".25"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+  <radialGradient id="g-rim" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#f1f4fb"/><stop offset=".55" stop-color="#8b93a6"/><stop offset="1" stop-color="#3b4152"/></radialGradient>
+  <radialGradient id="rl-steel" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#c9ccbf"/><stop offset=".6" stop-color="#8c917f"/><stop offset="1" stop-color="#555a50"/></radialGradient>
+  <linearGradient id="rl-pipe" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4d9ea"/><stop offset=".5" stop-color="#8d96b2"/><stop offset="1" stop-color="#3a4160"/></linearGradient>
+  <radialGradient id="rl-rim" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#262d47"/><stop offset="1" stop-color="#0f1322"/></radialGradient>
+  <radialGradient id="rl-head" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#fff6c8" stop-opacity=".8"/><stop offset="1" stop-color="#ffe08a" stop-opacity="0"/></radialGradient>
+  <linearGradient id="rl-tail" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff2d3d"/><stop offset="1" stop-color="#8a0a16"/></linearGradient>
+  </defs></svg>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <div class="ticker" aria-label="Latest results">
     <div class="ticker-track">
       <span>P1 · Redline #07 · Monza GP</span><span>Fastest lap 1:21.304</span><span>Constructors lead +38 pts</span><span>Next: Suzuka · 14 days</span>
@@ -17,7 +30,7 @@
 
   <header class="site-header">
     <a class="logo" href="#top" aria-label="Redline home"><b>RDL</b><span>Redline Racing</span></a>
-    <nav class="site-nav" aria-label="Primary">
+    <nav class="site-nav" id="site-nav" aria-label="Primary">
       <a href="#journey">Hot lap</a>
       <a href="#next">Next race</a>
       <a href="#standings">Standings</a>
@@ -25,9 +38,10 @@
       <a href="#calendar">Calendar</a>
     </nav>
     <a class="btn btn-small" href="#join">Join the pit wall</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu"><span></span><span></span></button>
   </header>
 
-  <main id="top">
+  <main id="top"><span id="main-content" tabindex="-1"></span>
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
         <p class="eyebrow">2027 season · Round 12 of 22</p>
@@ -42,21 +56,30 @@
       <div class="hero-stage" aria-hidden="true">
         <div class="flag"></div>
         <svg class="racer" viewBox="0 0 800 250" role="img" aria-label="Side view of the Redline RL-07 race car">
-          <ellipse cx="400" cy="228" rx="360" ry="9" fill="#000" opacity=".5" />
-          <rect class="r-wing" x="46" y="58" width="58" height="9" rx="2" />
-          <rect class="r-wing" x="64" y="64" width="9" height="62" />
-          <path class="r-body" d="M92 150 L190 118 L330 104 L420 96 L470 110 L640 146 L742 156 L742 170 L92 170 Z" />
-          <path class="r-shade" d="M92 158 L742 158 L742 170 L92 170 Z" />
-          <path class="r-white" d="M330 104 L420 96 L470 110 L430 126 L330 126 Z" />
-          <path class="r-halo" d="M360 104 Q392 70 440 100" />
-          <text x="248" y="150" class="r-num">07</text>
-          <rect class="r-wing" x="690" y="178" width="96" height="8" rx="2" />
-          <rect class="r-wing" x="700" y="166" width="8" height="14" />
-          <circle cx="190" cy="176" r="52" fill="#111" />
-          <circle cx="620" cy="180" r="44" fill="#111" />
-          <g class="wheel" style="transform-origin:190px 176px"><circle cx="190" cy="176" r="30" fill="#2a2a2a" /><path d="M190 150v52M164 176h52M172 158l36 36M208 158l-36 36" stroke="#8a8a8a" stroke-width="5" stroke-linecap="round" /><circle cx="190" cy="176" r="7" fill="#ff2a1f" /></g>
-          <g class="wheel" style="transform-origin:620px 180px"><circle cx="620" cy="180" r="26" fill="#2a2a2a" /><path d="M620 158v44M598 180h44M604 164l32 32M636 164l-32 32" stroke="#8a8a8a" stroke-width="5" stroke-linecap="round" /><circle cx="620" cy="180" r="6" fill="#ff2a1f" /></g>
-        </svg>
+  <ellipse cx="410" cy="236" rx="390" ry="10" fill="url(#rl-shadow)"/>
+  <path d="M70 100L130 154" stroke="#1a1a1d" stroke-width="7" stroke-linecap="round"/>
+  <path d="M52 40L114 38L118 106L64 124Z" fill="#17171a"/><path d="M52 40L114 38L116 62L54 66Z" class="r-body"/><path d="M52 40L114 38L116 62L54 66Z" fill="url(#rl-lit)"/>
+  <rect x="58" y="76" width="54" height="7" rx="2" fill="#0e0e10"/><rect x="62" y="92" width="50" height="6" rx="2" fill="#0e0e10"/>
+  <path d="M84 150L124 146L128 156L88 162Z" fill="#101012"/>
+  <path d="M96 176L112 172L118 184L100 188Z" fill="#2a2a2d"/><path d="M98 180L84 182" stroke="#ff8a3c" stroke-width="5" stroke-linecap="round" opacity=".8"/>
+  <path class="r-body" d="M108 178L128 160L200 142L300 124L346 102L374 96L394 112L456 120L520 132L640 156L752 168Q780 172 784 180L784 190L108 192Z"/>
+  <path d="M108 178L128 160L200 142L300 124L346 102L374 96L394 112L456 120L520 132L640 156L752 168Q780 172 784 180L784 190L108 192Z" fill="url(#rl-lit)"/>
+  <path d="M300 148L430 134L474 140L474 178L300 186Z" class="r-body"/><path d="M300 148L430 134L474 140L474 178L300 186Z" fill="url(#rl-lit)"/>
+  <path d="M440 142L476 140L476 172L446 174Z" fill="#08080a"/><path d="M450 146V170M460 145V170M470 143V170" stroke="#2a2a2e" stroke-width="2"/>
+  <path class="r-white" d="M456 120L520 132L640 156L720 163L640 162L520 144L450 134Z"/>
+  <path d="M300 126L346 104L374 98L394 112L318 130Z" fill="#101013"/><path d="M308 124L346 108" stroke="#fff" stroke-opacity=".3" stroke-width="2" fill="none"/>
+  <path class="r-white" d="M200 142L300 126L318 130L206 150Z"/>
+  <circle cx="414" cy="100" r="19" fill="#f4f4f6"/><path d="M416 92L436 98L434 112L412 110Z" fill="#101218"/><path d="M420 96L432 100" stroke="#fff" stroke-opacity=".45" stroke-width="2"/>
+  <path class="r-halo" d="M378 112Q412 58 462 114"/><path d="M458 112L450 130" stroke="#d8d8dc" stroke-width="6" stroke-linecap="round"/>
+  <text x="326" y="172" class="r-num">07</text>
+  <path d="M600 164L626 176M606 184L628 182" stroke="#26262a" stroke-width="4" stroke-linecap="round"/><path d="M214 170L190 172" stroke="#26262a" stroke-width="5" stroke-linecap="round"/>
+  <path d="M686 208L790 202L790 213L686 218Z" fill="#101012"/><path d="M690 200L788 196L790 202L686 208Z" fill="#1c1c20"/>
+  <path d="M768 184L792 182L794 216L772 218Z" class="r-body"/><path d="M768 184L792 182L794 216L772 218Z" fill="url(#rl-lit)"/>
+  <path d="M728 176L734 204" stroke="#1c1c20" stroke-width="5" stroke-linecap="round"/>
+  <path d="M112 196L722 200" stroke="#0a0a0c" stroke-width="7" stroke-linecap="round" opacity=".9"/>
+  <g class="wheel" style="transform-origin:188px 172px"><circle cx="188" cy="172" r="56" fill="#0a0b0f"/><circle cx="188" cy="172" r="50.4" fill="none" stroke="#1b1e27" stroke-width="2"/><circle cx="188" cy="172" r="43.68" fill="none" stroke="#ff2a1f" stroke-width="3"/><circle cx="188" cy="172" r="34" fill="url(#g-rim)"/><path d="M188 163.16L188 140.04M196.41 169.27L218.4 162.12M193.2 179.15L206.79 197.86M182.8 179.15L169.21 197.86M179.59 169.27L157.6 162.12" stroke="#bfc4d0" stroke-width="7" stroke-linecap="round"/><circle cx="188" cy="172" r="6.8" fill="#ff2a1f"/><circle cx="216.75" cy="182.47" r="1.8" fill="#fff"/></g>
+  <g class="wheel" style="transform-origin:622px 178px"><circle cx="622" cy="178" r="48" fill="#0a0b0f"/><circle cx="622" cy="178" r="43.2" fill="none" stroke="#1b1e27" stroke-width="2"/><circle cx="622" cy="178" r="37.44" fill="none" stroke="#ff2a1f" stroke-width="3"/><circle cx="622" cy="178" r="29" fill="url(#g-rim)"/><path d="M622 170.46L622 150.74M629.17 175.67L647.93 169.58M626.43 184.1L638.02 200.05M617.57 184.1L605.98 200.05M614.83 175.67L596.07 169.58" stroke="#bfc4d0" stroke-width="6" stroke-linecap="round"/><circle cx="622" cy="178" r="5.8" fill="#ff2a1f"/><circle cx="646.53" cy="186.93" r="1.8" fill="#fff"/></g>
+</svg>
       </div>
     </section>
 

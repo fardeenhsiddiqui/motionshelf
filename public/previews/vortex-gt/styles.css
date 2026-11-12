@@ -49,14 +49,8 @@ h1 span { color: var(--accent); }
 .swatch-glacier { background: #6fd3ff; }
 
 .hero-stage { position: relative; }
-.car { width: 100%; height: auto; filter: drop-shadow(0 30px 40px rgba(0, 0, 0, .5)); animation: float 5s ease-in-out infinite; }
+.car { width: 100%; height: auto; animation: float 5s ease-in-out infinite; }
 .car-body { fill: var(--car); transition: fill .3s; }
-.car-shade { fill: #000; opacity: .22; }
-.car-glass { fill: #0e1119; }
-.car-line { stroke: #000; stroke-opacity: .35; stroke-width: 2; }
-.car-intake { fill: #07080c; }
-.car-light { fill: #fff; }
-.car-tail { fill: #ff2d3d; }
 .wheel { animation: spin 1.4s linear infinite; }
 .speed-lines { position: absolute; inset: 0; pointer-events: none; }
 .speed-lines i { position: absolute; left: -10%; height: 2px; width: 40%; background: linear-gradient(90deg, transparent, var(--accent)); opacity: .5; animation: dash 1.6s linear infinite; }
@@ -126,7 +120,6 @@ h2 { margin-top: 14px; font-size: clamp(34px, 5vw, 64px); font-weight: 800; }
   .stats div:nth-child(-n + 2) { border-bottom: 1px solid var(--line); }
 }
 @media (max-width: 640px) {
-  .site-nav { display: none; }
   .site-header .btn { margin-left: auto; }
   .hex { display: none; }
 }
@@ -151,7 +144,7 @@ h2 { margin-top: 14px; font-size: clamp(34px, 5vw, 64px); font-weight: 800; }
 .streaks i { position: absolute; left: 0; height: 2px; width: 40%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .8)); }
 .streaks i:nth-child(1) { top: 52%; left: 6% } .streaks i:nth-child(2) { top: 61%; left: 44%; width: 55% } .streaks i:nth-child(3) { top: 70%; left: 14% } .streaks i:nth-child(4) { top: 78%; left: 58%; width: 30% } .streaks i:nth-child(5) { top: 86%; left: 28%; width: 50% }
 .scene-vehicle { position: absolute; left: 50%; bottom: 8%; width: min(600px, 64vw); transform: translateX(-50%); }
-.scene-vehicle svg { width: 100%; height: auto; display: block; animation: none; filter: drop-shadow(0 0 40px color-mix(in srgb, var(--accent) 40%, transparent)); }
+.scene-vehicle svg { width: 100%; height: auto; display: block; animation: none; }
 .scene-vehicle .wheel { animation: none; }
 .hud { position: absolute; right: clamp(16px, 4vw, 56px); top: clamp(80px, 12vh, 120px); text-align: right; font-family: var(--display); }
 .hud-speed { font-size: clamp(64px, 12vw, 160px); font-weight: 800; font-style: italic; line-height: .9; color: var(--accent); font-variant-numeric: tabular-nums; }
@@ -166,8 +159,63 @@ h2 { margin-top: 14px; font-size: clamp(34px, 5vw, 64px); font-weight: 800; }
 .has-scene .journey-copy article:first-child { position: absolute; }
 .journey-copy h2 { font-size: clamp(32px, 5vw, 60px); margin: 12px 0; }
 .journey-copy p:not(.eyebrow) { color: var(--muted); }
-@media (max-width: 760px) { .journey-copy { top: auto; bottom: 46%; width: 70%; } .hud { top: 76px; } .scene-vehicle { bottom: 12%; } }
+@media (max-width: 760px) { .journey-copy { top: auto; bottom: 46%; width: 70%; } .hud { top: 92px; } .scene-vehicle { bottom: 12%; } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* ===== Vehicle artwork ===== */
+.car-body { fill: var(--car); transition: fill .3s; }
+
+/* ===== Polish: navigation, focus, hover, motion and performance ===== */
+:root { --p-text: var(--text); --p-muted: var(--muted); --p-accent: var(--accent); --p-line: var(--line); --p-menu: rgba(11,13,18,.98); --p-on: #0b0d12; --scrim: 5,4,12; --scrim-a: .8; }
+html { scroll-behavior: smooth; }
+section[id] { scroll-margin-top: 76px; }
+.skip-link { position: absolute; left: 12px; top: -64px; z-index: 40; padding: 12px 18px; border-radius: 4px; background: var(--p-accent); color: var(--p-on); font-weight: 700; text-decoration: none; transition: top .2s; }
+.skip-link:focus { top: 10px; }
+:focus-visible { outline: 2px solid var(--p-accent); outline-offset: 3px; }
+.site-nav a { position: relative; padding-block: 12px; }
+.site-nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 4px; height: 2px; background: var(--p-accent); transform: scaleX(0); transform-origin: left; transition: transform .25s ease; }
+.site-nav a:hover::after, .site-nav a[aria-current="true"]::after { transform: scaleX(1); }
+.site-nav a[aria-current="true"] { color: var(--p-text); }
+.nav-toggle { display: none; position: relative; width: 44px; height: 44px; margin-left: 4px; border: 1px solid var(--p-line); border-radius: 50%; background: transparent; color: var(--p-text); cursor: pointer; }
+.nav-toggle span { position: absolute; left: 13px; right: 13px; height: 2px; background: currentColor; border-radius: 2px; transition: transform .25s, top .25s; }
+.nav-toggle span:first-child { top: 17px; }
+.nav-toggle span:last-child { top: 25px; }
+.is-menu-open .nav-toggle span:first-child { top: 21px; transform: rotate(45deg); }
+.is-menu-open .nav-toggle span:last-child { top: 21px; transform: rotate(-45deg); }
+@media (max-width: 760px) {
+  .site-header { gap: 12px; }
+  .site-header .btn-small { margin-left: auto; }
+  .nav-toggle { display: block; }
+  .site-nav { position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; gap: 0; margin: 0; padding: 6px clamp(16px, 4vw, 48px) 14px; background: var(--p-menu); border-bottom: 1px solid var(--p-line); font-size: 16px; visibility: hidden; opacity: 0; transform: translateY(-8px); transition: opacity .2s, transform .2s, visibility .2s; }
+  .is-menu-open .site-nav { visibility: visible; opacity: 1; transform: none; }
+  .site-nav a { padding: 15px 4px; border-bottom: 1px solid var(--p-line); }
+  .site-nav a::after { display: none; }
+}
+.btn { transition: transform .2s, background-color .2s, color .2s, border-color .2s; }
+.btn:active { transform: scale(.98); }
+@media (hover: hover) {
+  .btn:hover { transform: translateY(-2px); }
+  .model { transition: transform .3s cubic-bezier(.16, 1, .3, 1), border-color .3s, box-shadow .3s; }
+  .model:hover { transform: translateY(-6px); border-color: var(--p-accent); box-shadow: 0 22px 44px -22px rgba(var(--scrim), .7); }
+}
+.model:focus-within { border-color: var(--p-accent); }
+/* Journey captions stay readable over a busy scene. */
+.journey-copy { isolation: isolate; }
+.journey-copy::before { content: ""; position: absolute; z-index: -1; inset: -70px -110px -70px -90px; background: radial-gradient(ellipse closest-side at 50% 50%, rgba(var(--scrim), var(--scrim-a)) 0%, rgba(var(--scrim), calc(var(--scrim-a) * .7)) 55%, rgba(var(--scrim), 0) 100%); pointer-events: none; }
+.journey-copy h2, .journey-copy p { text-shadow: 0 1px 16px rgba(var(--scrim), .85); }
+.journey-copy p:not(.eyebrow) { color: var(--p-text); opacity: .9; }
+/* Looping motion pauses while its section is off screen. */
+.is-paused, .is-paused *, .is-paused *::before, .is-paused *::after { animation-play-state: paused !important; }
+/* Sections far below the fold are not rendered until the visitor gets near them. */
+main > section:not(.hero):not(.journey):not(.stats) { content-visibility: auto; contain-intrinsic-size: auto 720px; }
+@media (pointer: coarse) { .btn, .swatch { min-height: 44px; } .swatch { min-width: 44px; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* ===== Vortex scene ===== */
+.scene-vehicle::before { content: ""; position: absolute; left: 4%; right: 4%; bottom: -8%; height: 36%; background: radial-gradient(ellipse at 50% 55%, color-mix(in srgb, var(--accent) 44%, transparent), transparent 70%); }
+.beam { position: absolute; left: 96%; bottom: 28%; width: 58%; height: 36%; background: linear-gradient(90deg, rgba(255, 246, 200, .62), rgba(255, 246, 200, 0)); clip-path: polygon(0 38%, 100% 0, 100% 100%, 0 62%); opacity: 0; transform-origin: 0 50%; pointer-events: none; }
+.flame { position: absolute; left: 1%; bottom: 14%; width: 16%; height: 10%; background: radial-gradient(ellipse at 100% 50%, #fff3b0, #ff7a1a 42%, transparent 72%); opacity: 0; transform-origin: 100% 50%; pointer-events: none; }
+.lamps { bottom: 22%; height: 54%; background-size: 1000px 100%; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1000' height='300' viewBox='0 0 1000 300'%3E%3Cdefs%3E%3CradialGradient id='g'%3E%3Cstop offset='0' stop-color='%23ffd60a' stop-opacity='.9'/%3E%3Cstop offset='1' stop-color='%23ffd60a' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect x='198' y='40' width='5' height='260' fill='%2314161f'/%3E%3Cpath d='M200 44 H258' stroke='%2314161f' stroke-width='5'/%3E%3Ccircle cx='258' cy='50' r='46' fill='url(%23g)'/%3E%3Crect x='250' y='46' width='16' height='6' rx='3' fill='%23fff6c8'/%3E%3Crect x='698' y='90' width='5' height='210' fill='%2314161f'/%3E%3Cpath d='M700 94 H752' stroke='%2314161f' stroke-width='5'/%3E%3Ccircle cx='752' cy='100' r='40' fill='url(%23g)'/%3E%3Crect x='744' y='96' width='16' height='6' rx='3' fill='%23fff6c8'/%3E%3C/svg%3E"); }

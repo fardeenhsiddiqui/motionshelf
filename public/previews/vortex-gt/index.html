@@ -8,12 +8,25 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <linearGradient id="vx-lit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".28" stop-color="#fff" stop-opacity=".08"/><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".62"/></linearGradient>
+  <linearGradient id="vx-glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34445f"/><stop offset=".45" stop-color="#0d1322"/><stop offset="1" stop-color="#04060b"/></linearGradient>
+  <linearGradient id="vx-glint" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".34"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <radialGradient id="vx-shadow"><stop offset="0" stop-color="#000" stop-opacity=".7"/><stop offset=".6" stop-color="#000" stop-opacity=".25"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+  <radialGradient id="g-rim" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#f1f4fb"/><stop offset=".55" stop-color="#8b93a6"/><stop offset="1" stop-color="#3b4152"/></radialGradient>
+  <radialGradient id="vx-steel" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#c9ccbf"/><stop offset=".6" stop-color="#8c917f"/><stop offset="1" stop-color="#555a50"/></radialGradient>
+  <linearGradient id="vx-pipe" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4d9ea"/><stop offset=".5" stop-color="#8d96b2"/><stop offset="1" stop-color="#3a4160"/></linearGradient>
+  <radialGradient id="vx-rim" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#262d47"/><stop offset="1" stop-color="#0f1322"/></radialGradient>
+  <radialGradient id="vx-head" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#fff6c8" stop-opacity=".8"/><stop offset="1" stop-color="#ffe08a" stop-opacity="0"/></radialGradient>
+  <linearGradient id="vx-tail" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff2d3d"/><stop offset="1" stop-color="#8a0a16"/></linearGradient>
+  </defs></svg>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header">
     <a class="logo" href="#top" aria-label="Vortex home">
       <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><path d="M16 2 28 9v14L16 30 4 23V9z" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M10 12l6 9 6-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></svg>
       <span>VORTEX</span>
     </a>
-    <nav class="site-nav" aria-label="Primary">
+    <nav class="site-nav" id="site-nav" aria-label="Primary">
       <a href="#journey">Drive</a>
       <a href="#models">Models</a>
       <a href="#performance">Performance</a>
@@ -21,9 +34,10 @@
       <a href="#reserve">Reserve</a>
     </nav>
     <a class="btn btn-small" href="#reserve">Reserve yours</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu"><span></span><span></span></button>
   </header>
 
-  <main id="top">
+  <main id="top"><span id="main-content" tabindex="-1"></span>
     <section class="hero" aria-labelledby="hero-title">
       <input class="swatch-input" type="radio" name="paint" id="paint-volt" checked />
       <input class="swatch-input" type="radio" name="paint" id="paint-ember" />
@@ -49,19 +63,34 @@
         <div class="speed-lines"><i></i><i></i><i></i><i></i><i></i></div>
         <canvas class="car3d" data-model="../../assets/models/car-concept.glb" aria-hidden="true"></canvas>
         <svg class="car" viewBox="0 0 800 270" role="img" aria-label="Side view of the Vortex GT">
-          <ellipse cx="400" cy="246" rx="360" ry="12" fill="#000" opacity=".45" />
-          <path class="car-body" d="M34 190 L66 160 L206 134 L330 94 L476 90 L610 126 L742 148 L774 180 L760 202 L34 202 Z" />
-          <path class="car-shade" d="M206 134 L330 94 L476 90 L610 126 L742 148 L774 180 L760 202 L520 202 L440 140 Z" />
-          <path class="car-glass" d="M346 104 L462 101 L552 128 L304 132 Z" />
-          <path class="car-line" d="M304 132 L552 128" />
-          <path class="car-intake" d="M470 150 L560 160 L560 178 L492 172 Z" />
-          <path class="car-light" d="M722 154 L766 172 L748 170 Z" />
-          <path class="car-tail" d="M40 176 L74 168 L74 176 L40 184 Z" />
-          <circle cx="190" cy="202" r="46" fill="#05060a" />
-          <circle cx="618" cy="202" r="46" fill="#05060a" />
-          <g class="wheel" style="transform-origin:190px 202px"><circle cx="190" cy="202" r="36" fill="#14171f" /><circle cx="190" cy="202" r="26" fill="#1e2230" /><path d="M190 176v52M164 202h52M171 183l38 38M209 183l-38 38" stroke="#4a5166" stroke-width="5" stroke-linecap="round" /><circle cx="190" cy="202" r="7" fill="var(--accent)" /></g>
-          <g class="wheel" style="transform-origin:618px 202px"><circle cx="618" cy="202" r="36" fill="#14171f" /><circle cx="618" cy="202" r="26" fill="#1e2230" /><path d="M618 176v52M592 202h52M599 183l38 38M637 183l-38 38" stroke="#4a5166" stroke-width="5" stroke-linecap="round" /><circle cx="618" cy="202" r="7" fill="var(--accent)" /></g>
-        </svg>
+  <ellipse cx="410" cy="248" rx="392" ry="13" fill="url(#vx-shadow)"/>
+  
+  <path class="car-body" d="M40 230C32 212 34 190 48 176C84 150 150 134 206 130C262 126 320 106 398 97L470 94C506 94 536 104 572 124C600 128 640 128 680 136C724 146 750 158 766 172C780 182 784 198 780 212L776 228L752 236L70 236Z"/>
+  <path d="M40 230C32 212 34 190 48 176C84 150 150 134 206 130C262 126 320 106 398 97L470 94C506 94 536 104 572 124C600 128 640 128 680 136C724 146 750 158 766 172C780 182 784 198 780 212L776 228L752 236L70 236Z" fill="url(#vx-lit)"/>
+  <path d="M70 236L752 236L748 228L76 228Z" fill="#05060a" opacity=".75"/>
+  <path d="M262 170C286 160 312 154 332 156L338 216C312 218 288 220 270 216Z" fill="#05060a"/><path d="M276 172L282 216M290 168L296 217M304 165L310 217M318 162L324 217" stroke="#3a3f4e" stroke-width="2.2"/><path d="M262 170C286 160 312 154 332 156" stroke="#fff" stroke-opacity=".35" stroke-width="1.4" fill="none"/>
+  <path d="M322 117C352 102 410 98 468 97C508 97 542 108 568 124L322 126Z" fill="url(#vx-glass)"/>
+  <path d="M384 100L420 99L394 125L356 125Z" fill="url(#vx-glint)"/><path d="M470 98L520 104L494 126L452 126Z" fill="url(#vx-glint)" opacity=".7"/>
+  <path d="M432 98L430 126" stroke="#04050a" stroke-width="3"/>
+  <path d="M46 176L40 164C62 156 92 150 112 148L106 160Z" class="car-body"/><path d="M46 176L40 164C62 156 92 150 112 148L106 160Z" fill="url(#vx-lit)"/><path d="M112 148L106 160" stroke="#000" stroke-opacity=".5" stroke-width="2"/>
+  <path d="M196 138C260 134 312 118 380 104" stroke="#fff" stroke-opacity=".22" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <path d="M630 134C660 134 700 142 740 158" stroke="#fff" stroke-opacity=".2" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <path d="M646 138L694 146" stroke="#05060a" stroke-width="4" stroke-linecap="round"/>
+  <path d="M52 178C90 154 150 138 206 134C262 130 322 110 398 100" stroke="#fff" stroke-opacity=".42" stroke-width="1.6" fill="none"/>
+  <path d="M572 128C612 132 650 134 690 142" stroke="#fff" stroke-opacity=".3" stroke-width="1.4" fill="none"/>
+  <path d="M502 128L512 228M330 126L324 218" stroke="#000" stroke-opacity=".5" stroke-width="1.8" fill="none"/>
+  <path d="M452 152H482" stroke="#05060a" stroke-width="4" stroke-linecap="round"/><path d="M452 150H482" stroke="#fff" stroke-opacity=".5" stroke-width="1"/>
+  <path d="M100 210C300 198 500 198 704 206" stroke="#fff" stroke-opacity=".16" stroke-width="2" fill="none"/>
+  <path d="M556 126L576 122L572 133L554 134Z" class="car-body"/><path d="M556 126L576 122L572 133L554 134Z" fill="url(#vx-lit)"/>
+  <path d="M704 208L772 212L772 228L710 226Z" fill="#05060a"/><path d="M714 214H766M714 220H766" stroke="#2a2e3a" stroke-width="2"/>
+  <path d="M722 168L772 184L764 191L718 176Z" fill="#0a0c12"/><path d="M730 172L768 184" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><circle cx="764" cy="184" r="16" fill="url(#vx-head)"/>
+  <path d="M756 232L792 224L788 238L748 240Z" fill="#05060a"/>
+  <path d="M46 186L94 172" stroke="url(#vx-tail)" stroke-width="6" stroke-linecap="round"/><path d="M46 186L94 172" stroke="#ff7a85" stroke-opacity=".6" stroke-width="1.6"/>
+  <circle cx="54" cy="222" r="8" fill="#0a0b10" stroke="#7b8294" stroke-width="2"/><circle cx="54" cy="222" r="4" fill="#1d1f28"/>
+  <circle cx="192" cy="198" r="58" fill="#05060a"/><circle cx="616" cy="198" r="58" fill="#05060a"/>
+  <g class="wheel" style="transform-origin:192px 198px"><circle cx="192" cy="198" r="50" fill="#0a0b0f"/><circle cx="192" cy="198" r="45" fill="none" stroke="#1b1e27" stroke-width="2"/><circle cx="192" cy="198" r="36" fill="url(#g-rim)"/><circle cx="192" cy="198" r="28.08" fill="#20242e"/><path d="M210 198L218.64 198M208.91 204.16L217.03 207.11M205.79 209.57L212.41 215.12M201 213.59L205.32 221.07M195.13 215.73L196.63 224.24M188.87 215.73L187.37 224.24M183 213.59L178.68 221.07M178.21 209.57L171.59 215.12M175.09 204.16L166.97 207.11M174 198L165.36 198M175.09 191.84L166.97 188.89M178.21 186.43L171.59 180.88M183 182.41L178.68 174.93M188.87 180.27L187.37 171.76M195.13 180.27L196.63 171.76M201 182.41L205.32 174.93M205.79 186.43L212.41 180.88M208.91 191.84L217.03 188.89" stroke="#4a5163" stroke-width="1.6"/><path d="M192 188.64L192 164.16M197.5 190.43L211.89 170.62M200.9 195.11L224.18 187.54M200.9 200.89L224.18 208.46M197.5 205.57L211.89 225.38M192 207.36L192 231.84M186.5 205.57L172.11 225.38M183.1 200.89L159.82 208.46M183.1 195.11L159.82 187.54M186.5 190.43L172.11 170.62" stroke="#cfd5e2" stroke-width="3.2" stroke-linecap="round"/><circle cx="192" cy="198" r="7.2" fill="var(--accent)"/><circle cx="222.45" cy="209.08" r="1.8" fill="#fff"/></g><path d="M206.81 180.35A23.04 23.04 0 0 1 214.69 194" stroke="#ff2d3d" stroke-width="7.2" stroke-linecap="round" fill="none"/>
+  <g class="wheel" style="transform-origin:616px 198px"><circle cx="616" cy="198" r="50" fill="#0a0b0f"/><circle cx="616" cy="198" r="45" fill="none" stroke="#1b1e27" stroke-width="2"/><circle cx="616" cy="198" r="36" fill="url(#g-rim)"/><circle cx="616" cy="198" r="28.08" fill="#20242e"/><path d="M634 198L642.64 198M632.91 204.16L641.03 207.11M629.79 209.57L636.41 215.12M625 213.59L629.32 221.07M619.13 215.73L620.63 224.24M612.87 215.73L611.37 224.24M607 213.59L602.68 221.07M602.21 209.57L595.59 215.12M599.09 204.16L590.97 207.11M598 198L589.36 198M599.09 191.84L590.97 188.89M602.21 186.43L595.59 180.88M607 182.41L602.68 174.93M612.87 180.27L611.37 171.76M619.13 180.27L620.63 171.76M625 182.41L629.32 174.93M629.79 186.43L636.41 180.88M632.91 191.84L641.03 188.89" stroke="#4a5163" stroke-width="1.6"/><path d="M616 188.64L616 164.16M621.5 190.43L635.89 170.62M624.9 195.11L648.18 187.54M624.9 200.89L648.18 208.46M621.5 205.57L635.89 225.38M616 207.36L616 231.84M610.5 205.57L596.11 225.38M607.1 200.89L583.82 208.46M607.1 195.11L583.82 187.54M610.5 190.43L596.11 170.62" stroke="#cfd5e2" stroke-width="3.2" stroke-linecap="round"/><circle cx="616" cy="198" r="7.2" fill="var(--accent)"/><circle cx="646.45" cy="209.08" r="1.8" fill="#fff"/></g><path d="M630.81 180.35A23.04 23.04 0 0 1 638.69 194" stroke="#ff2d3d" stroke-width="7.2" stroke-linecap="round" fill="none"/>
+</svg>
         <div class="hex hex-a"></div><div class="hex hex-b"></div>
       </div>
     </section>
@@ -79,9 +108,10 @@
         <div class="sun-glow" aria-hidden="true"></div>
         <div class="layer sky-far" aria-hidden="true"></div>
         <div class="layer sky-near" aria-hidden="true"></div>
+        <div class="layer lamps" aria-hidden="true"></div>
         <div class="road" aria-hidden="true"><div class="road-dashes"></div></div>
         <div class="streaks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-        <div class="scene-vehicle" aria-hidden="true"></div>
+        <div class="scene-vehicle" aria-hidden="true"><span class="beam"></span><span class="flame"></span></div>
         <div class="journey-copy">
           <article>
             <p class="eyebrow">Launch</p>

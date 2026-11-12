@@ -8,21 +8,35 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <linearGradient id="ks-lit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".28" stop-color="#fff" stop-opacity=".08"/><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".62"/></linearGradient>
+  <linearGradient id="ks-glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34445f"/><stop offset=".45" stop-color="#0d1322"/><stop offset="1" stop-color="#04060b"/></linearGradient>
+  <linearGradient id="ks-glint" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".34"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <radialGradient id="ks-shadow"><stop offset="0" stop-color="#000" stop-opacity=".7"/><stop offset=".6" stop-color="#000" stop-opacity=".25"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+  <radialGradient id="g-rim" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#f1f4fb"/><stop offset=".55" stop-color="#8b93a6"/><stop offset="1" stop-color="#3b4152"/></radialGradient>
+  <radialGradient id="ks-steel" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#c9ccbf"/><stop offset=".6" stop-color="#8c917f"/><stop offset="1" stop-color="#555a50"/></radialGradient>
+  <linearGradient id="ks-pipe" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4d9ea"/><stop offset=".5" stop-color="#8d96b2"/><stop offset="1" stop-color="#3a4160"/></linearGradient>
+  <radialGradient id="ks-rim" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#262d47"/><stop offset="1" stop-color="#0f1322"/></radialGradient>
+  <radialGradient id="ks-head" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#fff6c8" stop-opacity=".8"/><stop offset="1" stop-color="#ffe08a" stop-opacity="0"/></radialGradient>
+  <linearGradient id="ks-tail" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff2d3d"/><stop offset="1" stop-color="#8a0a16"/></linearGradient>
+  </defs></svg>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header">
     <a class="logo" href="#top" aria-label="Kestrel home">
       <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><path d="M2 20 14 8l4 6 12-8-8 18-6-5z" fill="currentColor"/></svg>
       <span>KESTREL</span>
     </a>
-    <nav class="site-nav" aria-label="Primary">
+    <nav class="site-nav" id="site-nav" aria-label="Primary">
       <a href="#ride">The ride</a>
       <a href="#lineup">Lineup</a>
       <a href="#tech">Technology</a>
       <a href="#book">Test ride</a>
     </nav>
     <a class="btn btn-small" href="#book">Book a ride</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu"><span></span><span></span></button>
   </header>
 
-  <main id="top">
+  <main id="top"><span id="main-content" tabindex="-1"></span>
     <section class="hero" aria-labelledby="hero-title">
       <input class="swatch-input" type="radio" name="paint" id="paint-teal" checked />
       <input class="swatch-input" type="radio" name="paint" id="paint-pink" />
@@ -47,29 +61,38 @@
       <div class="hero-stage" aria-hidden="true">
         <div class="sun-disc"></div>
         <svg class="bike" viewBox="0 0 800 420" role="img" aria-label="Side view of the Kestrel M9 motorcycle">
-          <ellipse cx="400" cy="396" rx="340" ry="10" fill="#000" opacity=".5" />
-          <path class="b-pipe" d="M360 322 L190 302 L112 296 L112 312 L196 318 L352 342 Z" />
-          <path class="b-swing" d="M180 320 L346 290" />
-          <path class="b-engine" d="M326 250 L488 250 L474 322 L346 326 Z" />
-          <path class="b-tail" d="M112 240 L272 214 L334 238 L302 254 L134 264 Z" />
-          <path class="b-body" d="M286 226 C318 166 424 156 478 188 L508 220 L444 240 L330 248 Z" />
-          <path class="b-body" d="M476 188 L572 212 L606 266 L552 290 L474 260 Z" />
-          <path class="b-shade" d="M330 248 L444 240 L508 220 L552 290 L474 260 Z" />
-          <path class="b-glass" d="M486 184 L560 156 L582 206 L526 208 Z" />
-          <path class="b-light" d="M590 232 L612 240 L604 256 L584 250 Z" />
-          <path class="b-fork" d="M582 204 L624 320" />
-          <g class="b-rider">
-            <path d="M326 222 L396 150 L452 168 L474 204 L440 226 Z" />
-            <path class="b-limb" d="M432 176 L526 198" />
-            <path class="b-limb" d="M346 240 L430 266 L476 306" />
-            <circle cx="430" cy="126" r="28" fill="#f4f6ff" />
-            <path d="M436 112 L462 118 L458 138 L432 138 Z" fill="#101626" />
-          </g>
-          <circle cx="180" cy="320" r="72" fill="#0a0d18" />
-          <circle cx="620" cy="320" r="72" fill="#0a0d18" />
-          <g class="wheel" style="transform-origin:180px 320px"><circle cx="180" cy="320" r="52" fill="#1a2036" /><path d="M180 272v96M132 320h96M146 286l68 68M214 286l-68 68" stroke="#7c86a8" stroke-width="5" stroke-linecap="round" /><circle cx="180" cy="320" r="9" fill="var(--accent)" /></g>
-          <g class="wheel" style="transform-origin:620px 320px"><circle cx="620" cy="320" r="52" fill="#1a2036" /><path d="M620 272v96M572 320h96M586 286l68 68M654 286l-68 68" stroke="#7c86a8" stroke-width="5" stroke-linecap="round" /><circle cx="620" cy="320" r="9" fill="var(--accent)" /></g>
-        </svg>
+  <ellipse cx="400" cy="398" rx="370" ry="11" fill="url(#ks-shadow)"/>
+  <path d="M352 332L140 318" stroke="#5b6480" stroke-width="3" stroke-dasharray="4 3"/>
+  <path d="M312 238L338 300" stroke="#8d96b2" stroke-width="9" stroke-linecap="round"/><path d="M316 246L336 296" stroke="#ff9b3d" stroke-width="3" stroke-dasharray="3 3" stroke-linecap="round"/>
+  <path d="M338 328L246 304L108 296L106 312L240 322L340 346Z" fill="url(#ks-pipe)"/><path d="M108 296L106 312" stroke="#2a3048" stroke-width="7" stroke-linecap="round"/>
+  <path class="b-engine" d="M342 264L430 238L488 254L480 334L350 340Z"/><path d="M342 264L430 238L488 254L480 334L350 340Z" fill="url(#ks-lit)"/>
+  <path d="M356 268L430 246M356 280L474 258M356 292L476 270" stroke="#58628a" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+  <circle cx="388" cy="318" r="22" fill="#2a3150"/><circle cx="388" cy="318" r="14" fill="#161b2e"/><circle cx="388" cy="318" r="5" fill="#8d96b2"/>
+  <path class="b-tail" d="M104 232L222 208L246 232L130 254Z"/><path d="M104 232L222 208L246 232L130 254Z" fill="url(#ks-lit)"/>
+  <path d="M104 232L120 230L130 246L108 250Z" fill="#ff3350"/><circle cx="110" cy="240" r="14" fill="url(#ks-tail)" opacity=".7"/>
+  <path d="M214 222C250 204 330 208 390 218L384 236L226 240Z" fill="#14182a"/><path d="M222 217C250 206 330 210 386 219" stroke="#fff" stroke-opacity=".25" stroke-width="1.6" fill="none"/>
+  <path class="b-body" d="M372 220C392 188 470 180 526 198L540 218C500 232 430 236 380 238Z"/><path d="M372 220C392 188 470 180 526 198L540 218C500 232 430 236 380 238Z" fill="url(#ks-lit)"/>
+  <path d="M396 200C430 188 480 188 516 200" stroke="#fff" stroke-opacity=".5" stroke-width="2" fill="none"/>
+  <path d="M356 252L460 236L488 252" fill="none" stroke="#1c2238" stroke-width="12" stroke-linecap="round"/>
+  <path class="b-body" d="M522 198L586 190L616 218L610 258L560 268L520 242Z"/><path d="M522 198L586 190L616 218L610 258L560 268L520 242Z" fill="url(#ks-lit)"/>
+  <path class="b-glass" d="M534 192L578 146L596 188Z"/><path d="M544 190L578 156" stroke="#fff" stroke-opacity=".4" stroke-width="2"/>
+  <ellipse cx="601" cy="228" rx="15" ry="11" fill="#0d1226"/><ellipse cx="603" cy="228" rx="9" ry="6.5" fill="#fff6cf"/><circle cx="604" cy="228" r="22" fill="url(#ks-head)" opacity=".75"/>
+  <path d="M552 268C566 246 646 242 668 268" fill="none" stroke="var(--bike)" stroke-width="9" stroke-linecap="round" class="b-fender"/>
+  <path d="M552 192L508 178L498 182" stroke="#14182a" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M500 180L488 170L504 168Z" fill="#8d96b2"/>
+  <g class="b-rider">
+    <path d="M300 214L330 188L398 160L468 154L492 166L478 186L412 202L370 232L320 238Z" fill="#232a47"/>
+    <path d="M404 164L468 156" stroke="var(--bike)" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+    <path class="b-limb" d="M470 168L514 186L540 188"/>
+    <path class="b-limb" d="M322 226L420 256L402 316"/>
+    <path d="M388 322L418 322L428 334L384 334Z" fill="#10142a"/>
+    <path d="M472 128C476 102 506 96 524 112C534 124 530 142 516 150L488 152Z" fill="#f6f7ff"/>
+    <path d="M500 118L526 124L522 142L494 140Z" fill="#101626"/><path d="M504 122L520 126" stroke="#fff" stroke-opacity=".45" stroke-width="2"/>
+  </g>
+  <g class="wheel" style="transform-origin:180px 320px"><circle cx="180" cy="320" r="72" fill="#0a0b0f"/><circle cx="180" cy="320" r="64.8" fill="none" stroke="#1b1e27" stroke-width="2"/><circle cx="180" cy="320" r="52" fill="url(#ks-rim)"/><circle cx="180" cy="320" r="40.56" fill="#20242e"/><path d="M206 320L218.48 320M204.43 328.89L216.16 333.16M199.92 336.71L209.48 344.73M193 342.52L199.24 353.32M184.51 345.61L186.68 357.9M175.49 345.61L173.32 357.9M167 342.52L160.76 353.32M160.08 336.71L150.52 344.73M155.57 328.89L143.84 333.16M154 320L141.52 320M155.57 311.11L143.84 306.84M160.08 303.29L150.52 295.27M167 297.48L160.76 286.68M175.49 294.39L173.32 282.1M184.51 294.39L186.68 282.1M193 297.48L199.24 286.68M199.92 303.29L209.48 295.27M204.43 311.11L216.16 306.84" stroke="#4a5163" stroke-width="1.6"/><path d="M180 306.48L180 271.12M190.57 311.57L218.22 289.52M193.18 323.01L227.65 330.88M185.87 332.18L201.21 364.04M174.13 332.18L158.79 364.04M166.82 323.01L132.35 330.88M169.43 311.57L141.78 289.52" stroke="#b9c1de" stroke-width="3" stroke-linecap="round"/><circle cx="180" cy="320" r="10.4" fill="var(--accent)"/><circle cx="223.98" cy="336.01" r="1.8" fill="#fff"/></g>
+  <g class="wheel" style="transform-origin:620px 320px"><circle cx="620" cy="320" r="72" fill="#0a0b0f"/><circle cx="620" cy="320" r="64.8" fill="none" stroke="#1b1e27" stroke-width="2"/><circle cx="620" cy="320" r="52" fill="url(#ks-rim)"/><circle cx="620" cy="320" r="40.56" fill="#20242e"/><path d="M646 320L658.48 320M644.43 328.89L656.16 333.16M639.92 336.71L649.48 344.73M633 342.52L639.24 353.32M624.51 345.61L626.68 357.9M615.49 345.61L613.32 357.9M607 342.52L600.76 353.32M600.08 336.71L590.52 344.73M595.57 328.89L583.84 333.16M594 320L581.52 320M595.57 311.11L583.84 306.84M600.08 303.29L590.52 295.27M607 297.48L600.76 286.68M615.49 294.39L613.32 282.1M624.51 294.39L626.68 282.1M633 297.48L639.24 286.68M639.92 303.29L649.48 295.27M644.43 311.11L656.16 306.84" stroke="#4a5163" stroke-width="1.6"/><path d="M620 306.48L620 271.12M630.57 311.57L658.22 289.52M633.18 323.01L667.65 330.88M625.87 332.18L641.21 364.04M614.13 332.18L598.79 364.04M606.82 323.01L572.35 330.88M609.43 311.57L581.78 289.52" stroke="#b9c1de" stroke-width="3" stroke-linecap="round"/><circle cx="620" cy="320" r="10.4" fill="var(--accent)"/><circle cx="663.98" cy="336.01" r="1.8" fill="#fff"/></g><path d="M625.78 287.23A33.28 33.28 0 0 1 647.26 300.91" stroke="#ff9b3d" stroke-width="10.4" stroke-linecap="round" fill="none"/>
+  <path d="M356 306L180 320" stroke="#262d47" stroke-width="15" stroke-linecap="round"/><path d="M356 301L180 315" stroke="#fff" stroke-opacity=".18" stroke-width="2" stroke-linecap="round"/>
+  <path d="M556 214L620 330" stroke="#c7ccdf" stroke-width="13" stroke-linecap="round"/><path d="M556 214L620 330" stroke="#fff" stroke-opacity=".5" stroke-width="2.5" stroke-linecap="round" transform="translate(-3 0)"/><path d="M590 270L620 326" stroke="#7a82a0" stroke-width="13" stroke-linecap="round"/>
+</svg>
       </div>
     </section>
 
@@ -83,11 +106,13 @@
     <section class="journey" id="ride" aria-labelledby="journey-title">
       <div class="journey-stage">
         <div class="sun" aria-hidden="true"></div>
+        <div class="layer gulls" aria-hidden="true"></div>
         <div class="layer hills" aria-hidden="true"></div>
         <div class="sea" aria-hidden="true"></div>
+        <div class="glitter" aria-hidden="true"></div>
         <div class="layer palms" aria-hidden="true"></div>
         <div class="road" aria-hidden="true"></div>
-        <div class="scene-vehicle" aria-hidden="true"></div>
+        <div class="scene-vehicle" aria-hidden="true"><span class="beam"></span></div>
         <div class="journey-copy">
           <article>
             <p class="eyebrow">Open the throttle</p>
