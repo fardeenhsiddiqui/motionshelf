@@ -694,3 +694,16 @@ Characters category and moving the test scripts into the repository. No new temp
 - A real Android or iPhone test, and real mobile GPU numbers.
 - Operator, contact, jurisdiction and governing-law details, and a legal reviewer.
 - Sending the feedback request and recording real answers.
+
+### 15.8 Redeploy and production verification
+
+Code changed (section 15.2), so the site was redeployed from `386003d` with the existing Wrangler login:
+previews https://9e256997.motionshelf-previews.pages.dev (alias https://motionshelf-previews.pages.dev) and main
+https://00d4c350.motionshelf.pages.dev (alias https://motionshelf.pages.dev).
+
+Verified on production afterwards: key routes return 200 and an unknown URL returns 404; the new breakpoints and the
+swatch focus rules are in the served CSS; the navigation scan at 700 to 1180 px finds no wrapping on all seven pages; the
+swatch focus ring appears under real Tab events in Edge; the app tests pass in Edge (15 of 15); the template tests (4
+templates) and anime tests (3 pages) pass in Edge against the previews origin; the zip from production contains
+`LICENSE.txt` (and `CREDITS.txt` for Vortex GT). Not re-run on production after this redeploy: the Chrome suites and the
+full 12-device matrix (both passed locally on the same build).
