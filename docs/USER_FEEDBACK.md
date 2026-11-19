@@ -6,6 +6,25 @@ https://motionshelf.pages.dev. It takes about 10 minutes.
 This file holds the template and a log for **real** responses only. Nothing here is invented. Until someone
 answers, the log is empty.
 
+> **Owner action needed.** Nobody can collect this for you: you choose who to ask, send the message, and paste the real
+> answers into the log below. Until you do, there is no feedback, and nothing in this repository should be read as if there were.
+
+## Quick request (five questions, about 5 minutes)
+
+For a developer or freelancer who will not read a long list. Paste it as it is.
+
+> Hi, would you give me 5 minutes of honest feedback on MotionShelf, a free library of animated website templates
+> (cars, off-road, motorsport, motorcycles) plus an anime-style section? https://motionshelf.pages.dev
+> Open one template and one anime demo, on your phone if you can, then reply with:
+>
+> 1. **Quality:** would you put this on a real client page, or does it look like a template? What gave it away?
+> 2. **Usability:** could you find, preview, copy and download one without help? Where did you hesitate?
+> 3. **Mobile:** any missed taps, cut-off content, stuck scrolling or odd layout? (Device and browser, please.)
+> 4. **Animation performance:** did anything stutter, freeze or drain the battery? Where exactly?
+> 5. **Missing:** what one thing would make you use it again or recommend it?
+>
+> "I would not use this" is a useful answer. Thank you.
+
 ## Short message (for a chat, DM or email)
 
 Paste this as it is. The link goes to the live site; check it is the version you want people to see before sending.

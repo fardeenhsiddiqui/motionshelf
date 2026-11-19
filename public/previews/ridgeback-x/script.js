@@ -14,7 +14,7 @@
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") { setOpen(false); toggle.focus(); }
     });
-    window.matchMedia("(min-width: 761px)").addEventListener("change", function () { setOpen(false); });
+    window.matchMedia("(min-width: 901px)").addEventListener("change", function () { setOpen(false); });
   }
   if (!("IntersectionObserver" in window)) return;
   var links = [].slice.call(document.querySelectorAll(".site-nav a[href^='#']"));

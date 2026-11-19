@@ -42,6 +42,7 @@ export const privacy: LegalDoc = {
       list: [
         "cdnjs.cloudflare.com, for the GSAP animation library used by the four automotive templates",
         "esm.sh, for the three.js 3D library used by the optional 3D hero of Vortex GT",
+        "no third party at all for the anime items (Sakura Dusk, Neon Rain and Impact Frames), which load only from MotionShelf",
       ],
     },
     {

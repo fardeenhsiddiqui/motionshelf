@@ -39,9 +39,19 @@ export function CodeTabs({ item, sources, assets }: { item: CatalogItem; sources
   const onPrompt = async () => {
     if (ready) showPrompted(await copyText(buildPrompt(item, sources, assets ?? [])));
   };
-  const onZip = () => {
+  // The download carries the license text and any required credits next to the code, so they travel with it.
+  const onZip = async () => {
     if (!ready) return;
     const files = item.files.map((f) => ({ name: f.path, text: (sources[f.path] as { text: string }).text }));
+    let license = "";
+    try {
+      const response = await fetch(item.license.licenseFile);
+      if (response.ok) license = await response.text();
+    } catch { /* fall back to a notice below */ }
+    files.push({ name: "LICENSE.txt", text: license || `${item.license.name} license. Author: ${item.license.author}. Full text: ${item.license.licenseFile} on MotionShelf.\n` });
+    const credits = (assets ?? []).filter((a) => a.attributionRequired).map((a) => `${a.title}: ${a.attributionText ?? a.author} (${a.license.name}, ${a.license.url})`);
+    if (item.license.attributionRequired && item.license.attributionText) credits.unshift(item.license.attributionText);
+    if (credits.length > 0) files.push({ name: "CREDITS.txt", text: credits.join("\n") + "\n" });
     saveBlob(`${item.id}.zip`, zipFiles(files));
   };
 

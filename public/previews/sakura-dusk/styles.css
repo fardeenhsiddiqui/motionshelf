@@ -106,7 +106,7 @@ section[id] { scroll-margin-top: 64px; }
   .caps { top: 18%; }
   .sun { left: 54%; width: 30vmin; height: 30vmin; }
 }
-@media (max-height: 520px) and (orientation: landscape) { .caps { top: 14%; } .cap p:not(.eyebrow) { display: none; } .cap h1 { font-size: 34px; } }
+@media (max-height: 520px) and (orientation: landscape) { .caps { top: 82px; } .cap p:not(.eyebrow) { display: none; } .cap h1 { font-size: 34px; } }
 
 
 /* portrait screens: the artwork keeps its full 16:9 width and the camera pans across it as you scroll,

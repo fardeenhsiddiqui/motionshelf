@@ -587,3 +587,110 @@ Source read: https://gsap.com/standard-license/ ("Standard 'No Charge' GSAP Lice
 - Vortex 30 fps idle rotation is unverified on real hardware.
 - Optional: ask Webflow whether bundling GSAP in downloads is permitted.
 - Real feedback has still not been collected.
+
+## 15. Phase 6: post-deployment validation, Vortex measurements, legal and feedback preparation
+
+Baseline: `4d5ad31` (code deployed as `dbd4fa3`). Headless Chrome 157 and Edge 157. **Firefox, Safari and WebKit are
+still not installed** (checked for Firefox in Program Files and Playwright browsers; none), so they were not tested.
+
+### 15.1 Edge against production (before any change in this round)
+
+| Suite | Target | Result |
+|---|---|---|
+| App tests (gallery, categories, 3 anime detail pages, sandbox attribute, phone overflow) | motionshelf.pages.dev | 15 of 15 pass |
+| 12-device matrix, 16 app routes incl. 404 and `/components` | motionshelf.pages.dev | All pass |
+| 12-device matrix, 7 standalone previews | motionshelf-previews.pages.dev | Only the known probe noise: 3 invisible radio inputs (opacity 0) in Vortex, Ridgeback and Kestrel |
+| Template behaviour tests (4 templates: scene, scroll-spy, HUD, wheels, menu, Escape, skip link, reduced motion, CDNs blocked, console) | previews origin | 68 of 68 pass |
+| Anime behaviour tests (3 pages x 4 sizes, keyboard, scene steps, pause off screen, Hit button, reduced motion, idle CPU) | previews origin | 62 of 62 pass |
+
+Screenshots of all seven previews at desktop, phone portrait and phone landscape were taken in Edge from production
+(42 images, kept in the working scratch folder, not in the repository).
+
+### 15.2 Regressions and defects found by looking at those screenshots, and fixed
+
+None of these were caught by the automated checks. All were reproduced before fixing.
+
+- **Landscape phone: Sakura Dusk and Neon Rain captions sat under the fixed header** (eyebrow text half hidden). The
+  landscape rule placed captions at 14 % of a 390 px stage, above the 68 px header. Now 82 px from the top.
+- **Redline Racing navigation wrapped onto two lines at 844 px** (landscape phone), and **Ridgeback X wrapped at 768 px**
+  (iPad portrait). Cause: five links plus a button do not fit before the 760 px menu breakpoint. Menu breakpoints are now
+  980 px (Redline) and 900 px (Ridgeback), with the matching `matchMedia` in each script. A scan at 700, 768, 820, 844,
+  915, 980, 1024 and 1180 px now finds no wrapping or overflow in any of the seven pages.
+- **Colour swatches had no visible keyboard focus.** The real radio inputs are invisible, and nothing styled the label.
+  Tab now shows a ring and scale on the matching swatch in Vortex, Ridgeback and Kestrel (checked with real Tab key
+  events). In Vortex the hexagon clips the outer ring, so only the inner ring shows there.
+- **The download did not contain what the Terms said it did.** The zip held only the code files, but the Terms say the
+  license file and required credits are included. Fixed in `CodeTabs.tsx`: the zip now adds `LICENSE.txt` and, when
+  credit is required, `CREDITS.txt` (checked in the browser: Vortex gets both, Ridgeback and Sakura Dusk get the license).
+  The Vortex zip still does not include the 3D model file; that is listed in `docs/ROADMAP.md`.
+- A test race, not a product bug: the Vortex "Escape closes the menu" check failed 3 of 5 runs because it read
+  `visibility` 250 ms after Escape while the menu fades out over 200 ms on a page busy with the 3D canvas. Menu state and
+  focus were correct immediately (`aria-expanded=false`, focus on the button). The test now waits 600 ms; three
+  consecutive runs pass.
+
+Retest after the fixes (local build, Chrome): template tests 4/4 templates pass (Vortex re-run three times after the
+test fix), anime tests 62/62, app tests 15/15, device matrix on app routes passes; on the four edited previews only the
+invisible-radio probe noise remains (Ridgeback).
+
+### 15.3 Vortex 3D: real GPU and frame pacing
+
+A real GPU was available: **Intel Arc Graphics (integrated, desktop), through Direct3D 11**, in a headless Chrome started
+without the software-rendering flag (renderer string read from the page). This is **not** a phone GPU, and the machine is
+a laptop or desktop, so nothing here proves mobile GPU performance.
+
+Old (60 fps idle, commit `e76d526`) against new (30 fps idle), interleaved twice, desktop 1440 x 900:
+
+| | Old | New |
+|---|---|---|
+| Idle render cadence | 59.9 to 60.2 fps | 29.9 to 30.2 fps, p95 gap 34.4 to 35.2 ms |
+| Render cadence while dragging | 60.2 fps | 59.9 to 60.2 fps (full rate) |
+| Return to 30 fps after dragging | n/a | yes, 3.5 s after release |
+| GPU 3D engine, mean over 10 s | 18.8 % and 18.8 % | 11.4 % and 11.3 % |
+| Browser processes' CPU, over 10 s | 37 % and 50 % of a core | 32 % and 30 % of a core |
+| Renders while scrolled away | 0 | 0, and rendering resumes on return |
+
+Touch emulation (390 x 844, device pixel ratio 3, `pointer: coarse` true): the new build renders at pixel ratio 1.50
+(old 2.00), idle 30.0 fps with p95 gap 34.1 ms, 60 fps while dragging, 0 renders offscreen. GPU 3D engine 7.5 %,
+browser CPU 22 % of a core. One drag showed a single 88 ms frame gap, once, at the start of the touch drag.
+
+Decision on the 30 ms gap: **not changed**. A logic simulation of the gate at 50 to 240 Hz displays (no GPU involved)
+shows even spacing at every rate (25 fps at 50 and 75 Hz, 28.8 fps at 144 Hz, 30 fps at 60, 90, 120 and 240 Hz). The only
+improved case with a "half a display frame" gate was 75 Hz (25 to 37.5 fps), which is not enough to justify more logic.
+Smoothness to a human eye was not measured; the rotation moves about 0.5 degrees per drawn frame.
+
+Resource cleanup: `hero3d.js` runs on a standalone page, has no unmount, and the browser releases the WebGL context when
+the frame or tab closes. The main site's React showroom, which does mount and unmount, was tested for leaks in phase 3
+(8 cycles, canvases, contexts, nodes and listeners counted).
+
+Further optimisation that the evidence does support is not a rendering change but a loading one: the 1.8 MB model loads
+on phones without being asked (roadmap P0 item 1).
+
+### 15.4 Legal review preparation
+
+`docs/LEGAL_REVIEW.md` compares each statement in `/terms` and `/privacy` with observed behaviour on production
+(hosts contacted, cookies, storage: only the two own origins on app pages; cdnjs and esm.sh only inside the
+automotive previews; no cookies or storage anywhere), lists the details only the owner can supply (operator, contact,
+governing law, controller details, subprocessors, copyright-notice procedure), and gives eight questions for a
+qualified reviewer. The pages are **not** legally approved. One inaccuracy was found and fixed (the zip contents, above),
+and the privacy text now states that the anime previews contact no third party.
+
+### 15.5 GSAP
+
+Unchanged from section 14.4: official license read at gsap.com/standard-license (effective 30 April 2025); commercial
+use free; redistribution and bundling not addressed; CDN loading kept; the templates render fully with the CDN blocked
+(checked in every run of the template tests). No official evidence supports changing the approach.
+
+### 15.6 Feedback and roadmap
+
+`docs/USER_FEEDBACK.md` now has a five-question quick request for real developers and freelancers and an explicit note
+that the owner must send it and paste real answers; the response log is empty. `docs/ROADMAP.md` lists the next work in
+priority order from these findings: load the Vortex model only on request on phones, real-device and Firefox/WebKit
+testing, legal review, real feedback, then idle cost of the four templates, download completeness, the empty
+Characters category and moving the test scripts into the repository. No new templates.
+
+### 15.7 Blockers needing the owner
+
+- Firefox and WebKit: approve a Playwright download (about 300 MB) or provide a Mac or iPhone.
+- A real Android or iPhone test, and real mobile GPU numbers.
+- Operator, contact, jurisdiction and governing-law details, and a legal reviewer.
+- Sending the feedback request and recording real answers.

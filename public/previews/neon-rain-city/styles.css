@@ -122,7 +122,7 @@ section[id] { scroll-margin-top: 64px; }
   .moon { left: 56%; width: 26vmin; height: 26vmin; }
   .train { height: 4.6vh; }
 }
-@media (max-height: 520px) and (orientation: landscape) { .caps { top: 14%; } .cap p:not(.eyebrow) { display: none; } .cap h1 { font-size: 34px; } }
+@media (max-height: 520px) and (orientation: landscape) { .caps { top: 82px; } .cap p:not(.eyebrow) { display: none; } .cap h1 { font-size: 34px; } }
 
 
 

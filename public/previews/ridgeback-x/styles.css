@@ -170,7 +170,7 @@ section[id] { scroll-margin-top: 76px; }
 .nav-toggle span:last-child { top: 25px; }
 .is-menu-open .nav-toggle span:first-child { top: 21px; transform: rotate(45deg); }
 .is-menu-open .nav-toggle span:last-child { top: 21px; transform: rotate(-45deg); }
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   .site-header { gap: 12px; }
   .site-header .btn-small { margin-left: auto; }
   .nav-toggle { display: block; }
@@ -211,3 +211,8 @@ main > section:not(.hero):not(.journey):not(.stats) { content-visibility: auto; 
 .btn-small { font-size: 12px; }
 .site-footer a { display: inline-block; padding: 12px 0; }
 .tag, .hud dt, .countdown dt { font-size: 12px; }
+
+/* Keyboard focus for the colour swatches: the radio inputs are invisible, so the matching label shows the ring */
+.hero:has(#paint-olive:focus-visible) label[for="paint-olive"] { transform: scale(1.25); box-shadow: inset 0 0 0 3px #fff, 0 0 0 3px var(--p-accent, #fff); }
+.hero:has(#paint-dune:focus-visible) label[for="paint-dune"] { transform: scale(1.25); box-shadow: inset 0 0 0 3px #fff, 0 0 0 3px var(--p-accent, #fff); }
+.hero:has(#paint-slate:focus-visible) label[for="paint-slate"] { transform: scale(1.25); box-shadow: inset 0 0 0 3px #fff, 0 0 0 3px var(--p-accent, #fff); }
